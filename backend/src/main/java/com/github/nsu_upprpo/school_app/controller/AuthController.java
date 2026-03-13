@@ -1,7 +1,7 @@
 package com.github.nsu_upprpo.school_app.controller;
 
 import com.github.nsu_upprpo.school_app.model.dto.request.LoginRequest;
-import com.github.nsu_upprpo.school_app.model.dto.request.RefreshRequest;
+import com.github.nsu_upprpo.school_app.model.dto.request.RefreshTokenRequest;
 import com.github.nsu_upprpo.school_app.model.dto.request.RegisterRequest;
 import com.github.nsu_upprpo.school_app.model.dto.response.TokenResponse;
 import com.github.nsu_upprpo.school_app.service.AuthService;
@@ -32,8 +32,8 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<TokenResponse> refresh(@Valid @RequestBody RefreshRequest refreshRequest) {
-        return ResponseEntity.ok(authService.refresh(refreshRequest));
+    public ResponseEntity<TokenResponse> refresh(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+        return ResponseEntity.ok(authService.refresh(refreshTokenRequest));
     }
 
 }
