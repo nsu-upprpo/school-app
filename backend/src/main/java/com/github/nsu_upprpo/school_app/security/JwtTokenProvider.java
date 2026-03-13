@@ -80,4 +80,12 @@ public class JwtTokenProvider {
         return getClaims(token).get("email", String.class);
     }
 
+    public String getUserId(String token) {
+        return getClaims(token).getSubject();
+    }
+
+    public boolean isAccessToken(String token) {
+        return "access".equals(getTokenType(token));
+    }
+
 }
