@@ -1,0 +1,91 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-create-groups
+      author: team
+      changes:
+        - createTable:
+            tableName: groups
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: course_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_groups_course
+                    references: courses(id)
+              - column:
+                  name: branch_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_groups_branch
+                    references: branches(id)
+              - column:
+                  name: teacher_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_groups_teacher
+                    references: users(id)
+              - column:
+                  name: schedule_description
+                  type: varchar(255)
+              - column:
+                  name: max_students
+                  type: int
+              - column:
+                  name: active
+                  type: boolean
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+  - changeSet:
+      id: 005-create-group-students
+      author: team
+      changes:
+        - createTable:
+            tableName: group_students
+            columns:
+              - column:
+                  name: group_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_gs_group
+                    references: groups(id)
+              - column:
+                  name: child_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_gs_child
+                    references: children(id)
+              - column:
+                  name: enrolled_at
+                  type: date
+              - column:
+                  name: left_at
+                  type: date
+
+        - addPrimaryKey:
+            tableName: group_students
+            columnNames: group_id, child_id

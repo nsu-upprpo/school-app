@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 003-create-courses
-      author: team
+      author: arsenii
       changes:
         - createTable:
             tableName: courses
