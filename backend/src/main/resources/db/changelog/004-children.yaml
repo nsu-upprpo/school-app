@@ -1,0 +1,75 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-create-children
+      author: arsenii
+      changes:
+        - createTable:
+            tableName: children
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: first_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patronymic
+                  type: varchar(50)
+              - column:
+                  name: birth_date
+                  type: date
+              - column:
+                  name: branch_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_children_branch
+                    references: branches(id)
+              - column:
+                  name: active
+                  type: boolean
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+  - changeSet:
+      id: 004-create-parent-children
+      author: team
+      changes:
+        - createTable:
+            tableName: parent_children
+            columns:
+              - column:
+                  name: parent_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_pc_parent
+                    references: users(id)
+              - column:
+                  name: child_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_pc_child
+                    references: children(id)
+
+        - addPrimaryKey:
+            tableName: parent_children
+            columnNames: parent_id, child_id

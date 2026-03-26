@@ -59,6 +59,11 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public User findById(UUID userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User with this id doesn't exist"));
+    }
+
     private UserResponse mapToResponse(User user) {
         return UserResponse.builder()
                 .id(user.getId())

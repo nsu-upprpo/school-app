@@ -3,23 +3,30 @@ package com.github.nsu_upprpo.school_app.model.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Builder
-public class GroupResponse {
+public class GroupDetailedResponse {
 
     private final UUID id;
     private final String name;
-    private final UUID courseId;
     private final String courseName;
-    private final UUID branchId;
     private final String branchName;
-    private final UUID teacherId;
     private final String teacherName;
     private final String scheduleDescription;
     private final Integer maxStudents;
-    private final int currentStudents;
-    private final boolean active;
+    private final List<StudentInfo> students;
+
+    @Getter
+    @Builder
+    public static class StudentInfo {
+        private final UUID childId;
+        private final String firstName;
+        private final String lastName;
+        private final LocalDate enrolledAt;
+    }
 
 }

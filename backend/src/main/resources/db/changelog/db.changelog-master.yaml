@@ -3,3 +3,9 @@ databaseChangeLog:
       file: db/changelog/001-users.yaml
   - include:
       file: db/changelog/002-branches.yaml
+  - include:
+      file: db/changelog/003-courses.yaml
+  - include:
+      file: db/changelog/004-children.yaml
+  - include:
+      file: db/changelog/005-groups.yaml
