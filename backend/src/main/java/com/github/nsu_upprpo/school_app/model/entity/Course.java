@@ -15,7 +15,7 @@ public class Course extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(length = 100)
     private String description;
 
     @Column(name = "min_age")
