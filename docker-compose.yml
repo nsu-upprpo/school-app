@@ -1,12 +1,11 @@
-# Todo: POSTGRES_USER + POSTGRES_PASSWORD to env file
 services:
   db:
     image: postgres:16-alpine
     container_name: school-app-db
     environment:
-      POSTGRES_DB: school_app
-      POSTGRES_USER: school_user
-      POSTGRES_PASSWORD: school_pass
+      - POSTGRES_DB=school_app
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -20,11 +19,11 @@ services:
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/school_app
-      SPRING_DATASOURCE_USERNAME: school_user
-      SPRING_DATASOURCE_PASSWORD: school_pass
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SPRING_H2_CONSOLE_ENABLED: "false"
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/school_app
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_H2_CONSOLE_ENABLED="false"
     ports:
       - "8080:8080"
 
