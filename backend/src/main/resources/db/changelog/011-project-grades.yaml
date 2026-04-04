@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 005-create-groups
+      id: 011-create-project-grades
       author: ilia
       changes:
         - createTable:
-            tableName: groups
+            tableName: project_grades
             columns:
               - column:
                   name: id
@@ -13,32 +13,26 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: project_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: child_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
                   name: teacher_id
                   type: uuid
                   constraints:
                     nullable: false
               - column:
-                  name: branch_id
-                  type: uuid
-                  constraints:
-                    nullable: false
-              - column:
-                  name: course_id
-                  type: uuid
-                  constraints:
-                    nullable: false
-              - column:
-                  name: schedule_description
-                  type: varchar(255)
-              - column:
-                  name: max_students
+                  name: score
                   type: int
               - column:
-                  name: active
-                  type: boolean
-                  defaultValueBoolean: true
-                  constraints:
-                    nullable: false
+                  name: comment
+                  type: varchar(255)
               - column:
                   name: created_at
                   type: timestamp
@@ -52,20 +46,20 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
-            baseTableName: groups
+            baseTableName: project_grades
+            baseColumnNames: project_id
+            referencedTableName: projects
+            referencedColumnNames: id
+            constraintName: fk_project_grades_project
+        - addForeignKeyConstraint:
+            baseTableName: project_grades
+            baseColumnNames: child_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_project_grades_child
+        - addForeignKeyConstraint:
+            baseTableName: project_grades
             baseColumnNames: teacher_id
             referencedTableName: users
             referencedColumnNames: id
-            constraintName: fk_groups_teacher
-        - addForeignKeyConstraint:
-            baseTableName: groups
-            baseColumnNames: branch_id
-            referencedTableName: branches
-            referencedColumnNames: id
-            constraintName: fk_groups_branch
-        - addForeignKeyConstraint:
-            baseTableName: groups
-            baseColumnNames: course_id
-            referencedTableName: courses
-            referencedColumnNames: id
-            constraintName: fk_groups_course
+            constraintName: fk_project_grades_teacher

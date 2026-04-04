@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-create-parent-children
+      author: ilia
+      changes:
+        - createTable:
+            tableName: parent_children
+            columns:
+              - column:
+                  name: parent_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: child_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            tableName: parent_children
+            columnNames: parent_id, child_id
+            constraintName: pk_parent_children
+        - addForeignKeyConstraint:
+            baseTableName: parent_children
+            baseColumnNames: parent_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_parent_children_parent
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: parent_children
+            baseColumnNames: child_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_parent_children_child
+            onDelete: CASCADE

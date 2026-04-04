@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 005-create-groups
+      id: 010-create-lessons
       author: ilia
       changes:
         - createTable:
-            tableName: groups
+            tableName: lessons
             columns:
               - column:
                   name: id
@@ -13,32 +13,32 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: teacher_id
+                  name: project_id
+                  type: uuid
+              - column:
+                  name: group_id
                   type: uuid
                   constraints:
                     nullable: false
               - column:
-                  name: branch_id
-                  type: uuid
+                  name: start_time
+                  type: timestamp
                   constraints:
                     nullable: false
               - column:
-                  name: course_id
-                  type: uuid
+                  name: end_time
+                  type: timestamp
                   constraints:
                     nullable: false
               - column:
-                  name: schedule_description
+                  name: topic
                   type: varchar(255)
               - column:
-                  name: max_students
-                  type: int
+                  name: status
+                  type: varchar(20)
               - column:
-                  name: active
-                  type: boolean
-                  defaultValueBoolean: true
-                  constraints:
-                    nullable: false
+                  name: cancel_reason
+                  type: varchar(255)
               - column:
                   name: created_at
                   type: timestamp
@@ -52,20 +52,14 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
-            baseTableName: groups
-            baseColumnNames: teacher_id
-            referencedTableName: users
+            baseTableName: lessons
+            baseColumnNames: project_id
+            referencedTableName: projects
             referencedColumnNames: id
-            constraintName: fk_groups_teacher
+            constraintName: fk_lessons_project
         - addForeignKeyConstraint:
-            baseTableName: groups
-            baseColumnNames: branch_id
-            referencedTableName: branches
+            baseTableName: lessons
+            baseColumnNames: group_id
+            referencedTableName: groups
             referencedColumnNames: id
-            constraintName: fk_groups_branch
-        - addForeignKeyConstraint:
-            baseTableName: groups
-            baseColumnNames: course_id
-            referencedTableName: courses
-            referencedColumnNames: id
-            constraintName: fk_groups_course
+            constraintName: fk_lessons_group

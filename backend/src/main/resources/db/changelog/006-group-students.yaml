@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-create-group-students
+      author: ilia
+      changes:
+        - createTable:
+            tableName: group_students
+            columns:
+              - column:
+                  name: child_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: group_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enrolled_at
+                  type: date
+              - column:
+                  name: left_at
+                  type: date
+        - addPrimaryKey:
+            tableName: group_students
+            columnNames: child_id, group_id
+            constraintName: pk_group_students
+        - addForeignKeyConstraint:
+            baseTableName: group_students
+            baseColumnNames: child_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_group_students_child
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: group_students
+            baseColumnNames: group_id
+            referencedTableName: groups
+            referencedColumnNames: id
+            constraintName: fk_group_students_group
+            onDelete: CASCADE
