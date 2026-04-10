@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 005-create-groups
+      id: 013-create-payments
       author: ilia
       changes:
         - createTable:
-            tableName: groups
+            tableName: payments
             columns:
               - column:
                   name: id
@@ -13,32 +13,33 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: teacher_id
+                  name: child_id
                   type: uuid
                   constraints:
                     nullable: false
               - column:
-                  name: branch_id
+                  name: group_id
                   type: uuid
                   constraints:
                     nullable: false
               - column:
-                  name: course_id
-                  type: uuid
-                  constraints:
-                    nullable: false
+                  name: period
+                  type: varchar(20)
               - column:
-                  name: schedule_description
-                  type: varchar(255)
+                  name: amount
+                  type: decimal(10,2)
               - column:
-                  name: max_students
-                  type: int
+                  name: status
+                  type: varchar(20)
               - column:
-                  name: active
-                  type: boolean
-                  defaultValueBoolean: true
-                  constraints:
-                    nullable: false
+                  name: covers_from
+                  type: date
+              - column:
+                  name: covers_to
+                  type: date
+              - column:
+                  name: paid_at
+                  type: timestamp
               - column:
                   name: created_at
                   type: timestamp
@@ -52,20 +53,14 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
-            baseTableName: groups
-            baseColumnNames: teacher_id
+            baseTableName: payments
+            baseColumnNames: child_id
             referencedTableName: users
             referencedColumnNames: id
-            constraintName: fk_groups_teacher
+            constraintName: fk_payments_child
         - addForeignKeyConstraint:
-            baseTableName: groups
-            baseColumnNames: branch_id
-            referencedTableName: branches
+            baseTableName: payments
+            baseColumnNames: group_id
+            referencedTableName: groups
             referencedColumnNames: id
-            constraintName: fk_groups_branch
-        - addForeignKeyConstraint:
-            baseTableName: groups
-            baseColumnNames: course_id
-            referencedTableName: courses
-            referencedColumnNames: id
-            constraintName: fk_groups_course
+            constraintName: fk_payments_group

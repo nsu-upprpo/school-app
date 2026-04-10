@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 003-create-courses
+      id: 014-create-notifications
       author: ilia
       changes:
         - createTable:
-            tableName: courses
+            tableName: notifications
             columns:
               - column:
                   name: id
@@ -13,23 +13,26 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
-                  type: varchar(100)
+                  name: user_id
+                  type: uuid
                   constraints:
                     nullable: false
               - column:
-                  name: description
+                  name: type
+                  type: varchar(50)
+              - column:
+                  name: message_text
                   type: varchar(255)
               - column:
-                  name: min_age
-                  type: int
+                  name: reference_id
+                  type: uuid
               - column:
-                  name: max_age
-                  type: int
+                  name: reference_type
+                  type: varchar(50)
               - column:
-                  name: active
+                  name: is_read
                   type: boolean
-                  defaultValueBoolean: true
+                  defaultValueBoolean: false
                   constraints:
                     nullable: false
               - column:
@@ -38,9 +41,9 @@ databaseChangeLog:
                   defaultValueComputed: CURRENT_TIMESTAMP
                   constraints:
                     nullable: false
-              - column:
-                  name: updated_at
-                  type: timestamp
-                  defaultValueComputed: CURRENT_TIMESTAMP
-                  constraints:
-                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: notifications
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_notifications_user
