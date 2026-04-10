@@ -44,7 +44,7 @@ databaseChangeLog:
               - column: { name: last_name, value: 'Родитель' }
               - column: { name: email, value: 'parent@test.com' }
               - column: { name: phone, value: '+79990000004' }
-              - column: { name: password_hash, value: '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiJ7xq2R9gYqL/95B2S/bR5E2wE8p4y' }
+              - column: { name: password_hash, value: '$2a$12$jSSTa1jDcQwk2qNBY8vN..y3/G4NMLuNos3KC7atHvuvBV.eZ30Ke' }
               - column: { name: role, value: 'PARENT' }
               - column: { name: active, valueBoolean: true }
         - insert:
@@ -56,7 +56,7 @@ databaseChangeLog:
               - column: { name: birth_date, valueDate: '2015-06-15' }
               - column: { name: email, value: 'student1@school.ru' }
               - column: { name: phone, value: '+79990000005' }
-              - column: { name: password_hash, value: '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiJ7xq2R9gYqL/95B2S/bR5E2wE8p4y' }
+              - column: { name: password_hash, value: '$2a$12$jSSTa1jDcQwk2qNBY8vN..y3/G4NMLuNos3KC7atHvuvBV.eZ30Ke' }
               - column: { name: role, value: 'STUDENT' }
               - column: { name: active, valueBoolean: true }
         - insert:
@@ -68,7 +68,7 @@ databaseChangeLog:
               - column: { name: birth_date, valueDate: '2017-09-20' }
               - column: { name: email, value: 'student2@school.ru' }
               - column: { name: phone, value: '+79990000006' }
-              - column: { name: password_hash, value: '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiJ7xq2R9gYqL/95B2S/bR5E2wE8p4y' }
+              - column: { name: password_hash, value: '$2a$12$jSSTa1jDcQwk2qNBY8vN..y3/G4NMLuNos3KC7atHvuvBV.eZ30Ke' }
               - column: { name: role, value: 'STUDENT' }
               - column: { name: active, valueBoolean: true }
         - insert:

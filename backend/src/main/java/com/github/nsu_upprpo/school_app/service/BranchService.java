@@ -43,7 +43,7 @@ public class BranchService {
                 .phone(request.getPhone())
                 .build();
         branch = branchRepository.save(branch);
-        return toResponse(branchRepository.save(branch));
+        return toResponse(branch);
     }
 
     @Transactional

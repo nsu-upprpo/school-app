@@ -23,15 +23,13 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserResponse getProfile(UUID userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with this id doesn't exist"));
+        User user = findById(userId);
         return mapToResponse(user);
     }
 
     @Transactional
     public UserResponse updateProfile(UUID userId, UpdateUserRequest request) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with this id doesn't exist"));
+        User user = findById(userId);
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setPhone(request.getPhone());
@@ -47,8 +45,7 @@ public class UserService {
 
     @Transactional
     public void changePassword(UUID userId, ChangePasswordRequest request) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with this id doesn't exist"));
+        User user = findById(userId);
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
             throw new BadCredentialsException("Current password is incorrect");
         }
@@ -70,12 +67,13 @@ public class UserService {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .patronymic(user.getPatronymic())
+                .birthDate(user.getBirthDate())
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .role(user.getRole().name())
-                .notificationEnabled(user.isNotificationEnabled())
                 .createdAt(user.getCreatedAt())
                 .build();
     }
 
 }
+
