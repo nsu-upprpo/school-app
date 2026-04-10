@@ -1,19 +1,19 @@
 package com.example.schoolapp.model;
 
-public class UserProfile {
+public class ChildDto {
+    private String id;
     private String firstName;
     private String lastName;
     private String patronymic;
-    private String email;
-    private String phone;
-    private String role;
+    private String birthDate;
+    private String branchId;
 
+    public String getId() { return id; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
     public String getPatronymic() { return patronymic; }
-    public String getEmail() { return email; }
-    public String getPhone() { return phone; }
-    public String getRole() { return role; }
+    public String getBirthDate() { return birthDate; }
+    public String getBranchId() { return branchId; }
 
     public String getFullName() {
         StringBuilder sb = new StringBuilder();

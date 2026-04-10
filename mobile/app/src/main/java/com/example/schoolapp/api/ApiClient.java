@@ -1,4 +1,5 @@
 package com.example.schoolapp.api;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
