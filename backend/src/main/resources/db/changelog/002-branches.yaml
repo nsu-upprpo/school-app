@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 002-create-branches
-      author: arsenii
+      author: ilia
       changes:
         - createTable:
             tableName: branches
@@ -11,6 +11,7 @@ databaseChangeLog:
                   type: uuid
                   constraints:
                     primaryKey: true
+                    nullable: false
               - column:
                   name: name
                   type: varchar(100)
@@ -39,7 +40,11 @@ databaseChangeLog:
                   name: created_at
                   type: timestamp
                   defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
               - column:
                   name: updated_at
                   type: timestamp
                   defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false

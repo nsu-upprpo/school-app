@@ -16,8 +16,6 @@ public class ChildResponse {
     private final String lastName;
     private final String patronymic;
     private final LocalDate birthDate;
-    private final UUID branchId;
-    private final String branchName;
     private final List<GroupInfo> groups;
 
 }

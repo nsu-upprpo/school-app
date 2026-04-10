@@ -10,7 +10,6 @@ import java.util.UUID;
 public class GroupResponse {
 
     private final UUID id;
-    private final String name;
     private final UUID courseId;
     private final String courseName;
     private final UUID branchId;

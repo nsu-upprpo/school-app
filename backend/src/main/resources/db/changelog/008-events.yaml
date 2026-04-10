@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 003-create-courses
+      id: 008-create-events
       author: ilia
       changes:
         - createTable:
-            tableName: courses
+            tableName: events
             columns:
               - column:
                   name: id
@@ -21,17 +21,21 @@ databaseChangeLog:
                   name: description
                   type: varchar(255)
               - column:
-                  name: min_age
-                  type: int
+                  name: branch_id
+                  type: uuid
               - column:
-                  name: max_age
-                  type: int
-              - column:
-                  name: active
-                  type: boolean
-                  defaultValueBoolean: true
+                  name: start_time
+                  type: timestamp
                   constraints:
                     nullable: false
+              - column:
+                  name: end_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: location
+                  type: varchar(255)
               - column:
                   name: created_at
                   type: timestamp
@@ -44,3 +48,9 @@ databaseChangeLog:
                   defaultValueComputed: CURRENT_TIMESTAMP
                   constraints:
                     nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: events
+            baseColumnNames: branch_id
+            referencedTableName: branches
+            referencedColumnNames: id
+            constraintName: fk_events_branch

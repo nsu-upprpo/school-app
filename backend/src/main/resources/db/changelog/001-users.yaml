@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 001-create-users
-      author: arsenii
+      author: ilia
       changes:
         - createTable:
             tableName: users
@@ -11,6 +11,7 @@ databaseChangeLog:
                   type: uuid
                   constraints:
                     primaryKey: true
+                    nullable: false
               - column:
                   name: first_name
                   type: varchar(50)
@@ -24,6 +25,9 @@ databaseChangeLog:
               - column:
                   name: patronymic
                   type: varchar(50)
+              - column:
+                  name: birth_date
+                  type: date
               - column:
                   name: email
                   type: varchar(100)
@@ -44,12 +48,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: notification_enabled
-                  type: boolean
-                  defaultValueBoolean: true
-                  constraints:
-                    nullable: false
-              - column:
                   name: active
                   type: boolean
                   defaultValueBoolean: true
@@ -59,14 +57,12 @@ databaseChangeLog:
                   name: created_at
                   type: timestamp
                   defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
               - column:
                   name: updated_at
                   type: timestamp
                   defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
 
-        - createIndex:
-            tableName: users
-            indexName: idx_users_email
-            columns:
-              - column:
-                  name: email

@@ -1,0 +1,255 @@
+databaseChangeLog:
+  - changeSet:
+      id: 100-seed-test-data
+      author: ilia
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, value: '00000000-0000-0000-0000-000000000001' }
+              - column: { name: first_name, value: 'Иван' }
+              - column: { name: last_name, value: 'Администратор' }
+              - column: { name: email, value: 'admin@school.ru' }
+              - column: { name: phone, value: '+79990000001' }
+              - column: { name: password_hash, value: '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiJ7xq2R9gYqL/95B2S/bR5E2wE8p4y' }
+              - column: { name: role, value: 'ADMIN' }
+              - column: { name: active, valueBoolean: true }
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, value: '00000000-0000-0000-0000-000000000002' }
+              - column: { name: first_name, value: 'Мария' }
+              - column: { name: last_name, value: 'Управляющая' }
+              - column: { name: email, value: 'manager@school.ru' }
+              - column: { name: phone, value: '+79990000002' }
+              - column: { name: password_hash, value: '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiJ7xq2R9gYqL/95B2S/bR5E2wE8p4y' }
+              - column: { name: role, value: 'MANAGER' }
+              - column: { name: active, valueBoolean: true }
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, value: '00000000-0000-0000-0000-000000000003' }
+              - column: { name: first_name, value: 'Павел' }
+              - column: { name: last_name, value: 'Преподаватель' }
+              - column: { name: email, value: 'teacher@school.ru' }
+              - column: { name: phone, value: '+79990000003' }
+              - column: { name: password_hash, value: '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiJ7xq2R9gYqL/95B2S/bR5E2wE8p4y' }
+              - column: { name: role, value: 'TEACHER' }
+              - column: { name: active, valueBoolean: true }
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, value: '00000000-0000-0000-0000-000000000004' }
+              - column: { name: first_name, value: 'Ирина' }
+              - column: { name: last_name, value: 'Родитель' }
+              - column: { name: email, value: 'parent@test.com' }
+              - column: { name: phone, value: '+79990000004' }
+              - column: { name: password_hash, value: '$2a$12$jSSTa1jDcQwk2qNBY8vN..y3/G4NMLuNos3KC7atHvuvBV.eZ30Ke' }
+              - column: { name: role, value: 'PARENT' }
+              - column: { name: active, valueBoolean: true }
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, value: '00000000-0000-0000-0000-000000000005' }
+              - column: { name: first_name, value: 'Маша' }
+              - column: { name: last_name, value: 'Ученик' }
+              - column: { name: birth_date, valueDate: '2015-06-15' }
+              - column: { name: email, value: 'student1@school.ru' }
+              - column: { name: phone, value: '+79990000005' }
+              - column: { name: password_hash, value: '$2a$12$jSSTa1jDcQwk2qNBY8vN..y3/G4NMLuNos3KC7atHvuvBV.eZ30Ke' }
+              - column: { name: role, value: 'STUDENT' }
+              - column: { name: active, valueBoolean: true }
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: id, value: '00000000-0000-0000-0000-000000000006' }
+              - column: { name: first_name, value: 'Петя' }
+              - column: { name: last_name, value: 'Ученик' }
+              - column: { name: birth_date, valueDate: '2017-09-20' }
+              - column: { name: email, value: 'student2@school.ru' }
+              - column: { name: phone, value: '+79990000006' }
+              - column: { name: password_hash, value: '$2a$12$jSSTa1jDcQwk2qNBY8vN..y3/G4NMLuNos3KC7atHvuvBV.eZ30Ke' }
+              - column: { name: role, value: 'STUDENT' }
+              - column: { name: active, valueBoolean: true }
+        - insert:
+            tableName: branches
+            columns:
+              - column: { name: id, value: '10000000-0000-0000-0000-000000000001' }
+              - column: { name: name, value: 'Центральный' }
+              - column: { name: city, value: 'Новосибирск' }
+              - column: { name: address, value: 'ул. Ленина, 1' }
+              - column: { name: phone, value: '+73831234567' }
+              - column: { name: active, valueBoolean: true }
+        - insert:
+            tableName: branches
+            columns:
+              - column: { name: id, value: '10000000-0000-0000-0000-000000000002' }
+              - column: { name: name, value: 'Левобережный' }
+              - column: { name: city, value: 'Новосибирск' }
+              - column: { name: address, value: 'ул. Кирова, 50' }
+              - column: { name: phone, value: '+73839876543' }
+              - column: { name: active, valueBoolean: true }
+        - insert:
+            tableName: courses
+            columns:
+              - column: { name: id, value: '20000000-0000-0000-0000-000000000001' }
+              - column: { name: name, value: 'Графический дизайн' }
+              - column: { name: description, value: 'Основы графики, композиции и цвета' }
+              - column: { name: min_age, valueNumeric: 7 }
+              - column: { name: max_age, valueNumeric: 14 }
+              - column: { name: active, valueBoolean: true }
+        - insert:
+            tableName: courses
+            columns:
+              - column: { name: id, value: '20000000-0000-0000-0000-000000000002' }
+              - column: { name: name, value: 'Архитектурный дизайн' }
+              - column: { name: description, value: 'Макетирование и пространственное мышление' }
+              - column: { name: min_age, valueNumeric: 10 }
+              - column: { name: max_age, valueNumeric: 16 }
+              - column: { name: active, valueBoolean: true }
+        - insert:
+            tableName: parent_children
+            columns:
+              - column: { name: parent_id, value: '00000000-0000-0000-0000-000000000004' }
+              - column: { name: child_id, value: '00000000-0000-0000-0000-000000000005' }
+        - insert:
+            tableName: parent_children
+            columns:
+              - column: { name: parent_id, value: '00000000-0000-0000-0000-000000000004' }
+              - column: { name: child_id, value: '00000000-0000-0000-0000-000000000006' }
+        - insert:
+            tableName: groups
+            columns:
+              - column: { name: id, value: '30000000-0000-0000-0000-000000000001' }
+              - column: { name: teacher_id, value: '00000000-0000-0000-0000-000000000003' }
+              - column: { name: branch_id, value: '10000000-0000-0000-0000-000000000001' }
+              - column: { name: course_id, value: '20000000-0000-0000-0000-000000000001' }
+              - column: { name: schedule_description, value: 'ПН, СР 10:00-11:30' }
+              - column: { name: max_students, valueNumeric: 12 }
+              - column: { name: active, valueBoolean: true }
+        - insert:
+            tableName: groups
+            columns:
+              - column: { name: id, value: '30000000-0000-0000-0000-000000000002' }
+              - column: { name: teacher_id, value: '00000000-0000-0000-0000-000000000003' }
+              - column: { name: branch_id, value: '10000000-0000-0000-0000-000000000002' }
+              - column: { name: course_id, value: '20000000-0000-0000-0000-000000000002' }
+              - column: { name: schedule_description, value: 'ВТ, ЧТ 16:00-17:30' }
+              - column: { name: max_students, valueNumeric: 10 }
+              - column: { name: active, valueBoolean: true }
+        - insert:
+            tableName: group_students
+            columns:
+              - column: { name: child_id, value: '00000000-0000-0000-0000-000000000005' }
+              - column: { name: group_id, value: '30000000-0000-0000-0000-000000000001' }
+              - column: { name: enrolled_at, valueDate: '2025-09-01' }
+        - insert:
+            tableName: group_students
+            columns:
+              - column: { name: child_id, value: '00000000-0000-0000-0000-000000000006' }
+              - column: { name: group_id, value: '30000000-0000-0000-0000-000000000001' }
+              - column: { name: enrolled_at, valueDate: '2025-09-01' }
+        - insert:
+            tableName: price_lists
+            columns:
+              - column: { name: id, value: '40000000-0000-0000-0000-000000000001' }
+              - column: { name: course_id, value: '20000000-0000-0000-0000-000000000001' }
+              - column: { name: branch_id, value: '10000000-0000-0000-0000-000000000001' }
+              - column: { name: period, value: 'MONTH' }
+              - column: { name: price, valueNumeric: 5500.00 }
+        - insert:
+            tableName: price_lists
+            columns:
+              - column: { name: id, value: '40000000-0000-0000-0000-000000000002' }
+              - column: { name: course_id, value: '20000000-0000-0000-0000-000000000002' }
+              - column: { name: branch_id, value: '10000000-0000-0000-0000-000000000002' }
+              - column: { name: period, value: 'MONTH' }
+              - column: { name: price, valueNumeric: 4000.00 }
+        - insert:
+            tableName: events
+            columns:
+              - column: { name: id, value: '50000000-0000-0000-0000-000000000001' }
+              - column: { name: name, value: 'День открытых дверей' }
+              - column: { name: description, value: 'Презентация курсов и знакомство с преподавателями' }
+              - column: { name: branch_id, value: '10000000-0000-0000-0000-000000000001' }
+              - column: { name: start_time, valueDate: '2025-10-01T12:00:00' }
+              - column: { name: end_time, valueDate: '2025-10-01T14:00:00' }
+              - column: { name: location, value: 'Актовый зал' }
+        - insert:
+            tableName: projects
+            columns:
+              - column: { name: id, value: '60000000-0000-0000-0000-000000000001' }
+              - column: { name: group_id, value: '30000000-0000-0000-0000-000000000001' }
+              - column: { name: name, value: 'Осенний постер' }
+              - column: { name: total_lessons, valueNumeric: 4 }
+              - column: { name: max_score, valueNumeric: 100 }
+              - column: { name: status, value: 'ACTIVE' }
+        - insert:
+            tableName: lessons
+            columns:
+              - column: { name: id, value: '70000000-0000-0000-0000-000000000001' }
+              - column: { name: project_id, value: '60000000-0000-0000-0000-000000000001' }
+              - column: { name: group_id, value: '30000000-0000-0000-0000-000000000001' }
+              - column: { name: start_time, valueDate: '2025-09-02T10:00:00' }
+              - column: { name: end_time, valueDate: '2025-09-02T11:30:00' }
+              - column: { name: topic, value: 'Введение в проект' }
+              - column: { name: status, value: 'PLANNED' }
+        - insert:
+            tableName: lessons
+            columns:
+              - column: { name: id, value: '70000000-0000-0000-0000-000000000002' }
+              - column: { name: project_id, value: '60000000-0000-0000-0000-000000000001' }
+              - column: { name: group_id, value: '30000000-0000-0000-0000-000000000001' }
+              - column: { name: start_time, valueDate: '2025-09-04T10:00:00' }
+              - column: { name: end_time, valueDate: '2025-09-04T11:30:00' }
+              - column: { name: topic, value: 'Работа с цветом' }
+              - column: { name: status, value: 'PLANNED' }
+        - insert:
+            tableName: project_grades
+            columns:
+              - column: { name: id, value: '80000000-0000-0000-0000-000000000001' }
+              - column: { name: project_id, value: '60000000-0000-0000-0000-000000000001' }
+              - column: { name: child_id, value: '00000000-0000-0000-0000-000000000005' }
+              - column: { name: teacher_id, value: '00000000-0000-0000-0000-000000000003' }
+              - column: { name: score, valueNumeric: 92 }
+              - column: { name: comment, value: 'Отличная композиция' }
+        - insert:
+            tableName: attendances
+            columns:
+              - column: { name: id, value: '90000000-0000-0000-0000-000000000001' }
+              - column: { name: lesson_id, value: '70000000-0000-0000-0000-000000000001' }
+              - column: { name: child_id, value: '00000000-0000-0000-0000-000000000005' }
+              - column: { name: marked_by, value: '00000000-0000-0000-0000-000000000003' }
+              - column: { name: marked_at, valueDate: '2025-09-02T11:40:00' }
+              - column: { name: status, value: 'PRESENT' }
+        - insert:
+            tableName: attendances
+            columns:
+              - column: { name: id, value: '90000000-0000-0000-0000-000000000002' }
+              - column: { name: lesson_id, value: '70000000-0000-0000-0000-000000000001' }
+              - column: { name: child_id, value: '00000000-0000-0000-0000-000000000006' }
+              - column: { name: marked_by, value: '00000000-0000-0000-0000-000000000003' }
+              - column: { name: marked_at, valueDate: '2025-09-02T11:40:00' }
+              - column: { name: status, value: 'ABSENT' }
+        - insert:
+            tableName: payments
+            columns:
+              - column: { name: id, value: 'a0000000-0000-0000-0000-000000000001' }
+              - column: { name: child_id, value: '00000000-0000-0000-0000-000000000005' }
+              - column: { name: group_id, value: '30000000-0000-0000-0000-000000000001' }
+              - column: { name: period, value: 'MONTH' }
+              - column: { name: amount, valueNumeric: 4500.00 }
+              - column: { name: status, value: 'PAID' }
+              - column: { name: covers_from, valueDate: '2025-09-01' }
+              - column: { name: covers_to, valueDate: '2025-09-30' }
+              - column: { name: paid_at, valueDate: '2025-09-01T08:00:00' }
+        - insert:
+            tableName: notifications
+            columns:
+              - column: { name: id, value: 'b0000000-0000-0000-0000-000000000001' }
+              - column: { name: user_id, value: '00000000-0000-0000-0000-000000000004' }
+              - column: { name: type, value: 'PAYMENT' }
+              - column: { name: message_text, value: 'Оплата за сентябрь успешно проведена' }
+              - column: { name: reference_id, value: 'a0000000-0000-0000-0000-000000000001' }
+              - column: { name: reference_type, value: 'PAYMENT' }
+              - column: { name: is_read, valueBoolean: false }

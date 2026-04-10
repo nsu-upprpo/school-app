@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 005-create-groups
+      id: 012-create-attendances
       author: ilia
       changes:
         - createTable:
-            tableName: groups
+            tableName: attendances
             columns:
               - column:
                   name: id
@@ -13,32 +13,27 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: teacher_id
+                  name: lesson_id
                   type: uuid
                   constraints:
                     nullable: false
               - column:
-                  name: branch_id
+                  name: rescheduled_lesson_id
+                  type: uuid
+              - column:
+                  name: child_id
                   type: uuid
                   constraints:
                     nullable: false
               - column:
-                  name: course_id
+                  name: marked_by
                   type: uuid
-                  constraints:
-                    nullable: false
               - column:
-                  name: schedule_description
-                  type: varchar(255)
+                  name: marked_at
+                  type: timestamp
               - column:
-                  name: max_students
-                  type: int
-              - column:
-                  name: active
-                  type: boolean
-                  defaultValueBoolean: true
-                  constraints:
-                    nullable: false
+                  name: status
+                  type: varchar(20)
               - column:
                   name: created_at
                   type: timestamp
@@ -52,20 +47,26 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
-            baseTableName: groups
-            baseColumnNames: teacher_id
+            baseTableName: attendances
+            baseColumnNames: lesson_id
+            referencedTableName: lessons
+            referencedColumnNames: id
+            constraintName: fk_attendances_lesson
+        - addForeignKeyConstraint:
+            baseTableName: attendances
+            baseColumnNames: rescheduled_lesson_id
+            referencedTableName: lessons
+            referencedColumnNames: id
+            constraintName: fk_attendances_rescheduled_lesson
+        - addForeignKeyConstraint:
+            baseTableName: attendances
+            baseColumnNames: child_id
             referencedTableName: users
             referencedColumnNames: id
-            constraintName: fk_groups_teacher
+            constraintName: fk_attendances_child
         - addForeignKeyConstraint:
-            baseTableName: groups
-            baseColumnNames: branch_id
-            referencedTableName: branches
+            baseTableName: attendances
+            baseColumnNames: marked_by
+            referencedTableName: users
             referencedColumnNames: id
-            constraintName: fk_groups_branch
-        - addForeignKeyConstraint:
-            baseTableName: groups
-            baseColumnNames: course_id
-            referencedTableName: courses
-            referencedColumnNames: id
-            constraintName: fk_groups_course
+            constraintName: fk_attendances_marked_by
