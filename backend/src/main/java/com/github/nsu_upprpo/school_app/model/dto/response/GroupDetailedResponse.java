@@ -12,7 +12,6 @@ import java.util.UUID;
 public class GroupDetailedResponse {
 
     private final UUID id;
-    private final String name;
     private final String courseName;
     private final String branchName;
     private final String teacherName;
@@ -30,3 +29,4 @@ public class GroupDetailedResponse {
     }
 
 }
+

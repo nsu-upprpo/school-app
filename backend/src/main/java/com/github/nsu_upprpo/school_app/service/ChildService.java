@@ -6,14 +6,13 @@ import com.github.nsu_upprpo.school_app.model.dto.request.CreateChildRequest;
 import com.github.nsu_upprpo.school_app.model.dto.request.UpdateChildRequest;
 import com.github.nsu_upprpo.school_app.model.dto.response.ChildResponse;
 import com.github.nsu_upprpo.school_app.model.dto.response.GroupInfo;
-import com.github.nsu_upprpo.school_app.model.entity.Branch;
-import com.github.nsu_upprpo.school_app.model.entity.Child;
-import com.github.nsu_upprpo.school_app.model.entity.GroupStudent;
-import com.github.nsu_upprpo.school_app.model.entity.ParentChild;
-import com.github.nsu_upprpo.school_app.repository.ChildRepository;
+import com.github.nsu_upprpo.school_app.model.entity.*;
+import com.github.nsu_upprpo.school_app.repository.GroupRepository;
 import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;
 import com.github.nsu_upprpo.school_app.repository.ParentChildRepository;
+import com.github.nsu_upprpo.school_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,23 +25,24 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ChildService {
 
-    private final ChildRepository childRepository;
+    private final UserRepository userRepository;
     private final ParentChildRepository parentChildRepository;
     private final GroupStudentRepository groupStudentRepository;
-    private final BranchService branchService;
+    private final GroupRepository groupRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public ChildResponse addChild(UUID parentId, CreateChildRequest request) {
-        Branch branch = branchService.findById(request.getBranchId());
-
-        Child child = Child.builder()
+        User child = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .patronymic(request.getPatronymic())
                 .birthDate(request.getBirthDate())
-                .branch(branch)
+                .email(request.getEmail())
+                .passwordHash(passwordEncoder.encode(request.getPassword()))
+                .role(Role.STUDENT)
                 .build();
-        child = childRepository.save(child);
+        child = userRepository.save(child);
 
         ParentChild link = new ParentChild(parentId, child.getId());
         parentChildRepository.save(link);
@@ -59,8 +59,8 @@ public class ChildService {
             return Collections.emptyList();
         }
 
-        return childRepository.findAllById(childIds).stream()
-                .filter(Child::isActive)
+        return userRepository.findAllById(childIds).stream()
+                .filter(User::isActive)
                 .map(child -> {
                     List<GroupStudent> groupStudents = groupStudentRepository.findByChildId(child.getId());
                     return toResponse(child, groupStudents);
@@ -70,7 +70,7 @@ public class ChildService {
 
     public ChildResponse getChildById(UUID parentId, UUID childId) {
         checkOwnership(parentId, childId);
-        Child child = findById(childId);
+        User child = findChildById(childId);
         List<GroupStudent> groupStudents = groupStudentRepository.findByChildId(childId);
         return toResponse(child, groupStudents);
     }
@@ -78,12 +78,12 @@ public class ChildService {
     @Transactional
     public ChildResponse updateChild(UUID parentId, UUID childId, UpdateChildRequest request) {
         checkOwnership(parentId, childId);
-        Child child = findById(childId);
+        User child = findChildById(childId);
         child.setFirstName(request.getFirstName());
         child.setLastName(request.getLastName());
         child.setPatronymic(request.getPatronymic());
         child.setBirthDate(request.getBirthDate());
-        child = childRepository.save(child);
+        child = userRepository.save(child);
 
         List<GroupStudent> groupStudents = groupStudentRepository.findByChildId(childId);
         return toResponse(child, groupStudents);
@@ -95,16 +95,21 @@ public class ChildService {
         }
     }
 
-    public Child findById(UUID id) {
-        return childRepository.findById(id)
+    public User findChildById(UUID id) {
+        return userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Ребёнок не найден"));
     }
 
-    private ChildResponse toResponse(Child child, List<GroupStudent> groupStudents) {
+    private ChildResponse toResponse(User child, List<GroupStudent> groupStudents) {
         List<GroupInfo> groups = groupStudents.stream()
-                .map(gs -> GroupInfo.builder()
-                        .groupId(gs.getGroupId())
-                        .build()) // TODO: возвращать полную информацию о группе
+                .map(gs -> {
+                    Group group = groupRepository.findById(gs.getGroupId()).orElse(null);
+                    return GroupInfo.builder()
+                            .groupId(gs.getGroupId())
+                            .groupName(group != null ? group.getCourse().getName() : null)
+                            .courseName(group != null ? group.getCourse().getName() : null)
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         return ChildResponse.builder()
@@ -113,10 +118,7 @@ public class ChildService {
                 .lastName(child.getLastName())
                 .patronymic(child.getPatronymic())
                 .birthDate(child.getBirthDate())
-                .branchId(child.getBranch() != null ? child.getBranch().getId() : null)
-                .branchName(child.getBranch() != null ? child.getBranch().getName() + ", " + child.getBranch().getAddress() : null)
                 .groups(groups)
                 .build();
     }
-
 }

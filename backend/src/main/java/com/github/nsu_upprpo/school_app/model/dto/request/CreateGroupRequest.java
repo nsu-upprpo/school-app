@@ -12,10 +12,6 @@ import java.util.UUID;
 @Setter
 public class CreateGroupRequest {
 
-    @NotBlank(message = "Название группы обязательно")
-    @Size(max = 100)
-    private String name;
-
     @NotNull(message = "Курс обязателен")
     private UUID courseId;
 

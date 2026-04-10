@@ -7,10 +7,10 @@ import com.github.nsu_upprpo.school_app.model.dto.request.CreateGroupRequest;
 import com.github.nsu_upprpo.school_app.model.dto.response.GroupDetailedResponse;
 import com.github.nsu_upprpo.school_app.model.dto.response.GroupResponse;
 import com.github.nsu_upprpo.school_app.model.entity.*;
-import com.github.nsu_upprpo.school_app.repository.ChildRepository;
 import com.github.nsu_upprpo.school_app.repository.GroupRepository;
 import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;
 import com.github.nsu_upprpo.school_app.repository.ParentChildRepository;
+import com.github.nsu_upprpo.school_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +28,7 @@ public class GroupService {
     private final CourseService courseService;
     private final BranchService branchService;
     private final UserService userService;
-    private final ChildRepository childRepository;
+    private final UserRepository userRepository;
     private final ParentChildRepository parentChildRepository;
 
     public List<GroupResponse> getAll() {
@@ -51,7 +51,7 @@ public class GroupService {
 
     public List<GroupResponse> getByParent(UUID parentId) {
         List<UUID> childIds = parentChildRepository.findByParentId(parentId).stream()
-                .map(pc -> pc.getChildId())
+                .map(ParentChild::getChildId)
                 .collect(Collectors.toList());
 
         if (childIds.isEmpty()) {
@@ -77,7 +77,7 @@ public class GroupService {
 
         List<GroupDetailedResponse.StudentInfo> studentInfos = students.stream()
                 .map(gs -> {
-                    Child child = childRepository.findById(gs.getChildId()).orElse(null);
+                    User child = userRepository.findById(gs.getChildId()).orElse(null);
                     if (child == null) return null;
                     return GroupDetailedResponse.StudentInfo.builder()
                             .childId(child.getId())
@@ -86,15 +86,14 @@ public class GroupService {
                             .enrolledAt(gs.getEnrolledAt())
                             .build();
                 })
-                .filter(s -> s != null)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
         return GroupDetailedResponse.builder()
                 .id(group.getId())
-                .name(group.getName())
                 .courseName(group.getCourse().getName())
                 .branchName(group.getBranch().getName())
-                .teacherName(group.getTeacher().getLastName() + " " + group.getTeacher().getFirstName())
+                .teacherName(group.getTeacher().getFullName())
                 .scheduleDescription(group.getScheduleDescription())
                 .maxStudents(group.getMaxStudents())
                 .students(studentInfos)
@@ -108,7 +107,6 @@ public class GroupService {
         User teacher = userService.findById(request.getTeacherId());
 
         Group group = Group.builder()
-                .name(request.getName())
                 .course(course)
                 .branch(branch)
                 .teacher(teacher)
@@ -126,7 +124,6 @@ public class GroupService {
         Branch branch = branchService.findById(request.getBranchId());
         User teacher = userService.findById(request.getTeacherId());
 
-        group.setName(request.getName());
         group.setCourse(course);
         group.setBranch(branch);
         group.setTeacher(teacher);
@@ -151,7 +148,7 @@ public class GroupService {
             }
         }
 
-        if (!childRepository.existsById(childId)) {
+        if (!userRepository.existsById(childId)) {
             throw new NotFoundException("Ребёнок не найден");
         }
 
@@ -162,6 +159,7 @@ public class GroupService {
         groupStudentRepository.save(gs);
     }
 
+    @Transactional
     public void removeStudent(UUID groupId, UUID childId) {
         GroupStudent.GroupStudentId gsId = new GroupStudent.GroupStudentId(groupId, childId);
         GroupStudent gs = groupStudentRepository.findById(gsId)
@@ -180,13 +178,12 @@ public class GroupService {
 
         return GroupResponse.builder()
                 .id(group.getId())
-                .name(group.getName())
                 .courseId(group.getCourse().getId())
                 .courseName(group.getCourse().getName())
                 .branchId(group.getBranch().getId())
                 .branchName(group.getBranch().getName())
                 .teacherId(group.getTeacher().getId())
-                .teacherName(group.getTeacher().getLastName() + " " + group.getTeacher().getFirstName())
+                .teacherName(group.getTeacher().getFullName())
                 .scheduleDescription(group.getScheduleDescription())
                 .maxStudents(group.getMaxStudents())
                 .currentStudents((int) studentCount)

@@ -3,6 +3,8 @@ package com.github.nsu_upprpo.school_app.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -21,6 +23,9 @@ public class User extends BaseEntity {
     @Column(length = 50)
     private String patronymic;
 
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
+
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
@@ -33,10 +38,6 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Role role;
-
-    @Column(name = "notification_enabled", nullable = false)
-    @Builder.Default
-    private boolean notificationEnabled = true;
 
     @Column(nullable = false)
     @Builder.Default
