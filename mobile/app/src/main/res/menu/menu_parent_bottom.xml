@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/parent_nav_lessons"
+        android:title="Мои занятия"
+        android:icon="@android:drawable/ic_menu_agenda" />
+
+    <item
+        android:id="@+id/parent_nav_schedule"
+        android:title="Расписание"
+        android:icon="@android:drawable/ic_menu_today" />
+
+    <item
+        android:id="@+id/parent_nav_payment"
+        android:title="Оплата"
+        android:icon="@android:drawable/ic_menu_save" />
+
+    <item
+        android:id="@+id/parent_nav_profile"
+        android:title="Профиль"
+        android:icon="@android:drawable/ic_menu_myplaces" />
+
+</menu>
