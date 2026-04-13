@@ -23,7 +23,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       SPRING_H2_CONSOLE_ENABLED: "false"
     ports:
-      - "8080:8080"
+      - "53225:8080"
 
 volumes:
   postgres_data:
