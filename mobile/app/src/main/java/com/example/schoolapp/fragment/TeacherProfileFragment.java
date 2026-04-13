@@ -53,6 +53,13 @@ public class TeacherProfileFragment extends Fragment {
         TokenStorage storage = new TokenStorage(requireContext());
         String token = storage.getAccessToken();
 
+        if (token == null || token.isEmpty()) {
+            Toast.makeText(requireContext(), "Токен не найден", Toast.LENGTH_SHORT).show();
+            teacherNameInput.setText("Тестовый учитель");
+            teacherPhoneInput.setText("+7");
+            return;
+        }
+
         String authHeader = "Bearer " + token;
 
         UserApi userApi = ApiClient.getClient().create(UserApi.class);

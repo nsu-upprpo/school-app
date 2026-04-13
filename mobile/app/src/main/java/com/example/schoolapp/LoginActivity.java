@@ -85,7 +85,17 @@ public class LoginActivity extends AppCompatActivity {
 
                     loadProfileAndOpenScreen();
                 } else {
-                    Toast.makeText(LoginActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
+                    String errorText = "Ошибка login. Код: " + response.code();
+
+                    try {
+                        if (response.errorBody() != null) {
+                            errorText += "\n" + response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        errorText += "\nНе удалось прочитать errorBody";
+                    }
+
+                    Toast.makeText(LoginActivity.this, errorText, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -120,9 +130,20 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     UserProfile profile = response.body();
+
                     openMainScreenByRole(profile.getRole());
                 } else {
-                    Toast.makeText(LoginActivity.this, "Не удалось получить профиль", Toast.LENGTH_SHORT).show();
+                    String errorText = "Ошибка входа. Код: " + response.code();
+
+                    try {
+                        if (response.errorBody() != null) {
+                            errorText += "\n" + response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        errorText += "\nНе удалось прочитать errorBody";
+                    }
+
+                    Toast.makeText(LoginActivity.this, errorText, Toast.LENGTH_LONG).show();
                 }
             }
 
