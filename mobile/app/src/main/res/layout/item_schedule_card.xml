@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_card">
+
+    <View
+        android:id="@+id/colorStripe"
+        android:layout_width="6dp"
+        android:layout_height="match_parent"
+        android:background="@color/course_blue" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <TextView
+            android:id="@+id/scheduleTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Тема занятия"
+            android:textColor="@color/text_dark"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/scheduleSubtitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Группа"
+            android:textColor="@color/hint_gray"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/scheduleTimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="16:20–19:00"
+            android:textColor="@color/text_dark"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

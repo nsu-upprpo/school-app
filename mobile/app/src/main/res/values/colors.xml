@@ -2,4 +2,17 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="orange_main">#FF7A00</color>
+    <color name="orange_button">#FF7A00</color>
+    <color name="orange_stroke">#FF7A00</color>
+    <color name="screen_bg">#F3F3F3</color>
+    <color name="text_dark">#222222</color>
+    <color name="hint_gray">#8A8A8A</color>
+
+    <color name="course_green">#9CCC65</color>
+    <color name="course_yellow">#FFD54F</color>
+    <color name="course_orange">#FF8A65</color>
+    <color name="course_blue">#81D4FA</color>
+    <color name="course_purple">#B39DDB</color>
 </resources>

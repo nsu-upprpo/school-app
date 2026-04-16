@@ -46,7 +46,7 @@ public class ParentMainActivity extends AppCompatActivity {
         });
 
         if (savedInstanceState == null) {
-            bottomNavigationView.setSelectedItemId(R.id.parent_nav_lessons);
+            bottomNavigationView.setSelectedItemId(R.id.parent_nav_schedule);
         }
     }
 }

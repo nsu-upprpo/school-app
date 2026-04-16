@@ -13,6 +13,8 @@ import com.example.schoolapp.api.AuthApi;
 import com.example.schoolapp.api.UserApi;
 import com.example.schoolapp.model.LoginRequest;
 import com.example.schoolapp.model.LoginResponse;
+import com.example.schoolapp.model.RefreshRequest;
+import com.example.schoolapp.model.RefreshResponse;
 import com.example.schoolapp.model.UserProfile;
 import com.example.schoolapp.storage.TokenStorage;
 
@@ -25,43 +27,37 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordInput;
     Button loginButton;
 
-    //
+    // позже удалить
     Button testTeacherButton;
-    Button testParentButton;
-    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        TokenStorage storage = new TokenStorage(this);
+        String token = storage.getAccessToken();
+
+        if (token != null && !token.isEmpty()) {
+            loadProfileAndOpenScreen();
+            return;
+        }
+
         setContentView(R.layout.activity_login);
+
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
-        //
-        testTeacherButton = findViewById(R.id.testTeacherButton);
-        testParentButton = findViewById(R.id.testParentButton);
-        //
+
         loginButton.setOnClickListener(e -> login());
 
-        //
+        // позже удалить
+        testTeacherButton = findViewById(R.id.testTeacherButton);
         testTeacherButton.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, TeacherMainActivity.class);
             startActivity(intent);
         });
-
-        testParentButton.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, ParentMainActivity.class);
-            startActivity(intent);
-        });
-        //
     }
 
-    /*
-    1. Вызвали auth/login
-    2. Сохранили токен
-    3. Вызвали users/me
-    4. По роли открыли нужную activity
-     */
     private void login() {
         String email = emailInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
@@ -106,19 +102,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        emailInput.setText("");
-        passwordInput.setText("");
-    }
-
     private void loadProfileAndOpenScreen() {
         TokenStorage storage = new TokenStorage(this);
         String token = storage.getAccessToken();
 
-        if (token == null) {
-            Toast.makeText(this, "Токен не найден", Toast.LENGTH_SHORT).show();
+        if (token == null || token.isEmpty()) {
+            showLoginScreen();
             return;
         }
 
@@ -130,7 +119,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     UserProfile profile = response.body();
-
                     openMainScreenByRole(profile.getRole());
                 } else {
                     String errorText = "Ошибка входа. Код: " + response.code();
@@ -144,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     Toast.makeText(LoginActivity.this, errorText, Toast.LENGTH_LONG).show();
+                    showLoginScreen();
                 }
             }
 
@@ -151,6 +140,66 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Call<UserProfile> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, "Ошибка сети: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
+        });
+    }
+
+    private void refreshTokenAndRetry() {
+        TokenStorage storage = new TokenStorage(this);
+        String refreshToken = storage.getRefreshToken();
+
+        if (refreshToken == null || refreshToken.isEmpty()) {
+            storage.clear();
+            showLoginScreen();
+            return;
+        }
+
+        AuthApi authApi = ApiClient.getClient().create(AuthApi.class);
+        RefreshRequest request = new RefreshRequest(refreshToken);
+
+        authApi.refresh(request).enqueue(new Callback<RefreshResponse>() {
+            @Override
+            public void onResponse(Call<RefreshResponse> call, Response<RefreshResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    RefreshResponse body = response.body();
+
+                    String newAccessToken = body.getAccessToken();
+                    String newRefreshToken = body.getRefreshToken();
+
+                    if (newRefreshToken == null || newRefreshToken.isEmpty()) {
+                        newRefreshToken = refreshToken;
+                    }
+
+                    storage.saveTokens(newAccessToken, newRefreshToken);
+                    loadProfileAndOpenScreen();
+                } else {
+                    storage.clear();
+                    Toast.makeText(LoginActivity.this, "Сессия истекла. Войдите заново", Toast.LENGTH_SHORT).show();
+                    showLoginScreen();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RefreshResponse> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Ошибка обновления токена: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                showLoginScreen();
+            }
+        });
+    }
+
+    private void showLoginScreen() {
+        setContentView(R.layout.activity_login);
+
+        emailInput = findViewById(R.id.emailInput);
+        passwordInput = findViewById(R.id.passwordInput);
+        loginButton = findViewById(R.id.loginButton);
+
+        loginButton.setOnClickListener(e -> login());
+
+        // позже удалить
+        testTeacherButton = findViewById(R.id.testTeacherButton);
+        testTeacherButton.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, TeacherMainActivity.class);
+            startActivity(intent);
         });
     }
     private void openMainScreenByRole(String role) {
