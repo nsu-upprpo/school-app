@@ -11,7 +11,7 @@ databaseChangeLog:
               - column: { name: last_name, value: 'Администратор' }
               - column: { name: email, value: 'admin@school.ru' }
               - column: { name: phone, value: '+79990000001' }
-              - column: { name: password_hash, value: '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiJ7xq2R9gYqL/95B2S/bR5E2wE8p4y' }
+              - column: { name: password_hash, value: '$2a$12$jSSTa1jDcQwk2qNBY8vN..y3/G4NMLuNos3KC7atHvuvBV.eZ30Ke' }
               - column: { name: role, value: 'ADMIN' }
               - column: { name: active, valueBoolean: true }
         - insert:
@@ -22,7 +22,7 @@ databaseChangeLog:
               - column: { name: last_name, value: 'Управляющая' }
               - column: { name: email, value: 'manager@school.ru' }
               - column: { name: phone, value: '+79990000002' }
-              - column: { name: password_hash, value: '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiJ7xq2R9gYqL/95B2S/bR5E2wE8p4y' }
+              - column: { name: password_hash, value: '$2a$12$jSSTa1jDcQwk2qNBY8vN..y3/G4NMLuNos3KC7atHvuvBV.eZ30Ke' }
               - column: { name: role, value: 'MANAGER' }
               - column: { name: active, valueBoolean: true }
         - insert:
@@ -33,7 +33,7 @@ databaseChangeLog:
               - column: { name: last_name, value: 'Преподаватель' }
               - column: { name: email, value: 'teacher@school.ru' }
               - column: { name: phone, value: '+79990000003' }
-              - column: { name: password_hash, value: '$2a$10$7EqJtq98hPqEX7fNZaFWoOhiJ7xq2R9gYqL/95B2S/bR5E2wE8p4y' }
+              - column: { name: password_hash, value: '$2a$12$jSSTa1jDcQwk2qNBY8vN..y3/G4NMLuNos3KC7atHvuvBV.eZ30Ke' }
               - column: { name: role, value: 'TEACHER' }
               - column: { name: active, valueBoolean: true }
         - insert:
