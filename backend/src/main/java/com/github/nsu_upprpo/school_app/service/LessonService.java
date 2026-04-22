@@ -116,8 +116,8 @@ public class LessonService {
 
         List<LessonTemplateResponse.RecentLessonTime> recentTimes = recentLessons.stream()
                 .map(l -> LessonTemplateResponse.RecentLessonTime.builder()
-                        .startTime(l.getStartTime())
-                        .endTime(l.getEndTime())
+                        .startTime(l.getStartTime().plusWeeks(1))
+                        .endTime(l.getEndTime().plusWeeks(1))
                         .build())
                 .collect(Collectors.toList());
 
