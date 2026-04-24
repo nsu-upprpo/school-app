@@ -7,11 +7,6 @@
         android:icon="@drawable/ic_menu_lessons" />
 
     <item
-        android:id="@+id/parent_nav_schedule"
-        android:title="Расписание"
-        android:icon="@drawable/ic_menu_schedule" />
-
-    <item
         android:id="@+id/parent_nav_payment"
         android:title="Оплата"
         android:icon="@drawable/ic_menu_payment" />

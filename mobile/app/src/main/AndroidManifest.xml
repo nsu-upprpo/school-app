@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".LoginActivity"
+            android:name="com.github.nsu_upprpo.school_app.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,11 +25,11 @@
         </activity>
 
         <activity
-            android:name=".TeacherMainActivity"
+            android:name="com.github.nsu_upprpo.school_app.TeacherMainActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ParentMainActivity"
+            android:name="com.github.nsu_upprpo.school_app.ParentMainActivity"
             android:exported="false" />
 
     </application>

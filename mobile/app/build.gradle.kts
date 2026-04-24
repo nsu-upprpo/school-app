@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.schoolapp"
+    namespace = "com.github.nsu_upprpo.school_app"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.schoolapp"
+        applicationId = "com.github.nsu_upprpo.school_app"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -16,9 +16,28 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
+        debug {
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"http://10.0.2.2:8080/api/v1/\""
+            )
+        }
+
         release {
             isMinifyEnabled = false
+
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"http://144.31.16.0:53225/api/v1/\""
+            )
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
