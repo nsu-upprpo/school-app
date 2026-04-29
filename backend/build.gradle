@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '4.0.3'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'checkstyle'
+	id 'org.sonarqube' version '7.2.3.7755'
 }
 
 group = 'com.github.nsu-upprpo'
@@ -54,4 +55,11 @@ checkstyle {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+sonar {
+	properties {
+		property "sonar.projectKey", "nsu-upprpo_school-app_backend"
+		property "sonar.organization", "nsu-upprpo-1"
+	}
 }
