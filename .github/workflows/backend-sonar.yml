@@ -35,4 +35,4 @@ jobs:
       - name: Run Sonar analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonar --info
+        run: ./gradlew testClasses sonar --info
