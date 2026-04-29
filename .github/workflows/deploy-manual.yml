@@ -32,4 +32,4 @@ jobs:
             "set -euo pipefail && \
              cd '${{ secrets.SERVER_APP_DIR }}' && \
              docker-compose pull backend && \
-             docker-compose up -d --no-deps backend
+             docker-compose up -d --no-deps backend"
