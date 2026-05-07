@@ -9,6 +9,7 @@ import com.github.nsu_upprpo.school_app.model.entity.User;
 import com.github.nsu_upprpo.school_app.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class NotificationService {
         notificationRepository.save(n);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void send(UUID userId, NotificationType type, String message, UUID referenceId, String referenceType) {
         User user = userService.findById(userId);
         Notification n = Notification.builder()

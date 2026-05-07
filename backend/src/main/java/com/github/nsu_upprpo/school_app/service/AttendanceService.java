@@ -6,8 +6,10 @@ import com.github.nsu_upprpo.school_app.model.dto.response.AttendanceResponse;
 import com.github.nsu_upprpo.school_app.model.entity.Attendance;
 import com.github.nsu_upprpo.school_app.model.entity.Lesson;
 import com.github.nsu_upprpo.school_app.model.entity.User;
+import com.github.nsu_upprpo.school_app.model.event.AttendanceMarkedEvent;
 import com.github.nsu_upprpo.school_app.repository.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AttendanceService {
 
+    private final ApplicationEventPublisher eventPublisher;
     private final AttendanceRepository attendanceRepository;
     private final LessonService lessonService;
     private final UserService userService;
@@ -52,6 +55,15 @@ public class AttendanceService {
                 .status(request.getStatus())
                 .build();
         attendance = attendanceRepository.save(attendance);
+
+        eventPublisher.publishEvent(new AttendanceMarkedEvent(
+                attendance.getId(),
+                lesson.getId(),
+                child.getId(),
+                teacher.getId(),
+                attendance.getStatus()
+        ));
+
         return toResponse(attendance);
     }
 
