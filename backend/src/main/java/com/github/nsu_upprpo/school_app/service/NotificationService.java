@@ -1,5 +1,6 @@
 package com.github.nsu_upprpo.school_app.service;
 
+import com.github.nsu_upprpo.school_app.common.exception.ForbiddenException;
 import com.github.nsu_upprpo.school_app.common.exception.NotFoundException;
 import com.github.nsu_upprpo.school_app.model.dto.response.NotificationResponse;
 import com.github.nsu_upprpo.school_app.model.entity.Notification;
@@ -35,6 +36,11 @@ public class NotificationService {
     public void markAsRead(UUID notificationId, UUID userId) {
         Notification n = notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new NotFoundException("Уведомление не найдено"));
+
+        if (!n.getUser().getId().equals(userId)) {
+            throw new ForbiddenException("Нет доступа к этому уведомлению");
+        }
+
         n.setRead(true);
         notificationRepository.save(n);
     }
