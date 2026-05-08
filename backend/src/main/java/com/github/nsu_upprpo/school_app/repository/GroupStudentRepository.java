@@ -11,6 +11,7 @@ public interface GroupStudentRepository extends JpaRepository<GroupStudent, Grou
     List<GroupStudent> findByGroupId(UUID groupId);
     List<GroupStudent> findByChildId(UUID childId);
     List<GroupStudent> findByGroupIdAndLeftAtIsNull(UUID groupId);
+    List<GroupStudent> findByChildIdAndLeftAtIsNull(UUID childId);
     boolean existsByGroupIdAndChildIdAndLeftAtIsNull(UUID groupId, UUID childId);
     long countByGroupIdAndLeftAtIsNull(UUID groupId);
 }

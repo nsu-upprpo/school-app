@@ -5,11 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface ProjectGradeRepository extends JpaRepository<ProjectGrade, UUID> {
     List<ProjectGrade> findByProjectId(UUID projectId);
     List<ProjectGrade> findByChildId(UUID childId);
+    Optional<ProjectGrade> findByProjectIdAndChildId(UUID projectId, UUID childId);
 }
 

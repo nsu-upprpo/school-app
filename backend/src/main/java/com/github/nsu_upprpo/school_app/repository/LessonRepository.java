@@ -14,4 +14,5 @@ public interface LessonRepository extends JpaRepository<Lesson, UUID> {
     List<Lesson> findByGroupIdOrderByStartTimeAsc(UUID groupId);
     List<Lesson> findByGroupIdAndStartTimeBetween(UUID groupId, LocalDateTime from, LocalDateTime to);
     List<Lesson> findByProjectId(UUID projectId);
+    long countByProjectId(UUID projectId);
 }
