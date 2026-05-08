@@ -8,9 +8,11 @@ import com.github.nsu_upprpo.school_app.model.entity.Group;
 import com.github.nsu_upprpo.school_app.model.entity.Project;
 import com.github.nsu_upprpo.school_app.model.entity.ProjectGrade;
 import com.github.nsu_upprpo.school_app.model.entity.User;
+import com.github.nsu_upprpo.school_app.model.event.ProjectGradeCreatedEvent;
 import com.github.nsu_upprpo.school_app.repository.ProjectGradeRepository;
 import com.github.nsu_upprpo.school_app.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProjectService {
 
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final ProjectRepository projectRepository;
     private final ProjectGradeRepository projectGradeRepository;
     private final UserService userService;
@@ -69,6 +72,15 @@ public class ProjectService {
                 .comment(comment)
                 .build();
         grade = projectGradeRepository.save(grade);
+
+        applicationEventPublisher.publishEvent(new ProjectGradeCreatedEvent(
+                grade.getId(),
+                project.getId(),
+                child.getId(),
+                teacher.getId(),
+                grade.getScore()
+        ));
+
         return toGradeResponse(grade);
     }
 

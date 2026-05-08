@@ -237,19 +237,23 @@ databaseChangeLog:
               - column: { name: id, value: 'a0000000-0000-0000-0000-000000000001' }
               - column: { name: child_id, value: '00000000-0000-0000-0000-000000000005' }
               - column: { name: group_id, value: '30000000-0000-0000-0000-000000000001' }
-              - column: { name: period, value: 'MONTH' }
+              - column: { name: type, value: 'MONTH' }
+              - column: { name: period, value: '2025-09' }
               - column: { name: amount, valueNumeric: 4500.00 }
               - column: { name: status, value: 'PAID' }
               - column: { name: covers_from, valueDate: '2025-09-01' }
               - column: { name: covers_to, valueDate: '2025-09-30' }
-              - column: { name: paid_at, valueDate: '2025-09-01T08:00:00' }
+              - column: { name: due_date, valueDate: '2025-09-10' }
+              - column: { name: submitted_at, valueDate: '2025-09-01T08:00:00' }
+              - column: { name: confirmed_at, valueDate: '2025-09-01T08:30:00' }
+              - column: { name: confirmed_by, value: '00000000-0000-0000-0000-000000000001' }
         - insert:
             tableName: notifications
             columns:
               - column: { name: id, value: 'b0000000-0000-0000-0000-000000000001' }
               - column: { name: user_id, value: '00000000-0000-0000-0000-000000000004' }
               - column: { name: type, value: 'PAYMENT' }
-              - column: { name: message_text, value: 'Оплата за сентябрь успешно проведена' }
+              - column: { name: message_text, value: 'Оплата за сентябрь подтверждена' }
               - column: { name: reference_id, value: 'a0000000-0000-0000-0000-000000000001' }
-              - column: { name: reference_type, value: 'PAYMENT' }
+              - column: { name: reference_type, value: 'PAYMENT_CONFIRMED' }
               - column: { name: is_read, valueBoolean: false }
