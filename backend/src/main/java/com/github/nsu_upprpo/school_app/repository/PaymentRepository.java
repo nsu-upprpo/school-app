@@ -3,17 +3,24 @@ package com.github.nsu_upprpo.school_app.repository;
 import com.github.nsu_upprpo.school_app.model.entity.Payment;
 import com.github.nsu_upprpo.school_app.model.entity.PaymentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
 public interface PaymentRepository extends JpaRepository<Payment, UUID> {
 
     List<Payment> findByChildIdOrderByCreatedAtDesc(UUID childId);
 
+    List<Payment> findByChildIdAndStatusOrderByCreatedAtDesc(UUID childId, PaymentStatus status);
+
     List<Payment> findByStatusOrderByCreatedAtDesc(PaymentStatus status);
 
-    List<Payment> findByChildIdAndGroupIdOrderByCreatedAtDesc(UUID childId, UUID groupId);
+    List<Payment> findByStatusAndDueDateOrderByCreatedAtDesc(PaymentStatus status, LocalDate dueDate);
+
+    List<Payment> findByStatusAndDueDateBeforeOrderByCreatedAtDesc(PaymentStatus status, LocalDate date);
+
+    List<Payment> findByGroupIdOrderByCreatedAtDesc(UUID groupId);
+
+    List<Payment> findByGroupIdAndStatusOrderByCreatedAtDesc(UUID groupId, PaymentStatus status);
 }

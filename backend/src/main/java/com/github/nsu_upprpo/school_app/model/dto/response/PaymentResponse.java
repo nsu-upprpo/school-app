@@ -1,5 +1,7 @@
 package com.github.nsu_upprpo.school_app.model.dto.response;
 
+import com.github.nsu_upprpo.school_app.model.entity.PaymentStatus;
+import com.github.nsu_upprpo.school_app.model.entity.PaymentType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,22 +14,33 @@ import java.util.UUID;
 @Builder
 public class PaymentResponse {
 
-    private final UUID id;
+    private UUID id;
 
-    private final UUID childId;
-    private final String childName;
+    private UUID childId;
+    private String childName;
 
-    private final UUID groupId;
-    private final String groupName;
+    private UUID groupId;
+    private String groupName;
 
-    private final String period;
-    private final BigDecimal amount;
-    private final String status;
+    private PaymentType type;
+    private String period;
+    private BigDecimal amount;
+    private PaymentStatus status;
 
-    private final LocalDate coversFrom;
-    private final LocalDate coversTo;
+    private LocalDate coversFrom;
+    private LocalDate coversTo;
+    private LocalDate dueDate;
 
-    private final LocalDateTime paidAt;
-    private final LocalDateTime createdAt;
+    private Integer lessonsCount;
 
+    private LocalDateTime submittedAt;
+    private LocalDateTime confirmedAt;
+
+    private UUID confirmedById;
+    private String confirmedByName;
+
+    private String rejectionReason;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

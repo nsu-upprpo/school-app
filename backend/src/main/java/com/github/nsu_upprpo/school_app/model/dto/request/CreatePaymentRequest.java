@@ -1,5 +1,6 @@
 package com.github.nsu_upprpo.school_app.model.dto.request;
 
+import com.github.nsu_upprpo.school_app.model.entity.PaymentType;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -13,19 +14,26 @@ import java.util.UUID;
 @Setter
 public class CreatePaymentRequest {
 
-    @NotNull(message = "ID ребёнка обязателен")
+    @NotNull
     private UUID childId;
 
-    @NotNull(message = "ID группы обязателен")
+    @NotNull
     private UUID groupId;
+
+    @NotNull
+    private PaymentType type;
 
     private String period;
 
-    @NotNull(message = "Сумма обязательна")
-    @DecimalMin(value = "0.01", message = "Сумма должна быть больше 0")
+    @NotNull
+    @DecimalMin("0.01")
     private BigDecimal amount;
 
     private LocalDate coversFrom;
 
     private LocalDate coversTo;
+
+    private LocalDate dueDate;
+
+    private Integer lessonsCount;
 }
