@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-release-apk:
+  build-debug-apk:
     runs-on: ubuntu-latest
 
     defaults:
