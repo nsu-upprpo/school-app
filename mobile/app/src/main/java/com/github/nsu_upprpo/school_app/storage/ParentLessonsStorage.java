@@ -13,7 +13,9 @@ import java.util.List;
 
 public class ParentLessonsStorage {
     private static final String PREFS = "parent_lessons_storage";
-    private static final String KEY_LESSONS = "lessons";
+
+    private static final String KEY_FUTURE_LESSONS = "future_lessons";
+    private static final String KEY_MISSED_LESSONS = "missed_lessons";
 
     private final SharedPreferences prefs;
     private final Gson gson = new Gson();
@@ -22,14 +24,36 @@ public class ParentLessonsStorage {
         prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
-    public void saveLessons(List<ParentLessonItem> lessons) {
+    public void saveFutureLessons(List<ParentLessonItem> lessons) {
         prefs.edit()
-                .putString(KEY_LESSONS, gson.toJson(lessons))
+                .putString(KEY_FUTURE_LESSONS, gson.toJson(lessons))
                 .apply();
     }
 
-    public List<ParentLessonItem> getLessons() {
-        String json = prefs.getString(KEY_LESSONS, "");
+    public void saveMissedLessons(List<ParentLessonItem> lessons) {
+        prefs.edit()
+                .putString(KEY_MISSED_LESSONS, gson.toJson(lessons))
+                .apply();
+    }
+
+    public List<ParentLessonItem> getFutureLessons() {
+        return getLessonsByKey(KEY_FUTURE_LESSONS);
+    }
+
+    public List<ParentLessonItem> getMissedLessons() {
+        return getLessonsByKey(KEY_MISSED_LESSONS);
+    }
+
+    public boolean hasFutureLessons() {
+        return !getFutureLessons().isEmpty();
+    }
+
+    public boolean hasAnyLessons() {
+        return !getFutureLessons().isEmpty() || !getMissedLessons().isEmpty();
+    }
+
+    private List<ParentLessonItem> getLessonsByKey(String key) {
+        String json = prefs.getString(key, "");
 
         if (json.isEmpty()) {
             return new ArrayList<>();
@@ -39,10 +63,6 @@ public class ParentLessonsStorage {
         List<ParentLessonItem> lessons = gson.fromJson(json, type);
 
         return lessons == null ? new ArrayList<>() : lessons;
-    }
-
-    public boolean hasLessons() {
-        return !getLessons().isEmpty();
     }
 
     public void clear() {

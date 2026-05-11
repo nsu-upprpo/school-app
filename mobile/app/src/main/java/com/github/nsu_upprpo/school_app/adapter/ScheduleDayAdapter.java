@@ -11,15 +11,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.nsu_upprpo.school_app.R;
 import com.github.nsu_upprpo.school_app.model.ScheduleDay;
+import com.github.nsu_upprpo.school_app.model.ScheduleItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleDayAdapter extends RecyclerView.Adapter<ScheduleDayAdapter.ScheduleDayViewHolder> {
 
+    public interface OnScheduleClickListener {
+        void onScheduleClick(ScheduleItem item);
+    }
+
     private final List<ScheduleDay> days = new ArrayList<>();
+    private final OnScheduleClickListener listener;
 
     public ScheduleDayAdapter(List<ScheduleDay> initialDays) {
+        this(initialDays, null);
+    }
+
+    public ScheduleDayAdapter(List<ScheduleDay> initialDays, OnScheduleClickListener listener) {
+        this.listener = listener;
+
         if (initialDays != null) {
             days.addAll(initialDays);
         }
@@ -27,9 +39,11 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ScheduleDayAdapter.
 
     public void updateDays(List<ScheduleDay> newDays) {
         days.clear();
+
         if (newDays != null) {
             days.addAll(newDays);
         }
+
         notifyDataSetChanged();
     }
 
@@ -56,8 +70,13 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ScheduleDayAdapter.
             holder.cardsRecyclerView.setLayoutManager(
                     new LinearLayoutManager(holder.itemView.getContext())
             );
+
             holder.cardsRecyclerView.setAdapter(
-                    new ScheduleCardAdapter(day.getItems())
+                    new ScheduleCardAdapter(day.getItems(), item -> {
+                        if (listener != null) {
+                            listener.onScheduleClick(item);
+                        }
+                    })
             );
         }
     }

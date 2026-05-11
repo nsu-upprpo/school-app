@@ -3,11 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    android:background="@drawable/bg_readonly_field"
+    android:background="@drawable/bg_parent_lesson_card"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="horizontal">
 
     <View
-        android:layout_width="10dp"
+        android:layout_width="16dp"
         android:layout_height="match_parent"
         android:background="@color/course_orange" />
 
@@ -22,15 +24,42 @@
             android:id="@+id/lessonDateText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="2 мая, вторник"
             android:textColor="@color/text_dark"
             android:textSize="15sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lessonStatusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_status_red"
+            android:paddingStart="10dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="3dp"
+            android:text="Пропущено"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/lessonCourseText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:text="Курс: Графический дизайн"
+            android:textColor="@color/text_dark"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/lessonTopicText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Тема: Введение в проект"
             android:textColor="@color/text_dark"
             android:textSize="13sp" />
 
@@ -39,6 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:text="Преподаватель: Преподаватель Павел"
             android:textColor="@color/text_dark"
             android:textSize="13sp" />
 
@@ -51,6 +81,7 @@
         android:layout_gravity="bottom"
         android:layout_marginEnd="14dp"
         android:layout_marginBottom="14dp"
+        android:text="10:00–11:30"
         android:textColor="@color/text_dark"
         android:textSize="12sp" />
 

@@ -25,7 +25,7 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                "\"http://10.0.2.2:8080/api/v1/\""
+                "\"http://144.31.16.0:53225/api/v1/\""
             )
         }
 
