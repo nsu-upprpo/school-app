@@ -12,55 +12,141 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
+
               - column:
                   name: child_id
                   type: uuid
                   constraints:
                     nullable: false
+
               - column:
                   name: group_id
                   type: uuid
                   constraints:
                     nullable: false
+
+              # MONTH / YEAR / LESSONS
+              - column:
+                  name: type
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+
               - column:
                   name: period
-                  type: varchar(20)
+                  type: varchar(50)
+
               - column:
                   name: amount
                   type: decimal(10,2)
+                  constraints:
+                    nullable: false
+
               - column:
                   name: status
-                  type: varchar(20)
+                  type: varchar(40)
+                  defaultValue: UNPAID
+                  constraints:
+                    nullable: false
+
               - column:
                   name: covers_from
                   type: date
+
               - column:
                   name: covers_to
                   type: date
+
               - column:
-                  name: paid_at
+                  name: due_date
+                  type: date
+
+              - column:
+                  name: lessons_count
+                  type: int
+
+              - column:
+                  name: submitted_at
                   type: timestamp
+
+              - column:
+                  name: confirmed_at
+                  type: timestamp
+
+              - column:
+                  name: confirmed_by
+                  type: uuid
+
+              - column:
+                  name: rejection_reason
+                  type: varchar(255)
+
+              - column:
+                  name: due_soon_notified_at
+                  type: timestamp
+
+              - column:
+                  name: overdue_notified_at
+                  type: timestamp
+
               - column:
                   name: created_at
                   type: timestamp
                   defaultValueComputed: CURRENT_TIMESTAMP
                   constraints:
                     nullable: false
+
               - column:
                   name: updated_at
                   type: timestamp
                   defaultValueComputed: CURRENT_TIMESTAMP
                   constraints:
                     nullable: false
+
         - addForeignKeyConstraint:
             baseTableName: payments
             baseColumnNames: child_id
             referencedTableName: users
             referencedColumnNames: id
             constraintName: fk_payments_child
+
         - addForeignKeyConstraint:
             baseTableName: payments
             baseColumnNames: group_id
             referencedTableName: groups
             referencedColumnNames: id
             constraintName: fk_payments_group
+
+        - addForeignKeyConstraint:
+            baseTableName: payments
+            baseColumnNames: confirmed_by
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_payments_confirmed_by
+
+        - createIndex:
+            tableName: payments
+            indexName: idx_payments_child_created_at
+            columns:
+              - column:
+                  name: child_id
+              - column:
+                  name: created_at
+
+        - createIndex:
+            tableName: payments
+            indexName: idx_payments_group_status
+            columns:
+              - column:
+                  name: group_id
+              - column:
+                  name: status
+
+        - createIndex:
+            tableName: payments
+            indexName: idx_payments_status_due_date
+            columns:
+              - column:
+                  name: status
+              - column:
+                  name: due_date

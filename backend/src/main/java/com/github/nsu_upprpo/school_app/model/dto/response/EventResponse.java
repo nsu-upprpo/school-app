@@ -8,15 +8,13 @@ import java.util.UUID;
 
 @Getter
 @Builder
-public class LessonResponse {
-
+public class EventResponse {
     private final UUID id;
-    private final UUID projectId;
-    private final UUID groupId;
+    private final String name;
+    private final String description;
+    private final UUID branchId;
+    private final String branchName;
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
-    private final String topic;
-    private final String status;
-    private final String cancelReason;
-
+    private final String location;
 }

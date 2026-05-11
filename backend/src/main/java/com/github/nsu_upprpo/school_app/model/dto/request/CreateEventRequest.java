@@ -1,5 +1,6 @@
 package com.github.nsu_upprpo.school_app.model.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,11 +10,12 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class CreateLessonRequest {
-    private UUID projectId;
+public class CreateEventRequest {
+    @NotBlank(message = "Название обязательно")
+    private String name;
 
-    @NotNull(message = "Группа обязательна")
-    private UUID groupId;
+    private String description;
+    private UUID branchId;
 
     @NotNull(message = "Время начала обязательно")
     private LocalDateTime startTime;
@@ -21,5 +23,5 @@ public class CreateLessonRequest {
     @NotNull(message = "Время окончания обязательно")
     private LocalDateTime endTime;
 
-    private String topic;
+    private String location;
 }

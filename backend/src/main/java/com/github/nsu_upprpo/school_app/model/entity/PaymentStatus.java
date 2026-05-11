@@ -1,9 +1,11 @@
 package com.github.nsu_upprpo.school_app.model.entity;
 
 public enum PaymentStatus {
-    PENDING,
+    UNPAID,
+    PENDING_CONFIRMATION,
     PAID,
+    OVERDUE,
     CANCELLED,
-    REFUNDED
+    REJECTED
 }
 

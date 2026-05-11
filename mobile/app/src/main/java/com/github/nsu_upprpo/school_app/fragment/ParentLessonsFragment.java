@@ -529,7 +529,8 @@ public class ParentLessonsFragment extends Fragment {
                                 "Дети: " + lesson.getChildNames() + "\n" +
                                 "Преподаватель: " + lesson.getTeacherName() + "\n" +
                                 "Время: " + lesson.getStartTime() + "-" + lesson.getEndTime() + "\n\n" +
-                                statusText
+                                statusText +
+                                "Перенос и отмена занятия пока недоступны, потому что сервер ещё не предоставляет endpoint для этой функции."
                 )
                 .setPositiveButton("Понятно", null)
                 .show();

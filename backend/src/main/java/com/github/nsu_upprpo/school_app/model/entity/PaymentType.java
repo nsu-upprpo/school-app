@@ -1,0 +1,7 @@
+package com.github.nsu_upprpo.school_app.model.entity;
+
+public enum PaymentType {
+    MONTH,
+    YEAR,
+    LESSONS
+}
