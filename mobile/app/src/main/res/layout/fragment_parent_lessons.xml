@@ -8,62 +8,323 @@
 
     <TextView
         android:id="@+id/parentLessonsTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Мои занятия"
         android:textColor="@color/text_dark"
         android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginBottom="15dp" />
+
+    <LinearLayout
+        android:id="@+id/weekContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="7"
+        android:layout_marginBottom="20dp">
+
+        <LinearLayout
+            android:id="@+id/mondayContainer"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_week_day"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Пн"
+                android:textSize="14sp"
+                android:textColor="@color/text_dark" />
+
+            <TextView
+                android:id="@+id/mondayDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:textSize="11sp"
+                android:textColor="@color/hint_gray"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/mondayDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="30sp"
+                android:textColor="@color/orange_main"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tuesdayContainer"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_week_day"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Вт"
+                android:textSize="14sp"
+                android:textColor="@color/text_dark" />
+
+            <TextView
+                android:id="@+id/tuesdayDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5"
+                android:textSize="11sp"
+                android:textColor="@color/hint_gray"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/tuesdayDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="30sp"
+                android:textColor="@color/orange_main"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/wednesdayContainer"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_week_day"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ср"
+                android:textSize="14sp"
+                android:textColor="@color/text_dark" />
+
+            <TextView
+                android:id="@+id/wednesdayDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6"
+                android:textSize="11sp"
+                android:textColor="@color/hint_gray"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/wednesdayDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="30sp"
+                android:textColor="@color/orange_main"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/thursdayContainer"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_week_day"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Чт"
+                android:textSize="14sp"
+                android:textColor="@color/text_dark" />
+
+            <TextView
+                android:id="@+id/thursdayDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7"
+                android:textSize="11sp"
+                android:textColor="@color/hint_gray"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/thursdayDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="30sp"
+                android:textColor="@color/orange_main"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fridayContainer"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_week_day"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Пт"
+                android:textSize="14sp"
+                android:textColor="@color/text_dark" />
+
+            <TextView
+                android:id="@+id/fridayDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8"
+                android:textSize="11sp"
+                android:textColor="@color/hint_gray"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/fridayDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="30sp"
+                android:textColor="@color/orange_main"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/saturdayContainer"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_week_day"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Сб"
+                android:textSize="14sp"
+                android:textColor="@color/text_dark" />
+
+            <TextView
+                android:id="@+id/saturdayDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9"
+                android:textSize="11sp"
+                android:textColor="@color/hint_gray"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/saturdayDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="30sp"
+                android:textColor="@color/orange_main"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sundayContainer"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_week_day"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Вс"
+                android:textSize="14sp"
+                android:textColor="@color/text_dark" />
+
+            <TextView
+                android:id="@+id/sundayDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11"
+                android:textSize="11sp"
+                android:textColor="@color/hint_gray"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/sundayDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textSize="30sp"
+                android:textColor="@color/orange_main"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/parentLessonsTabs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/parentFutureTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_button_orange"
-            android:paddingHorizontal="18dp"
-            android:paddingVertical="8dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="Будущие"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:background="@drawable/bg_button_orange"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/parentMissedTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/bg_tab_inactive"
-            android:paddingHorizontal="18dp"
-            android:paddingVertical="8dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="Пропуски"
+            android:textSize="15sp"
+            android:background="@drawable/bg_tab_inactive"
             android:textColor="@color/text_dark"
-            android:textSize="14sp" />
-
+            android:layout_marginStart="8dp" />
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/parentLessonsRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp"
-        android:clipToPadding="false"
-        android:paddingBottom="24dp" />
 
     <TextView
         android:id="@+id/emptyLessonsText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ближайшие занятия не найдены"
+        android:text="Занятий пока нет"
+        android:textSize="16sp"
         android:textColor="@color/hint_gray"
-        android:textSize="15sp"
+        android:gravity="center"
+        android:paddingTop="40dp"
         android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/parentLessonsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 </LinearLayout>

@@ -16,10 +16,20 @@ import java.util.List;
 
 public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapter.ScheduleCardViewHolder> {
 
+    public interface OnScheduleClickListener {
+        void onScheduleClick(ScheduleItem item);
+    }
+
     private final List<ScheduleItem> items;
+    private final OnScheduleClickListener listener;
 
     public ScheduleCardAdapter(List<ScheduleItem> items) {
+        this(items, null);
+    }
+
+    public ScheduleCardAdapter(List<ScheduleItem> items, OnScheduleClickListener listener) {
         this.items = items;
+        this.listener = listener;
     }
 
     @NonNull
@@ -41,6 +51,12 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
         holder.colorStripe.setBackgroundColor(
                 ContextCompat.getColor(holder.itemView.getContext(), item.getStripeColorResId())
         );
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onScheduleClick(item);
+            }
+        });
     }
 
     @Override

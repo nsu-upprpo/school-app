@@ -25,13 +25,22 @@ public class ParentLessonAdapter extends RecyclerView.Adapter<ParentLessonAdapte
 
     private final List<ParentLessonItem> lessons = new ArrayList<>();
 
+    public interface OnLessonClickListener {
+        void onLessonClick(ParentLessonItem lesson);
+    }
+
+    private OnLessonClickListener listener;
+
+    public void setOnLessonClickListener(OnLessonClickListener listener) {
+        this.listener = listener;
+    }
+
     public void updateLessons(List<ParentLessonItem> newLessons) {
         lessons.clear();
 
         if (newLessons != null) {
             lessons.addAll(newLessons);
         }
-
         notifyDataSetChanged();
     }
 
@@ -51,6 +60,21 @@ public class ParentLessonAdapter extends RecyclerView.Adapter<ParentLessonAdapte
         holder.lessonCourseText.setText(makeCourseText(lesson.getCourseName()));
         holder.lessonTeacherText.setText("Преподаватель: " + lesson.getTeacherName());
         holder.lessonTimeText.setText(lesson.getStartTime() + "-" + lesson.getEndTime());
+
+        holder.lessonTopicText.setText("Тема: " + lesson.getTopic());
+
+        if ("ABSENT".equalsIgnoreCase(lesson.getStatus())) {
+            holder.lessonStatusText.setVisibility(View.VISIBLE);
+            holder.lessonStatusText.setText("Пропущено");
+        } else {
+            holder.lessonStatusText.setVisibility(View.GONE);
+        }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onLessonClick(lesson);
+            }
+        });
     }
 
     private SpannableString makeCourseText(String courseName) {
@@ -84,6 +108,8 @@ public class ParentLessonAdapter extends RecyclerView.Adapter<ParentLessonAdapte
         TextView lessonCourseText;
         TextView lessonTeacherText;
         TextView lessonTimeText;
+        TextView lessonTopicText;
+        TextView lessonStatusText;
 
         public ParentLessonViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,6 +118,8 @@ public class ParentLessonAdapter extends RecyclerView.Adapter<ParentLessonAdapte
             lessonCourseText = itemView.findViewById(R.id.lessonCourseText);
             lessonTeacherText = itemView.findViewById(R.id.lessonTeacherText);
             lessonTimeText = itemView.findViewById(R.id.lessonTimeText);
+            lessonTopicText = itemView.findViewById(R.id.lessonTopicText);
+            lessonStatusText = itemView.findViewById(R.id.lessonStatusText);
         }
     }
 }

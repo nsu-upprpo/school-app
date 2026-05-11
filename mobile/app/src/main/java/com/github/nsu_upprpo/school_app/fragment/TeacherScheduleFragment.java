@@ -23,10 +23,16 @@ import com.github.nsu_upprpo.school_app.model.ScheduleDay;
 import com.github.nsu_upprpo.school_app.model.ScheduleItem;
 import com.github.nsu_upprpo.school_app.storage.ScheduleStorage;
 import com.github.nsu_upprpo.school_app.storage.TokenStorage;
+import com.github.nsu_upprpo.school_app.api.ScheduleApi;
+import com.github.nsu_upprpo.school_app.model.LessonDto;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
@@ -59,9 +65,27 @@ public class TeacherScheduleFragment extends Fragment {
         weekTab = view.findViewById(R.id.teacherWeekTab);
 
         scheduleStorage = new ScheduleStorage(requireContext());
-        isTodayMode = scheduleStorage.isTeacherTodayMode();
+        isTodayMode = true;
+        scheduleStorage.setTeacherTodayMode(true);
 
-        adapter = new ScheduleDayAdapter(new ArrayList<>());
+        adapter = new ScheduleDayAdapter(new ArrayList<>(), item -> {
+            if (item.getLessonId() == null || item.getLessonId().isEmpty()) {
+                Toast.makeText(requireContext(), "Не найден id занятия", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            TeacherAttendanceFragment fragment = TeacherAttendanceFragment.newInstance(
+                    item.getLessonId(),
+                    item.getTitle(),
+                    item.getSubtitle() + " • " + item.getTime()
+            );
+
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.teacherFragmentContainer, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 
@@ -89,6 +113,12 @@ public class TeacherScheduleFragment extends Fragment {
         return view;
     }
 
+    private void saveToCache() {
+        Gson gson = new Gson();
+        String json = gson.toJson(allDays);
+        scheduleStorage.saveTeacherScheduleJson(json);
+    }
+
     private boolean tryLoadFromCache() {
         if (!scheduleStorage.hasTeacherSchedule()) {
             return false;
@@ -105,7 +135,7 @@ public class TeacherScheduleFragment extends Fragment {
             Type type = new TypeToken<List<ScheduleDay>>() {}.getType();
             List<ScheduleDay> cachedDays = gson.fromJson(json, type);
 
-            if (cachedDays == null) {
+            if (cachedDays == null || cachedDays.isEmpty()) {
                 return false;
             }
 
@@ -114,14 +144,9 @@ public class TeacherScheduleFragment extends Fragment {
             return true;
 
         } catch (Exception e) {
+            scheduleStorage.clear();
             return false;
         }
-    }
-
-    private void saveToCache() {
-        Gson gson = new Gson();
-        String json = gson.toJson(allDays);
-        scheduleStorage.saveTeacherScheduleJson(json);
     }
 
     private void updateUiByMode() {
@@ -146,52 +171,147 @@ public class TeacherScheduleFragment extends Fragment {
         String authHeader = "Bearer " + token;
 
         GroupApi groupApi = ApiClient.getClient().create(GroupApi.class);
+
         groupApi.getTeacherGroups(authHeader).enqueue(new Callback<List<GroupDto>>() {
             @Override
             public void onResponse(Call<List<GroupDto>> call, Response<List<GroupDto>> response) {
                 if (!isAdded()) return;
 
                 if (response.isSuccessful() && response.body() != null) {
-                    allDays.clear();
-                    allDays.addAll(mapGroupsToScheduleDays(response.body()));
-
-                    saveToCache();
-                    updateUiByMode();
+                    loadLessonsForGroups(authHeader, response.body());
                 } else {
-                    Toast.makeText(requireContext(), "Не удалось загрузить расписание", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Не удалось загрузить группы", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<GroupDto>> call, Throwable t) {
                 if (!isAdded()) return;
-
                 Toast.makeText(requireContext(), "Ошибка сети: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private List<ScheduleDay> mapGroupsToScheduleDays(List<GroupDto> groups) {
+    private void loadLessonsForGroups(String authHeader, List<GroupDto> groups) {
         Map<String, List<ScheduleItem>> dayMap = createWeekMap();
 
-        for (GroupDto group : groups) {
-            String title = safe(group.getCourseName());
-            String subtitle = safe(group.getBranchName()) + " • " + safe(group.getTeacherName());
-            String scheduleDescription = safe(group.getScheduleDescription());
-            String time = extractTime(scheduleDescription);
-            int color = pickColorByCourseId(group.getCourseId());
-
-            List<String> days = extractRussianDays(scheduleDescription);
-
-            for (String day : days) {
-                List<ScheduleItem> items = dayMap.get(day);
-
-                if (items != null) {
-                    items.add(new ScheduleItem(title, subtitle, time, color));
-                }
-            }
+        if (groups == null || groups.isEmpty()) {
+            allDays.clear();
+            allDays.addAll(mapDayMapToScheduleDays(dayMap));
+            updateUiByMode();
+            return;
         }
 
+        ScheduleApi scheduleApi = ApiClient.getClient().create(ScheduleApi.class);
+
+        final int[] pending = {groups.size()};
+
+        for (GroupDto group : groups) {
+            scheduleApi.getGroupSchedule(authHeader, group.getGroupId())
+                    .enqueue(new Callback<List<LessonDto>>() {
+                        @Override
+                        public void onResponse(Call<List<LessonDto>> call, Response<List<LessonDto>> response) {
+                            if (!isAdded()) return;
+
+                            if (response.isSuccessful() && response.body() != null) {
+                                addLessonsToDayMap(dayMap, group, response.body());
+                            }
+
+                            pending[0]--;
+
+                            if (pending[0] == 0) {
+                                finishScheduleLoading(dayMap);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<LessonDto>> call, Throwable t) {
+                            if (!isAdded()) return;
+
+                            pending[0]--;
+
+                            if (pending[0] == 0) {
+                                finishScheduleLoading(dayMap);
+                            }
+                        }
+                    });
+        }
+    }
+
+    private void addLessonsToDayMap(Map<String, List<ScheduleItem>> dayMap,
+                                    GroupDto group,
+                                    List<LessonDto> lessons) {
+        for (LessonDto lesson : lessons) {
+            String dayName = getRussianDayNameFromDateTime(lesson.getStartTime());
+
+            List<ScheduleItem> items = dayMap.get(dayName);
+
+            if (items == null) {
+                continue;
+            }
+
+            String title = safe(group.getCourseName());
+            String subtitle = "Группа • " + safe(group.getBranchName());
+            String time = formatTime(lesson.getStartTime()) + "-" + formatTime(lesson.getEndTime());
+            int color = pickColorByCourseId(group.getCourseId());
+
+            ScheduleItem item = new ScheduleItem(
+                    lesson.getId(),
+                    lesson.getGroupId(),
+                    title,
+                    subtitle,
+                    time,
+                    color
+            );
+
+            items.add(item);
+        }
+    }
+
+    private String getRussianDayNameFromDateTime(String dateTime) {
+        try {
+            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+            Date date = input.parse(dateTime);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+            switch (day) {
+                case Calendar.MONDAY:
+                    return "Понедельник";
+                case Calendar.TUESDAY:
+                    return "Вторник";
+                case Calendar.WEDNESDAY:
+                    return "Среда";
+                case Calendar.THURSDAY:
+                    return "Четверг";
+                case Calendar.FRIDAY:
+                    return "Пятница";
+                case Calendar.SATURDAY:
+                    return "Суббота";
+                case Calendar.SUNDAY:
+                    return "Воскресенье";
+                default:
+                    return "Понедельник";
+            }
+        } catch (ParseException | NullPointerException e) {
+            return "Понедельник";
+        }
+    }
+
+    private String formatTime(String dateTime) {
+        try {
+            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat output = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            return output.format(input.parse(dateTime));
+        } catch (ParseException | NullPointerException e) {
+            return "";
+        }
+    }
+
+    private void finishScheduleLoading(Map<String, List<ScheduleItem>> dayMap) {
         for (List<ScheduleItem> items : dayMap.values()) {
             items.sort((a, b) -> Integer.compare(
                     parseStartMinutes(a.getTime()),
@@ -199,6 +319,14 @@ public class TeacherScheduleFragment extends Fragment {
             ));
         }
 
+        allDays.clear();
+        allDays.addAll(mapDayMapToScheduleDays(dayMap));
+
+        saveToCache();
+        updateUiByMode();
+    }
+
+    private List<ScheduleDay> mapDayMapToScheduleDays(Map<String, List<ScheduleItem>> dayMap) {
         List<ScheduleDay> result = new ArrayList<>();
 
         for (Map.Entry<String, List<ScheduleItem>> entry : dayMap.entrySet()) {
@@ -252,37 +380,6 @@ public class TeacherScheduleFragment extends Fragment {
         }
 
         return result;
-    }
-
-    private List<String> extractRussianDays(String scheduleDescription) {
-        String s = scheduleDescription.toUpperCase(Locale.ROOT);
-        List<String> days = new ArrayList<>();
-
-        if (s.contains("ПН")) days.add("Понедельник");
-        if (s.contains("ВТ")) days.add("Вторник");
-        if (s.contains("СР")) days.add("Среда");
-        if (s.contains("ЧТ")) days.add("Четверг");
-        if (s.contains("ПТ")) days.add("Пятница");
-        if (s.contains("СБ")) days.add("Суббота");
-        if (s.contains("ВС")) days.add("Воскресенье");
-
-        return days;
-    }
-
-    private String extractTime(String scheduleDescription) {
-        if (scheduleDescription == null) return "";
-
-        String[] parts = scheduleDescription.trim().split("\\s+");
-
-        if (parts.length == 0) return "";
-
-        String lastPart = parts[parts.length - 1];
-
-        if (lastPart.matches("\\d{2}:\\d{2}-\\d{2}:\\d{2}")) {
-            return lastPart;
-        }
-
-        return scheduleDescription;
     }
 
     private int parseStartMinutes(String time) {

@@ -18,6 +18,8 @@ import com.github.nsu_upprpo.school_app.R;
 import com.github.nsu_upprpo.school_app.api.ApiClient;
 import com.github.nsu_upprpo.school_app.api.UserApi;
 import com.github.nsu_upprpo.school_app.model.UserProfile;
+import com.github.nsu_upprpo.school_app.storage.ScheduleStorage;
+import com.github.nsu_upprpo.school_app.storage.TeacherJournalStorage;
 import com.github.nsu_upprpo.school_app.storage.TokenStorage;
 import com.github.nsu_upprpo.school_app.storage.UserStorage;
 
@@ -101,9 +103,13 @@ public class TeacherProfileFragment extends Fragment {
     private void logout() {
         TokenStorage tokenStorage = new TokenStorage(requireContext());
         UserStorage userStorage = new UserStorage(requireContext());
+        TeacherJournalStorage teacherJournalStorage = new TeacherJournalStorage(requireContext());
+        ScheduleStorage scheduleStorage = new ScheduleStorage(requireContext());
 
         tokenStorage.clear();
         userStorage.clear();
+        teacherJournalStorage.clear();
+        scheduleStorage.clear();
 
         Intent intent = new Intent(requireContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

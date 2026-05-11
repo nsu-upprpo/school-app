@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.nsu_upprpo.school_app.LoginActivity;
 import com.github.nsu_upprpo.school_app.R;
-import com.github.nsu_upprpo.school_app.adapter.ChildAdapter;
+import com.github.nsu_upprpo.school_app.adapter.ParentChildAdapter;
 import com.github.nsu_upprpo.school_app.api.ApiClient;
 import com.github.nsu_upprpo.school_app.api.ChildApi;
 import com.github.nsu_upprpo.school_app.api.UserApi;
@@ -41,7 +41,7 @@ public class ParentProfileFragment extends Fragment {
     private EditText parentNameInput;
     private EditText parentPhoneInput;
     private RecyclerView childrenRecyclerView;
-    private ChildAdapter childAdapter;
+    private ParentChildAdapter childAdapter;
     private Button parentLogoutButton;
 
     @Nullable
@@ -55,9 +55,10 @@ public class ParentProfileFragment extends Fragment {
         childrenRecyclerView = view.findViewById(R.id.childrenRecyclerView);
         parentLogoutButton = view.findViewById(R.id.parentLogoutButton);
 
-        childAdapter = new ChildAdapter();
+        childAdapter = new ParentChildAdapter();
         childrenRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         childrenRecyclerView.setAdapter(childAdapter);
+        childAdapter.setOnChildClickListener(this::showChildInfoDialog);
 
         parentLogoutButton.setOnClickListener(v -> logout());
 
@@ -204,6 +205,40 @@ public class ParentProfileFragment extends Fragment {
             public void onFailure(Call<GroupDto> call, Throwable t) {
             }
         });
+    }
+
+    private void showChildInfoDialog(ChildDto child, String branchName) {
+        StringBuilder coursesText = new StringBuilder();
+
+        if (child.getGroups() != null && !child.getGroups().isEmpty()) {
+            for (GroupDto group : child.getGroups()) {
+                if (group.getCourseName() != null && !group.getCourseName().isEmpty()) {
+                    if (coursesText.length() > 0) {
+                        coursesText.append("\n");
+                    }
+                    coursesText.append("• ").append(group.getCourseName());
+                }
+            }
+        }
+
+        if (coursesText.length() == 0) {
+            coursesText.append("не указаны");
+        }
+
+        String birthDate = child.getBirthDate();
+        if (birthDate == null || birthDate.isEmpty()) {
+            birthDate = "не указана";
+        }
+
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle(child.getFullName())
+                .setMessage(
+                        "Дата рождения: " + birthDate + "\n\n" +
+                                "Филиал: " + branchName + "\n\n" +
+                                "Курсы:\n" + coursesText
+                )
+                .setPositiveButton("Закрыть", null)
+                .show();
     }
 
     private void logout() {
