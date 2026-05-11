@@ -1,18 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="30dp"
-    android:background="@color/screen_bg"
-    android:orientation="vertical">
+    android:background="@color/screen_bg">
 
     <TextView
         android:id="@+id/parentPaymentTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Оплата"
         android:textColor="@color/text_dark"
         android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginBottom="22dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/unpaidBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_payment_unpaid"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/unpaidMonthText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Апрель 2025"
+                android:textColor="@color/text_dark"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/unpaidAmountText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="7300 руб."
+                android:textColor="@color/text_dark"
+                android:textSize="15sp"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/payButtonText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Оплатить  ›"
+            android:textColor="@color/course_orange"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="8dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/noUnpaidText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Неоплаченных платежей нет"
+        android:textColor="@color/hint_gray"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:background="@drawable/bg_readonly_field"
+        android:padding="18dp"
+        android:visibility="gone"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:id="@+id/paidTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Оплачено"
+        android:textColor="@color/text_dark"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/paidPaymentsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

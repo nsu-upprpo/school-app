@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_card"
+    android:elevation="2dp">
+
+    <TextView
+        android:id="@+id/lessonDateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_dark"
+        android:text="4 мая - 10:00-11:30"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/lessonTopicText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Тема: Работа с цветом"
+        android:textColor="@color/hint_gray"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/lessonActionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Открыть посещаемость  ›"
+        android:textColor="@color/orange_main"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
