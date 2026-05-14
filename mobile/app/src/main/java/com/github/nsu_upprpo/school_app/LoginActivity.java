@@ -64,9 +64,6 @@ public class LoginActivity extends AppCompatActivity {
         authApi.login(request).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                loginButton.setEnabled(true);
-                loginButton.setText("Войти");
-
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse body = response.body();
 
@@ -76,6 +73,8 @@ public class LoginActivity extends AppCompatActivity {
                     loadProfileAndOpenScreen();
                 } else {
                     Toast.makeText(LoginActivity.this, "Неверный email или пароль", Toast.LENGTH_SHORT).show();
+                    loginButton.setEnabled(true);
+                    loginButton.setText("Войти");
                 }
             }
 
