@@ -40,9 +40,8 @@ public class TeacherAttendanceFragment extends Fragment {
 
     private TextView titleText;
     private TextView subtitleText;
-    private TextView backText;
     private Button markAllButton;
-    private Button saveButton;
+    private Button sendButton;
     private LinearLayout contentLayout;
 
     private String lessonId;
@@ -73,9 +72,8 @@ public class TeacherAttendanceFragment extends Fragment {
 
         titleText = view.findViewById(R.id.attendanceTitleText);
         subtitleText = view.findViewById(R.id.attendanceSubtitleText);
-        backText = view.findViewById(R.id.attendanceBackText);
         markAllButton = view.findViewById(R.id.markAllPresentButton);
-        saveButton = view.findViewById(R.id.saveAttendanceButton);
+        sendButton = view.findViewById(R.id.saveAttendanceButton);
         contentLayout = view.findViewById(R.id.attendanceContentLayout);
 
         Bundle args = getArguments();
@@ -96,12 +94,8 @@ public class TeacherAttendanceFragment extends Fragment {
 
         authHeader = "Bearer " + token;
 
-        backText.setOnClickListener(v ->
-                requireActivity().getSupportFragmentManager().popBackStack()
-        );
-
         markAllButton.setOnClickListener(v -> markAllPresent());
-        saveButton.setOnClickListener(v -> saveAttendance());
+        sendButton.setOnClickListener(v -> sendAttendance());
 
         loadAttendance();
 
@@ -111,7 +105,7 @@ public class TeacherAttendanceFragment extends Fragment {
     private void loadAttendance() {
         if (lessonId == null || lessonId.isEmpty()) {
             showMessage("Не найден id занятия");
-            saveButton.setEnabled(false);
+            sendButton.setEnabled(false);
             markAllButton.setEnabled(false);
             return;
         }
@@ -147,12 +141,12 @@ public class TeacherAttendanceFragment extends Fragment {
 
         if (attendances == null || attendances.isEmpty()) {
             showMessage("Сервер не вернул список учеников для этого занятия.");
-            saveButton.setEnabled(false);
+            sendButton.setEnabled(true);
             markAllButton.setEnabled(false);
             return;
         }
 
-        saveButton.setEnabled(true);
+        sendButton.setEnabled(true);
         markAllButton.setEnabled(true);
 
         for (AttendanceDto attendance : attendances) {
@@ -266,32 +260,32 @@ public class TeacherAttendanceFragment extends Fragment {
         }
     }
 
-    private void saveAttendance() {
-        int[] pending = {0};
+    private void sendAttendance() {
+        if (selectedStatuses.isEmpty()) {
+            Toast.makeText(requireContext(), "Сначала отметьте посещаемость", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        sendButton.setEnabled(false);
+        sendButton.setText("Отправка...");
+
+        int[] total = {0};
         int[] success = {0};
-        int[] skipped = {0};
         int[] errors = {0};
 
         AttendanceApi api = ApiClient.getClient().create(AttendanceApi.class);
 
         for (Map.Entry<String, String> entry : selectedStatuses.entrySet()) {
             String childId = entry.getKey();
-            String newStatus = entry.getValue();
-            String oldStatus = oldStatuses.get(childId);
+            String status = entry.getValue();
 
-            if (newStatus == null || newStatus.isEmpty()) {
-                skipped[0]++;
+            if (childId == null || childId.isEmpty() || status == null || status.isEmpty()) {
                 continue;
             }
 
-            if (oldStatus != null && !oldStatus.isEmpty()) {
-                skipped[0]++;
-                continue;
-            }
+            total[0]++;
 
-            pending[0]++;
-
-            AttendanceRequest request = new AttendanceRequest(childId, newStatus);
+            AttendanceRequest request = new AttendanceRequest(childId, status);
 
             api.markAttendance(authHeader, lessonId, request).enqueue(new Callback<AttendanceDto>() {
                 @Override
@@ -302,37 +296,44 @@ public class TeacherAttendanceFragment extends Fragment {
                         errors[0]++;
                     }
 
-                    checkFinish(pending, success, skipped, errors);
+                    checkAttendanceSendingFinished(total[0], success[0], errors[0]);
                 }
 
                 @Override
                 public void onFailure(Call<AttendanceDto> call, Throwable t) {
                     errors[0]++;
-                    checkFinish(pending, success, skipped, errors);
+                    checkAttendanceSendingFinished(total[0], success[0], errors[0]);
                 }
             });
         }
 
-        if (pending[0] == 0) {
-            Toast.makeText(
-                    requireContext(),
-                    "Изменений для сохранения нет",
-                    Toast.LENGTH_SHORT
-            ).show();
+        if (total[0] == 0) {
+            sendButton.setEnabled(true);
+            sendButton.setText("Отправить");
+            Toast.makeText(requireContext(), "Нет данных для отправки", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void checkFinish(int[] pending, int[] success, int[] skipped, int[] errors) {
-        pending[0]--;
+    private void checkAttendanceSendingFinished(int total, int success, int errors) {
+        if (success + errors < total) {
+            return;
+        }
 
-        if (pending[0] == 0) {
+        sendButton.setEnabled(true);
+        sendButton.setText("Отправить");
+
+        if (errors == 0) {
             Toast.makeText(
                     requireContext(),
-                    "Сохранено: " + success[0] + ", ошибок: " + errors[0],
+                    "Посещаемость отправлена",
+                    Toast.LENGTH_SHORT
+            ).show();
+        } else {
+            Toast.makeText(
+                    requireContext(),
+                    "Сохранено: " + success + ", ошибок: " + errors,
                     Toast.LENGTH_LONG
             ).show();
-
-            loadAttendance();
         }
     }
 

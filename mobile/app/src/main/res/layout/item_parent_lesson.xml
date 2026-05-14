@@ -3,8 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    android:background="@drawable/bg_parent_lesson_card"
+    android:background="@drawable/bg_lesson_card"
     android:clickable="true"
+    android:clipToOutline="true"
     android:focusable="true"
     android:orientation="horizontal">
 
