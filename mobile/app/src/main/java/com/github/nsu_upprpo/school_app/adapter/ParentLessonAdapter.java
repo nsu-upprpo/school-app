@@ -99,7 +99,7 @@ public class ParentLessonAdapter extends RecyclerView.Adapter<ParentLessonAdapte
     }
 
     private String formatDate(long millis) {
-        SimpleDateFormat format = new SimpleDateFormat("d MMMM, EEEE", new Locale("ru"));
+        SimpleDateFormat format = new SimpleDateFormat("d MMMM (EEEE)", new Locale("ru"));
         return format.format(millis);
     }
 
