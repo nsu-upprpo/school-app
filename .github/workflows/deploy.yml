@@ -1,10 +1,16 @@
-name: Deploy Backend Manually
+name: Deploy Backend
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy-backend.yml'
 
 concurrency:
-  group: school-app-manual-deploy
+  group: school-app-deploy
   cancel-in-progress: false
 
 jobs:
@@ -22,7 +28,7 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p "${{ secrets.SERVER_PORT }}" -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
 
-      - name: Pull fresh backend image and restart backend
+      - name: Recreate backend and database from scratch
         shell: bash
         run: |
           set -euo pipefail
