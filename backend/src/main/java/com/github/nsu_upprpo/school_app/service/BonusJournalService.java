@@ -2,11 +2,10 @@ package com.github.nsu_upprpo.school_app.service;
 
 import com.github.nsu_upprpo.school_app.common.exception.ForbiddenException;
 import com.github.nsu_upprpo.school_app.model.dto.response.BonusJournalResponse;
-import com.github.nsu_upprpo.school_app.model.entity.GroupStudent;
 import com.github.nsu_upprpo.school_app.model.entity.Project;
 import com.github.nsu_upprpo.school_app.model.entity.ProjectGrade;
-import com.github.nsu_upprpo.school_app.repository.AttendanceRepository;
 import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;
+import com.github.nsu_upprpo.school_app.repository.LessonParticipationRepository;
 import com.github.nsu_upprpo.school_app.repository.LessonRepository;
 import com.github.nsu_upprpo.school_app.repository.ParentChildRepository;
 import com.github.nsu_upprpo.school_app.repository.ProjectGradeRepository;
@@ -26,7 +25,7 @@ public class BonusJournalService {
     private final GroupStudentRepository groupStudentRepository;
     private final ProjectRepository projectRepository;
     private final LessonRepository lessonRepository;
-    private final AttendanceRepository attendanceRepository;
+    private final LessonParticipationRepository participationRepository;
     private final ProjectGradeRepository projectGradeRepository;
 
     public List<BonusJournalResponse> getForParentChild(UUID parentId, UUID childId) {
@@ -47,7 +46,7 @@ public class BonusJournalService {
     private BonusJournalResponse toResponse(Project project, UUID childId) {
         long totalLessons = lessonRepository.countByProjectId(project.getId());
 
-        long visitedLessons = attendanceRepository.countVisitedLessonsByChildAndProject(
+        long visitedLessons = participationRepository.countVisitedLessonsByChildAndProject(
                 childId,
                 project.getId()
         );
