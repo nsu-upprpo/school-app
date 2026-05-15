@@ -1,8 +1,8 @@
 {
   "info": {
-    "_postman_id": "f3c56517-d70b-4b86-963f-d238dcc2b9aa",
-    "name": "SchoolApp v5",
-    "description": "Собрано под backend SchoolApp. base_url уже включает /api/v1. Пароль тестовых пользователей: password123. Payment/Bonus Journal включены как целевые MVP endpoint'ы.",
+    "_postman_id": "4a7ea942-cc3d-488d-934a-37dc29b8ba50",
+    "name": "SchoolApp v6",
+    "description": "Собрано под backend SchoolApp. base_url уже включает /api/v1. Пароль тестовых пользователей: password123. v6: добавлены расписание ребёнка (07) и сценарный флоу отмены/восстановления/переноса занятий родителем (13).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "37218592"
   },
@@ -482,10 +482,12 @@
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
-                  "pm.test('Status is [204]', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
-                ]
+                  "pm.test('Status is [401]', function () { pm.expect(pm.response.code).to.be.oneOf([401]); });"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],
@@ -2317,18 +2319,23 @@
           "response": []
         },
         {
-          "name": "Schedule by group period (GET with body, as in code)",
+          "name": "Schedule by group period",
           "event": [
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is [200]', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
-                ]
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "bearer",
@@ -2347,6 +2354,15 @@
                 "value": "application/json"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"fromDate\": \"2025-01-01T00:00:00\", \r\n    \"toDate\": \"2030-01-01T00:00:00\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
               "raw": "{{base_url}}/schedule/groups/{{seed_group_id}}/period",
               "host": [
@@ -2399,6 +2415,161 @@
                 "lesson-template"
               ]
             }
+          },
+          "response": []
+        },
+        {
+          "name": "[Parent] Child schedule by period (wide window)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [200]', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
+                  "const lessons = pm.response.json();",
+                  "pm.test('Response is array', function () { pm.expect(lessons).to.be.an('array'); });",
+                  "pm.test('Each lesson has childStatus field (may be null)', function () {",
+                  "  lessons.forEach(l => pm.expect(l).to.have.property('childStatus'));",
+                  "});",
+                  "console.log('Child schedule lessons:', lessons.length);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/schedule/children/{{seed_child_id}}?from=2025-01-01T00:00:00&to=2030-01-01T00:00:00",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "schedule",
+                "children",
+                "{{seed_child_id}}"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2025-01-01T00:00:00"
+                },
+                {
+                  "key": "to",
+                  "value": "2030-01-01T00:00:00"
+                }
+              ]
+            },
+            "description": "Расписание конкретного ребёнка — групповые уроки плюс индивидуальные отмены/переносы. childStatus=null означает штатное участие."
+          },
+          "response": []
+        },
+        {
+          "name": "[Parent] Child upcoming lessons (limit=3)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [200]', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
+                  "const lessons = pm.response.json();",
+                  "pm.test('At most 3 lessons returned', function () { pm.expect(lessons.length).to.be.at.most(3); });",
+                  "pm.test('No CANCELLED_BY_PARENT in upcoming', function () {",
+                  "  const bad = lessons.find(l => l.childStatus === 'CANCELLED_BY_PARENT');",
+                  "  pm.expect(bad, 'cancelled lessons must be filtered out').to.be.undefined;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/schedule/children/{{seed_child_id}}/upcoming?limit=3",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "schedule",
+                "children",
+                "{{seed_child_id}}",
+                "upcoming"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "3"
+                }
+              ]
+            },
+            "description": "Ближайшие N занятий, на которые ребёнок реально идёт — без отменённых родителем и без исходных слотов переноса."
+          },
+          "response": []
+        },
+        {
+          "name": "[Parent] Child schedule — no auth → 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [401, 403]', function () { pm.expect(pm.response.code).to.be.oneOf([401, 403]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/schedule/children/{{seed_child_id}}?from=2025-01-01T00:00:00&to=2030-01-01T00:00:00",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "schedule",
+                "children",
+                "{{seed_child_id}}"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2025-01-01T00:00:00"
+                },
+                {
+                  "key": "to",
+                  "value": "2030-01-01T00:00:00"
+                }
+              ]
+            },
+            "description": "Без токена эндпоинт должен возвращать 401."
           },
           "response": []
         }
@@ -3647,6 +3818,1143 @@
       ]
     },
     {
+      "name": "13 Parent lesson actions / Child flow",
+      "item": [
+        {
+          "name": "01 [Admin] Create source lesson (future)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [201]', function () { pm.expect(pm.response.code).to.be.oneOf([201]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  try {",
+                  "    const j = pm.response.json();",
+                  "    if (j && j.id) pm.collectionVariables.set('parent_source_lesson_id', j.id);",
+                  "  } catch (e) {}",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{seed_project_id}}\",\n  \"groupId\": \"{{seed_group_id}}\",\n  \"startTime\": \"2028-09-10T10:00:00\",\n  \"endTime\": \"2028-09-10T11:30:00\",\n  \"topic\": \"Source lesson for parent flow\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/lessons",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "lessons"
+              ]
+            },
+            "description": "Шаг 1: создаём занятие, с которого родитель будет переносить/отменять. Сохраняет id в `parent_source_lesson_id`."
+          },
+          "response": []
+        },
+        {
+          "name": "02 [Admin] Create target lesson (future, same group)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [201]', function () { pm.expect(pm.response.code).to.be.oneOf([201]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  try {",
+                  "    const j = pm.response.json();",
+                  "    if (j && j.id) pm.collectionVariables.set('parent_target_lesson_id', j.id);",
+                  "  } catch (e) {}",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{seed_project_id}}\",\n  \"groupId\": \"{{seed_group_id}}\",\n  \"startTime\": \"2028-09-12T10:00:00\",\n  \"endTime\": \"2028-09-12T11:30:00\",\n  \"topic\": \"Target lesson for parent flow\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/lessons",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "lessons"
+              ]
+            },
+            "description": "Шаг 2: занятие, на которое будем переносить. Та же группа и курс — это требование сервиса."
+          },
+          "response": []
+        },
+        {
+          "name": "03 [Admin] Create lesson on DIFFERENT course (for 400 test)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [201]', function () { pm.expect(pm.response.code).to.be.oneOf([201]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "  try {",
+                  "    const j = pm.response.json();",
+                  "    if (j && j.id) pm.collectionVariables.set('parent_other_course_lesson_id', j.id);",
+                  "  } catch (e) {}",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"groupId\": \"{{seed_group2_id}}\",\n  \"startTime\": \"2028-09-15T10:00:00\",\n  \"endTime\": \"2028-09-15T11:30:00\",\n  \"topic\": \"Different course lesson\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/lessons",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "lessons"
+              ]
+            },
+            "description": "Шаг 3: занятие в другой группе/курсе. Понадобится для теста, что нельзя перенести между курсами."
+          },
+          "response": []
+        },
+        {
+          "name": "04 [Parent] Cancel target lesson for child → 204",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [204]', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Поездка на дачу\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/parents/me/children/{{seed_child_id}}/lessons/{{parent_target_lesson_id}}/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parents",
+                "me",
+                "children",
+                "{{seed_child_id}}",
+                "lessons",
+                "{{parent_target_lesson_id}}",
+                "cancel"
+              ]
+            },
+            "description": "Родитель отменяет занятие для своего ребёнка. Создаётся строка CANCELLED_BY_PARENT в lesson_participations."
+          },
+          "response": []
+        },
+        {
+          "name": "05 [Parent] Verify schedule shows CANCELLED_BY_PARENT on target",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [200]', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
+                  "const lessons = pm.response.json();",
+                  "const targetId = pm.collectionVariables.get('parent_target_lesson_id');",
+                  "const target = lessons.find(l => l.lessonId === targetId);",
+                  "pm.test('Target lesson present in schedule', function () { pm.expect(target, 'target lesson not found').to.exist; });",
+                  "pm.test('childStatus = CANCELLED_BY_PARENT', function () {",
+                  "  pm.expect(target.childStatus).to.eql('CANCELLED_BY_PARENT');",
+                  "});",
+                  "pm.test('reason recorded', function () { pm.expect(target.reason).to.eql('Поездка на дачу'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/schedule/children/{{seed_child_id}}?from=2028-09-01T00:00:00&to=2028-09-30T00:00:00",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "schedule",
+                "children",
+                "{{seed_child_id}}"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2028-09-01T00:00:00"
+                },
+                {
+                  "key": "to",
+                  "value": "2028-09-30T00:00:00"
+                }
+              ]
+            },
+            "description": "Расписание ребёнка должно показать отменённое занятие с пометкой. UI отрендерит как зачёркнутое."
+          },
+          "response": []
+        },
+        {
+          "name": "06 [Parent] Cancel same lesson again → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [409]', function () { pm.expect(pm.response.code).to.be.oneOf([409]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"duplicate\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/parents/me/children/{{seed_child_id}}/lessons/{{parent_target_lesson_id}}/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parents",
+                "me",
+                "children",
+                "{{seed_child_id}}",
+                "lessons",
+                "{{parent_target_lesson_id}}",
+                "cancel"
+              ]
+            },
+            "description": "Двойная отмена — конфликт. Сообщение из сервиса: «Занятие уже отменено для этого ребёнка»."
+          },
+          "response": []
+        },
+        {
+          "name": "07 [Parent] Restore target lesson → 204",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [204]', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/parents/me/children/{{seed_child_id}}/lessons/{{parent_target_lesson_id}}/restore",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parents",
+                "me",
+                "children",
+                "{{seed_child_id}}",
+                "lessons",
+                "{{parent_target_lesson_id}}",
+                "restore"
+              ]
+            },
+            "description": "Восстановление = удаление строки CANCELLED_BY_PARENT. Ребёнок снова участвует в занятии штатно."
+          },
+          "response": []
+        },
+        {
+          "name": "08 [Parent] Verify schedule shows no childStatus on target",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [200]', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
+                  "const lessons = pm.response.json();",
+                  "const targetId = pm.collectionVariables.get('parent_target_lesson_id');",
+                  "const target = lessons.find(l => l.lessonId === targetId);",
+                  "pm.test('Target lesson back to default participation', function () {",
+                  "  pm.expect(target).to.exist;",
+                  "  pm.expect(target.childStatus).to.be.null;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/schedule/children/{{seed_child_id}}?from=2028-09-01T00:00:00&to=2028-09-30T00:00:00",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "schedule",
+                "children",
+                "{{seed_child_id}}"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2028-09-01T00:00:00"
+                },
+                {
+                  "key": "to",
+                  "value": "2028-09-30T00:00:00"
+                }
+              ]
+            },
+            "description": "После восстановления childStatus = null — никакой строки в lesson_participations."
+          },
+          "response": []
+        },
+        {
+          "name": "09 [Parent] Reschedule source → target → 204",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [204]', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"targetLessonId\": \"{{parent_target_lesson_id}}\",\n  \"reason\": \"Не успеваем в этот день\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/parents/me/children/{{seed_child_id}}/lessons/{{parent_source_lesson_id}}/reschedule",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parents",
+                "me",
+                "children",
+                "{{seed_child_id}}",
+                "lessons",
+                "{{parent_source_lesson_id}}",
+                "reschedule"
+              ]
+            },
+            "description": "Перенос ребёнка с source на target. Создаются ДВЕ строки: RESCHEDULED_OUT на source + RESCHEDULED_IN на target, ссылаются друг на друга."
+          },
+          "response": []
+        },
+        {
+          "name": "10 [Parent] Verify both ends of reschedule in schedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [200]', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
+                  "const lessons = pm.response.json();",
+                  "const sourceId = pm.collectionVariables.get('parent_source_lesson_id');",
+                  "const targetId = pm.collectionVariables.get('parent_target_lesson_id');",
+                  "const src = lessons.find(l => l.lessonId === sourceId);",
+                  "const tgt = lessons.find(l => l.lessonId === targetId);",
+                  "pm.test('Source has RESCHEDULED_OUT', function () {",
+                  "  pm.expect(src).to.exist;",
+                  "  pm.expect(src.childStatus).to.eql('RESCHEDULED_OUT');",
+                  "  pm.expect(src.rescheduledToLessonId).to.eql(targetId);",
+                  "});",
+                  "pm.test('Target has RESCHEDULED_IN', function () {",
+                  "  pm.expect(tgt).to.exist;",
+                  "  pm.expect(tgt.childStatus).to.eql('RESCHEDULED_IN');",
+                  "  pm.expect(tgt.rescheduledFromLessonId).to.eql(sourceId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/schedule/children/{{seed_child_id}}?from=2028-09-01T00:00:00&to=2028-09-30T00:00:00",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "schedule",
+                "children",
+                "{{seed_child_id}}"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2028-09-01T00:00:00"
+                },
+                {
+                  "key": "to",
+                  "value": "2028-09-30T00:00:00"
+                }
+              ]
+            },
+            "description": "Главная проверка целостности переноса: обе строки на месте и взаимно ссылаются."
+          },
+          "response": []
+        },
+        {
+          "name": "11 [Parent] Cancel source while rescheduled → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [409]', function () { pm.expect(pm.response.code).to.be.oneOf([409]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"after-reschedule cancel\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/parents/me/children/{{seed_child_id}}/lessons/{{parent_source_lesson_id}}/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parents",
+                "me",
+                "children",
+                "{{seed_child_id}}",
+                "lessons",
+                "{{parent_source_lesson_id}}",
+                "cancel"
+              ]
+            },
+            "description": "Нельзя отменить уже перенесённое занятие — сначала надо отменить перенос. Сообщение: «...сначала отмените перенос»."
+          },
+          "response": []
+        },
+        {
+          "name": "12 [Parent] Reschedule source again → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [409]', function () { pm.expect(pm.response.code).to.be.oneOf([409]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"targetLessonId\": \"{{parent_target_lesson_id}}\",\n  \"reason\": \"duplicate\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/parents/me/children/{{seed_child_id}}/lessons/{{parent_source_lesson_id}}/reschedule",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parents",
+                "me",
+                "children",
+                "{{seed_child_id}}",
+                "lessons",
+                "{{parent_source_lesson_id}}",
+                "reschedule"
+              ]
+            },
+            "description": "Повторный перенос уже перенесённого занятия — конфликт."
+          },
+          "response": []
+        },
+        {
+          "name": "13 [Parent] Restore source — undoes both rows → 204",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [204]', function () { pm.expect(pm.response.code).to.be.oneOf([204]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/parents/me/children/{{seed_child_id}}/lessons/{{parent_source_lesson_id}}/restore",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parents",
+                "me",
+                "children",
+                "{{seed_child_id}}",
+                "lessons",
+                "{{parent_source_lesson_id}}",
+                "restore"
+              ]
+            },
+            "description": "Восстановление переноса = удаление обеих строк (RESCHEDULED_OUT и парной RESCHEDULED_IN)."
+          },
+          "response": []
+        },
+        {
+          "name": "14 [Parent] Verify both lessons cleaned up",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [200]', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
+                  "const lessons = pm.response.json();",
+                  "const sourceId = pm.collectionVariables.get('parent_source_lesson_id');",
+                  "const targetId = pm.collectionVariables.get('parent_target_lesson_id');",
+                  "const src = lessons.find(l => l.lessonId === sourceId);",
+                  "const tgt = lessons.find(l => l.lessonId === targetId);",
+                  "pm.test('Source restored to default', function () {",
+                  "  pm.expect(src && src.childStatus, 'source should have no childStatus').to.be.null;",
+                  "});",
+                  "pm.test('Target restored to default', function () {",
+                  "  pm.expect(tgt && tgt.childStatus, 'target should have no childStatus').to.be.null;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/schedule/children/{{seed_child_id}}?from=2028-09-01T00:00:00&to=2028-09-30T00:00:00",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "schedule",
+                "children",
+                "{{seed_child_id}}"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2028-09-01T00:00:00"
+                },
+                {
+                  "key": "to",
+                  "value": "2028-09-30T00:00:00"
+                }
+              ]
+            },
+            "description": "После восстановления переноса оба занятия снова в дефолтном состоянии."
+          },
+          "response": []
+        },
+        {
+          "name": "15 [Parent] Reschedule to same lesson → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [400]', function () { pm.expect(pm.response.code).to.be.oneOf([400]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"targetLessonId\": \"{{parent_source_lesson_id}}\",\n  \"reason\": \"self-target\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/parents/me/children/{{seed_child_id}}/lessons/{{parent_source_lesson_id}}/reschedule",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parents",
+                "me",
+                "children",
+                "{{seed_child_id}}",
+                "lessons",
+                "{{parent_source_lesson_id}}",
+                "reschedule"
+              ]
+            },
+            "description": "Source == target — bad request."
+          },
+          "response": []
+        },
+        {
+          "name": "16 [Parent] Reschedule to lesson of OTHER course → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [400]', function () { pm.expect(pm.response.code).to.be.oneOf([400]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"targetLessonId\": \"{{parent_other_course_lesson_id}}\",\n  \"reason\": \"wrong course\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/parents/me/children/{{seed_child_id}}/lessons/{{parent_source_lesson_id}}/reschedule",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parents",
+                "me",
+                "children",
+                "{{seed_child_id}}",
+                "lessons",
+                "{{parent_source_lesson_id}}",
+                "reschedule"
+              ]
+            },
+            "description": "Бизнес-правило: перенос разрешён только между занятиями одного курса."
+          },
+          "response": []
+        },
+        {
+          "name": "17 [Parent] Cancel past seed lesson → 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [409]', function () { pm.expect(pm.response.code).to.be.oneOf([409]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"past lesson\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/parents/me/children/{{seed_child_id}}/lessons/{{seed_lesson_id}}/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parents",
+                "me",
+                "children",
+                "{{seed_child_id}}",
+                "lessons",
+                "{{seed_lesson_id}}",
+                "cancel"
+              ]
+            },
+            "description": "seed_lesson_id датирован 2025 годом — это прошлое. ensureLessonModifiable отшивает с 409."
+          },
+          "response": []
+        },
+        {
+          "name": "18 [Parent] Restore lesson without overlay → 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [404]', function () { pm.expect(pm.response.code).to.be.oneOf([404]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/parents/me/children/{{seed_child_id}}/lessons/{{parent_target_lesson_id}}/restore",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parents",
+                "me",
+                "children",
+                "{{seed_child_id}}",
+                "lessons",
+                "{{parent_target_lesson_id}}",
+                "restore"
+              ]
+            },
+            "description": "Нечего восстанавливать — строки в lesson_participations нет (мы её снесли на шаге 13)."
+          },
+          "response": []
+        },
+        {
+          "name": "19 [Parent] Upcoming after flow — still works",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [200]', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
+                  "const lessons = pm.response.json();",
+                  "pm.test('Returns array', function () { pm.expect(lessons).to.be.an('array'); });",
+                  "pm.test('No leftover RESCHEDULED_OUT', function () {",
+                  "  const bad = lessons.find(l => l.childStatus === 'RESCHEDULED_OUT');",
+                  "  pm.expect(bad).to.be.undefined;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{parent_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/schedule/children/{{seed_child_id}}/upcoming?limit=5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "schedule",
+                "children",
+                "{{seed_child_id}}",
+                "upcoming"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": "Хелсчек: после полного цикла отмена→восстановление→перенос→восстановление расписание чистое."
+          },
+          "response": []
+        },
+        {
+          "name": "20 [Teacher] Got notifications about parent actions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is [200]', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
+                  "const items = pm.response.json();",
+                  "pm.test('Teacher received LESSON notifications', function () {",
+                  "  const lessonNotifs = items.filter(n => n.type === 'LESSON');",
+                  "  pm.expect(lessonNotifs.length, 'expected at least one LESSON notification').to.be.greaterThan(0);",
+                  "});",
+                  "console.log('Total notifications:', items.length, '— LESSON:', items.filter(n => n.type === 'LESSON').length);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{teacher_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications"
+              ]
+            },
+            "description": "На каждое действие родителя сервис уведомляет учителя группы через NotificationService."
+          },
+          "response": []
+        }
+      ],
+      "description": "**Сценарный флоу управления участием ребёнка в занятиях.** Запускать requests **строго по порядку** — это связанная цепочка. Рекомендуется прогонять через Postman Collection Runner: каждый шаг проверяет конкретное состояние state machine.\n\nДемонстрирует:\n1. Подготовка: админ создаёт два будущих занятия в одной группе + одно в другом курсе.\n2. Отмена → восстановление родителем.\n3. Перенос с одного занятия на другое.\n4. Проверка отображения статусов в расписании ребёнка.\n5. Конфликты: повторная отмена, отмена поверх переноса, перенос в другой курс, отмена прошедшего занятия.\n6. Уведомления учителю.\n\n**Если вы перезапускаете флоу** — переменные `parent_source_lesson_id`, `parent_target_lesson_id`, `parent_other_course_lesson_id` перезапишутся на новые UUID, и шаги останутся валидными."
+    },
+    {
       "name": "14 Security smoke",
       "item": [
         {
@@ -3969,6 +5277,38 @@
     },
     {
       "key": "overdue_payment_id",
+      "value": ""
+    },
+    {
+      "key": "parent_source_lesson_id",
+      "value": ""
+    },
+    {
+      "key": "parent_target_lesson_id",
+      "value": ""
+    },
+    {
+      "key": "parent_other_course_lesson_id",
+      "value": ""
+    },
+    {
+      "key": "registered_token",
+      "value": ""
+    },
+    {
+      "key": "registered_refresh_token",
+      "value": ""
+    },
+    {
+      "key": "grade_id",
+      "value": ""
+    },
+    {
+      "key": "attendance_id",
+      "value": ""
+    },
+    {
+      "key": "event_id",
       "value": ""
     }
   ]
