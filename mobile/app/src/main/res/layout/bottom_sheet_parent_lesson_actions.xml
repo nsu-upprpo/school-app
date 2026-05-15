@@ -25,12 +25,6 @@
         android:layout_height="60dp"
         android:layout_marginTop="8dp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="54dp"
-        android:background="#E6E6E6" />
-
     <include
         android:id="@+id/cancelLessonAction"
         layout="@layout/item_bottom_sheet_action"
