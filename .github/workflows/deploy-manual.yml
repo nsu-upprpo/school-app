@@ -33,6 +33,4 @@ jobs:
              cd '${{ secrets.SERVER_APP_DIR }}' && \
              docker-compose down -v && \
              docker-compose pull backend && \
-             docker-compose stop backend || true && \
-             docker-compose rm -f backend || true && \
-             docker-compose up -d --no-deps backend"
+             docker-compose up -d"
