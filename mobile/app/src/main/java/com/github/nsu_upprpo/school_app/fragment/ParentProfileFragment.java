@@ -24,6 +24,7 @@ import com.github.nsu_upprpo.school_app.api.UserApi;
 import com.github.nsu_upprpo.school_app.model.ChildDto;
 import com.github.nsu_upprpo.school_app.model.UserProfile;
 import com.github.nsu_upprpo.school_app.storage.ParentLessonsStorage;
+import com.github.nsu_upprpo.school_app.storage.ParentPaymentsStorage;
 import com.github.nsu_upprpo.school_app.storage.TokenStorage;
 import com.github.nsu_upprpo.school_app.storage.UserStorage;
 import com.github.nsu_upprpo.school_app.api.GroupApi;
@@ -246,11 +247,13 @@ public class ParentProfileFragment extends Fragment {
         UserStorage userStorage = new UserStorage(requireContext());
         ChildrenStorage childrenStorage = new ChildrenStorage(requireContext());
         ParentLessonsStorage parentLessonsStorage = new ParentLessonsStorage(requireContext());
+        ParentPaymentsStorage parentPaymentsStorage = new ParentPaymentsStorage(requireContext());
 
         tokenStorage.clear();
         userStorage.clear();
         childrenStorage.clear();
         parentLessonsStorage.clear();
+        parentPaymentsStorage.clear();
 
         Intent intent = new Intent(requireContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
