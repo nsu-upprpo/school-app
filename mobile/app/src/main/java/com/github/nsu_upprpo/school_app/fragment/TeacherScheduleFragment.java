@@ -251,7 +251,7 @@ public class TeacherScheduleFragment extends Fragment {
             }
 
             String title = safe(group.getCourseName());
-            String subtitle = "Группа • " + safe(group.getBranchName());
+            String subtitle = safe(group.getBranchName());
             String time = formatTime(lesson.getStartTime()) + "-" + formatTime(lesson.getEndTime());
             int color = pickColorByCourseId(group.getCourseId());
 

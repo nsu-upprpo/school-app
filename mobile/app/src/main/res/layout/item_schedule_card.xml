@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:orientation="horizontal"
-    android:background="@drawable/bg_card">
+    android:background="@drawable/bg_lesson_card"
+    android:clipToOutline="true">
 
     <View
         android:id="@+id/colorStripe"

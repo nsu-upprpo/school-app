@@ -10,6 +10,7 @@ import com.github.nsu_upprpo.school_app.fragment.*;
 import com.github.nsu_upprpo.school_app.fragment.TeacherJournalFragment;
 import com.github.nsu_upprpo.school_app.fragment.TeacherProfileFragment;
 import com.github.nsu_upprpo.school_app.fragment.TeacherScheduleFragment;
+import com.github.nsu_upprpo.school_app.ui.SystemBarsInsets;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -20,6 +21,7 @@ public class TeacherMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_main);
+        SystemBarsInsets.apply(this, findViewById(R.id.teacherMainRoot));
 
         bottomNavigationView = findViewById(R.id.teacherBottomNav);
 

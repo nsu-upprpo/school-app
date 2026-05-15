@@ -4,12 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,7 +39,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -134,7 +134,7 @@ public class ParentLessonsFragment extends Fragment {
         parentLessonsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         parentLessonsRecyclerView.setAdapter(adapter);
 
-        adapter.setOnLessonClickListener(this::showLessonInfoDialog);
+        adapter.setOnLessonClickListener(this::showLessonDialog);
 
         parentFutureTab.setOnClickListener(v -> {
             isFutureMode = true;
@@ -512,28 +512,60 @@ public class ParentLessonsFragment extends Fragment {
         parentLessonsRecyclerView.setVisibility(View.GONE);
     }
 
-    private void showLessonInfoDialog(ParentLessonItem lesson) {
-        String statusText;
+    private void showLessonDialog(ParentLessonItem lesson) {
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+
+        View view = LayoutInflater.from(requireContext())
+                .inflate(R.layout.bottom_sheet_parent_lesson_actions, null);
+
+        TextView lessonDateText = view.findViewById(R.id.lessonDateText);
+        TextView lessonTimeText = view.findViewById(R.id.lessonTimeText);
+        TextView lessonStatusText = view.findViewById(R.id.lessonStatusText);
+        TextView lessonCourseText = view.findViewById(R.id.lessonCourseText);
+        TextView lessonTopicText = view.findViewById(R.id.lessonTopicText);
+        TextView lessonTeacherText = view.findViewById(R.id.lessonTeacherText);
+
+        View moveLessonAction = view.findViewById(R.id.moveLessonAction);
+        View cancelLessonAction = view.findViewById(R.id.cancelLessonAction);
+
+        TextView moveLessonText = moveLessonAction.findViewById(R.id.actionText);
+        ImageView moveLessonIcon = moveLessonAction.findViewById(R.id.actionIcon);
+        TextView cancelLessonText = cancelLessonAction.findViewById(R.id.actionText);
+        ImageView cancelLessonIcon = cancelLessonAction.findViewById(R.id.actionIcon);
+
+        moveLessonText.setText("Перенести занятие");
+        moveLessonIcon.setImageResource(R.drawable.ic_edit);
+        cancelLessonText.setText("Отменить занятие");
+        cancelLessonIcon.setImageResource(R.drawable.ic_close);
+
+        lessonDateText.setText(formatDateForCard(lesson.getDateMillis()));
+        lessonTimeText.setText(lesson.getStartTime() + "–" + lesson.getEndTime());
+        lessonCourseText.setText("Курс: " + safe(lesson.getCourseName()));
+        lessonTopicText.setText("Тема: " + safe(lesson.getTopic()));
+        lessonTeacherText.setText("Преподаватель: " + safe(lesson.getTeacherName()));
 
         if ("ABSENT".equalsIgnoreCase(lesson.getStatus())) {
-            statusText = "Статус: пропущено\n\n";
+            lessonStatusText.setVisibility(View.VISIBLE);
+            lessonStatusText.setText("Пропущено");
         } else {
-            statusText = "";
+            lessonStatusText.setVisibility(View.GONE);
         }
 
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Информация о занятии")
-                .setMessage(
-                        "Курс: " + lesson.getCourseName() + "\n" +
-                                "Тема: " + lesson.getTopic() + "\n" +
-                                "Дети: " + lesson.getChildNames() + "\n" +
-                                "Преподаватель: " + lesson.getTeacherName() + "\n" +
-                                "Время: " + lesson.getStartTime() + "-" + lesson.getEndTime() + "\n\n" +
-                                statusText +
-                                "Перенос и отмена занятия пока недоступны, потому что сервер ещё не предоставляет endpoint для этой функции."
-                )
-                .setPositiveButton("Понятно", null)
-                .show();
+        moveLessonAction.setOnClickListener(v ->
+                Toast.makeText(requireContext(), "Перенос занятия пока не реализован", Toast.LENGTH_SHORT).show()
+        );
+
+        cancelLessonAction.setOnClickListener(v ->
+                Toast.makeText(requireContext(), "Отмена занятия пока не реализована", Toast.LENGTH_SHORT).show()
+        );
+
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+    private String formatDateForCard(long millis) {
+        SimpleDateFormat format = new SimpleDateFormat("d MMMM (EEEE)", new Locale("ru"));
+        return format.format(new Date(millis));
     }
 
     private void setFutureTabActive() {

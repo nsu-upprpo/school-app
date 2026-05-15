@@ -4,26 +4,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.nsu_upprpo.school_app.R;
-import com.github.nsu_upprpo.school_app.model.ParentPaymentItem;
+import com.github.nsu_upprpo.school_app.model.PaymentDto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParentPaymentAdapter extends RecyclerView.Adapter<ParentPaymentAdapter.PaymentViewHolder> {
 
-    private final List<ParentPaymentItem> payments = new ArrayList<>();
+    private final List<PaymentDto> payments = new ArrayList<>();
 
-    public void updatePayments(List<ParentPaymentItem> newPayments) {
+    public void updatePayments(List<PaymentDto> newPayments) {
         payments.clear();
+
         if (newPayments != null) {
             payments.addAll(newPayments);
         }
+
         notifyDataSetChanged();
     }
 
@@ -37,24 +40,77 @@ public class ParentPaymentAdapter extends RecyclerView.Adapter<ParentPaymentAdap
 
     @Override
     public void onBindViewHolder(@NonNull PaymentViewHolder holder, int position) {
-        ParentPaymentItem payment = payments.get(position);
+        PaymentDto payment = payments.get(position);
 
-        holder.paymentMonthText.setText(payment.getMonth());
-        holder.paymentAmountText.setText(payment.getAmount());
-        holder.paymentActionText.setText("Детали  ›");
+        holder.paymentMonthText.setText(formatPeriod(payment.getPeriod()));
+        holder.paymentAmountText.setText(formatAmount(payment.getAmount()));
+        holder.paymentActionText.setText(statusToText(payment.getStatus()));
 
         holder.itemView.setOnClickListener(v ->
-                Toast.makeText(
-                        holder.itemView.getContext(),
-                        "Детали оплаты пока недоступны",
-                        Toast.LENGTH_SHORT
-                ).show()
+                new AlertDialog.Builder(holder.itemView.getContext())
+                        .setTitle("Детали оплаты")
+                        .setMessage(buildDetailsText(payment))
+                        .setPositiveButton("Понятно", null)
+                        .show()
         );
     }
 
     @Override
     public int getItemCount() {
         return payments.size();
+    }
+
+    private String formatAmount(BigDecimal amount) {
+        if (amount == null) {
+            return "";
+        }
+
+        return amount.stripTrailingZeros().toPlainString() + " руб.";
+    }
+
+    private String formatPeriod(String period) {
+        if (period == null || period.isEmpty()) {
+            return "Платёж";
+        }
+
+        return period;
+    }
+
+    private String statusToText(String status) {
+        if ("PAID".equalsIgnoreCase(status)) {
+            return "Оплачено";
+        }
+
+        if ("PENDING_CONFIRMATION".equalsIgnoreCase(status)) {
+            return "Ожидает";
+        }
+
+        if ("REJECTED".equalsIgnoreCase(status)) {
+            return "Отклонено";
+        }
+
+        if ("UNPAID".equalsIgnoreCase(status)) {
+            return "Не оплачено";
+        }
+
+        return "Детали ›";
+    }
+
+    private String buildDetailsText(PaymentDto payment) {
+        return "Ребёнок: " + safe(payment.getChildName()) +
+                "\nГруппа: " + safe(payment.getGroupName()) +
+                "\nПериод оплаты: " + safe(payment.getPeriod()) +
+                "\nСумма: " + formatAmount(payment.getAmount()) +
+                "\nСтатус: " + statusToText(payment.getStatus()) +
+                "\nПокрывает: " + safe(payment.getCoversFrom()) + " — " + safe(payment.getCoversTo()) +
+                "\nСрок оплаты: " + safe(payment.getDueDate()) +
+                "\nДата отправки оплаты: " + safe(payment.getSubmittedAt()) +
+                "\nДата подтверждения: " + safe(payment.getConfirmedAt()) +
+                "\nПричина отклонения: " + safe(payment.getRejectionReason());
+    }
+
+    private String safe(String value) {
+        return value == null || value.isEmpty() ? "не указано" : value;
     }
 
     static class PaymentViewHolder extends RecyclerView.ViewHolder {
