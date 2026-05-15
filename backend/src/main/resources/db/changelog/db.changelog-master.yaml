@@ -31,3 +31,5 @@ databaseChangeLog:
       file: db/changelog/015-lesson-participations.yaml
   - include:
       file: db/changelog/100-seed-test-data.yaml
+  - include:
+      file: db/changelog/101-more-seed-test-data.yaml
