@@ -51,9 +51,6 @@ public class LessonParticipationService {
 
         Optional<LessonParticipation> existing =
                 participationRepository.findByLessonIdAndChildId(lessonId, request.getChildId());
-        if (existing.isPresent() && existing.get().getStatus().isTeacherMark()) {
-            throw new ConflictException("Посещаемость уже отмечена для этого ученика");
-        }
 
         LessonParticipation p = existing.orElseGet(LessonParticipation::new);
         p.setLesson(lesson);
