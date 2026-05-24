@@ -21,10 +21,15 @@ import com.github.nsu_upprpo.school_app.api.PaymentApi;
 import com.github.nsu_upprpo.school_app.model.PaymentDto;
 import com.github.nsu_upprpo.school_app.storage.ParentPaymentsStorage;
 import com.github.nsu_upprpo.school_app.storage.TokenStorage;
+import com.github.nsu_upprpo.school_app.util.PaymentUiFormatter;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,6 +74,7 @@ public class ParentPaymentFragment extends Fragment {
         paidPaymentsRecyclerView = view.findViewById(R.id.paidPaymentsRecyclerView);
 
         adapter = new ParentPaymentAdapter();
+        adapter.setOnPaymentClickListener(this::showPaymentDetailsDialog);
         paymentsStorage = new ParentPaymentsStorage(requireContext());
 
         paidPaymentsRecyclerView.setLayoutManager(
@@ -79,13 +85,17 @@ public class ParentPaymentFragment extends Fragment {
 
         payButtonText.setOnClickListener(v -> submitPayment());
 
-        if (paymentsStorage.hasLoadedPayments()) {
-            showCachedPayments();
-        } else {
-            refreshPaymentsFromBackend();
-        }
+        loadPayments();
 
         return view;
+    }
+
+    private void loadPayments() {
+        if (paymentsStorage.hasLoadedPayments()) {
+            showCachedPayments();
+        }
+
+        refreshPaymentsFromBackend();
     }
 
     private void showCachedPayments() {
@@ -222,7 +232,7 @@ public class ParentPaymentFragment extends Fragment {
         unpaidBlock.setVisibility(View.VISIBLE);
         noUnpaidText.setVisibility(View.GONE);
 
-        unpaidMonthText.setText(payment.getPeriod());
+        unpaidMonthText.setText(PaymentUiFormatter.formatPeriod(payment.getPeriod()));
 
         unpaidAmountText.setText(
                 formatAmount(payment.getAmount())
@@ -310,5 +320,138 @@ public class ParentPaymentFragment extends Fragment {
         }
 
         return amount.stripTrailingZeros().toPlainString() + " руб.";
+    }
+
+    private void showPaymentDetailsDialog(PaymentDto payment) {
+        View dialogView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.dialog_payment_details, null);
+
+        TextView childText = dialogView.findViewById(R.id.paymentDetailsChildText);
+        TextView groupText = dialogView.findViewById(R.id.paymentDetailsGroupText);
+        TextView periodText = dialogView.findViewById(R.id.paymentDetailsPeriodText);
+        TextView amountText = dialogView.findViewById(R.id.paymentDetailsAmountText);
+        TextView statusText = dialogView.findViewById(R.id.paymentDetailsStatusText);
+        TextView coversText = dialogView.findViewById(R.id.paymentDetailsCoversText);
+        TextView dueDateText = dialogView.findViewById(R.id.paymentDetailsDueDateText);
+        TextView submittedAtText = dialogView.findViewById(R.id.paymentDetailsSubmittedAtText);
+        TextView confirmedAtText = dialogView.findViewById(R.id.paymentDetailsConfirmedAtText);
+        View rejectionBlock = dialogView.findViewById(R.id.paymentDetailsRejectionBlock);
+        TextView rejectionReasonText = dialogView.findViewById(R.id.paymentDetailsRejectionReasonText);
+
+        childText.setText("Ребёнок: " + safe(payment.getChildName()));
+        groupText.setText("Группа: " + safe(payment.getGroupName()));
+        periodText.setText("Период оплаты: " + PaymentUiFormatter.formatPeriod(payment.getPeriod()));
+        amountText.setText("Сумма: " + nonEmpty(formatAmount(payment.getAmount())));
+        statusText.setText("Статус: " + statusToText(payment.getStatus()));
+        coversText.setText("Покрывает: " + formatRange(payment.getCoversFrom(), payment.getCoversTo()));
+        dueDateText.setText("Срок оплаты: " + safeDate(payment.getDueDate()));
+        submittedAtText.setText("Дата отправки оплаты: " + safeDateTime(payment.getSubmittedAt()));
+        confirmedAtText.setText("Дата подтверждения: " + safeDateTime(payment.getConfirmedAt()));
+
+        if (payment.getRejectionReason() == null || payment.getRejectionReason().isEmpty()) {
+            rejectionBlock.setVisibility(View.GONE);
+        } else {
+            rejectionBlock.setVisibility(View.VISIBLE);
+            rejectionReasonText.setText(payment.getRejectionReason());
+        }
+
+        new AlertDialog.Builder(requireContext())
+                .setView(dialogView)
+                .setPositiveButton("Понятно", null)
+                .show();
+    }
+
+    private String statusToText(String status) {
+        if ("PAID".equalsIgnoreCase(status)) {
+            return "Оплачено";
+        }
+
+        if ("PENDING_CONFIRMATION".equalsIgnoreCase(status)) {
+            return "Ожидает";
+        }
+
+        if ("REJECTED".equalsIgnoreCase(status)) {
+            return "Отклонено";
+        }
+
+        if ("UNPAID".equalsIgnoreCase(status)) {
+            return "Не оплачено";
+        }
+
+        return "не указано";
+    }
+
+    private String safe(String value) {
+        return value == null || value.isEmpty() ? "не указано" : value;
+    }
+
+    private String nonEmpty(String value) {
+        return value == null || value.isEmpty() ? "не указано" : value;
+    }
+
+    private String safeDate(String value) {
+        String formatted = formatDate(value);
+        return formatted == null ? "не указано" : formatted;
+    }
+
+    private String safeDateTime(String value) {
+        String formatted = formatDateTime(value);
+        return formatted == null ? "не указано" : formatted;
+    }
+
+    private String formatRange(String from, String to) {
+        String formattedFrom = formatDate(from);
+        String formattedTo = formatDate(to);
+
+        if (formattedFrom == null && formattedTo == null) {
+            return "не указано";
+        }
+
+        return nonEmpty(formattedFrom) + " – " + nonEmpty(formattedTo);
+    }
+
+    private String formatDate(String value) {
+        Date date = parseDate(value);
+
+        if (date == null) {
+            return null;
+        }
+
+        return new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(date);
+    }
+
+    private String formatDateTime(String value) {
+        if (value == null || !value.contains("T")) {
+            return formatDate(value);
+        }
+
+        Date date = parseDate(value);
+
+        if (date == null) {
+            return null;
+        }
+
+        return new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault()).format(date);
+    }
+
+    private Date parseDate(String value) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+
+        String[] patterns = {
+                "yyyy-MM-dd'T'HH:mm:ss",
+                "yyyy-MM-dd'T'HH:mm:ss.SSS",
+                "yyyy-MM-dd"
+        };
+
+        for (String pattern : patterns) {
+            try {
+                return new SimpleDateFormat(pattern, Locale.getDefault()).parse(value);
+            } catch (ParseException ignored) {
+            }
+        }
+
+        return null;
     }
 }
