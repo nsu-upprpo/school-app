@@ -30,6 +30,7 @@ import com.github.nsu_upprpo.school_app.storage.UserStorage;
 import com.github.nsu_upprpo.school_app.api.GroupApi;
 import com.github.nsu_upprpo.school_app.model.GroupDto;
 import com.github.nsu_upprpo.school_app.storage.ChildrenStorage;
+import com.github.nsu_upprpo.school_app.storage.ParentChildProfileStorage;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class ParentProfileFragment extends Fragment {
         childAdapter = new ParentChildAdapter();
         childrenRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         childrenRecyclerView.setAdapter(childAdapter);
-        childAdapter.setOnChildClickListener(this::showChildInfoDialog);
+        childAdapter.setOnChildClickListener(this::openChildProfile);
 
         parentLogoutButton.setOnClickListener(v -> logout());
 
@@ -208,38 +209,21 @@ public class ParentProfileFragment extends Fragment {
         });
     }
 
-    private void showChildInfoDialog(ChildDto child, String branchName) {
-        StringBuilder coursesText = new StringBuilder();
-
-        if (child.getGroups() != null && !child.getGroups().isEmpty()) {
-            for (GroupDto group : child.getGroups()) {
-                if (group.getCourseName() != null && !group.getCourseName().isEmpty()) {
-                    if (coursesText.length() > 0) {
-                        coursesText.append("\n");
-                    }
-                    coursesText.append("• ").append(group.getCourseName());
-                }
-            }
+    private void openChildProfile(ChildDto child, String branchName) {
+        if (child == null || child.getId() == null || child.getId().isEmpty()) {
+            return;
         }
 
-        if (coursesText.length() == 0) {
-            coursesText.append("не указаны");
-        }
+        ParentChildProfileFragment fragment = ParentChildProfileFragment.newInstance(
+                child.getId(),
+                child.getFullName()
+        );
 
-        String birthDate = child.getBirthDate();
-        if (birthDate == null || birthDate.isEmpty()) {
-            birthDate = "не указана";
-        }
-
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle(child.getFullName())
-                .setMessage(
-                        "Дата рождения: " + birthDate + "\n\n" +
-                                "Филиал: " + branchName + "\n\n" +
-                                "Курсы:\n" + coursesText
-                )
-                .setPositiveButton("Закрыть", null)
-                .show();
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.parentFragmentContainer, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void logout() {
@@ -247,12 +231,14 @@ public class ParentProfileFragment extends Fragment {
         UserStorage userStorage = new UserStorage(requireContext());
         ChildrenStorage childrenStorage = new ChildrenStorage(requireContext());
         ParentLessonsStorage parentLessonsStorage = new ParentLessonsStorage(requireContext());
+        ParentChildProfileStorage parentChildProfileStorage = new ParentChildProfileStorage(requireContext());
         ParentPaymentsStorage parentPaymentsStorage = new ParentPaymentsStorage(requireContext());
 
         tokenStorage.clear();
         userStorage.clear();
         childrenStorage.clear();
         parentLessonsStorage.clear();
+        parentChildProfileStorage.clear();
         parentPaymentsStorage.clear();
 
         Intent intent = new Intent(requireContext(), LoginActivity.class);
