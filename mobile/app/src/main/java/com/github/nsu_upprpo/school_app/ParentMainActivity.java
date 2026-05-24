@@ -9,6 +9,7 @@ import com.github.nsu_upprpo.school_app.fragment.*;
 import com.github.nsu_upprpo.school_app.fragment.ParentLessonsFragment;
 import com.github.nsu_upprpo.school_app.fragment.ParentPaymentFragment;
 import com.github.nsu_upprpo.school_app.fragment.ParentProfileFragment;
+import com.github.nsu_upprpo.school_app.ui.SystemBarsInsets;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -19,6 +20,7 @@ public class ParentMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent_main);
+        SystemBarsInsets.apply(this, findViewById(R.id.parentMainRoot));
 
         bottomNavigationView = findViewById(R.id.parentBottomNav);
 

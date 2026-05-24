@@ -15,6 +15,7 @@ import com.github.nsu_upprpo.school_app.model.LoginRequest;
 import com.github.nsu_upprpo.school_app.model.LoginResponse;
 import com.github.nsu_upprpo.school_app.model.UserProfile;
 import com.github.nsu_upprpo.school_app.storage.TokenStorage;
+import com.github.nsu_upprpo.school_app.ui.SystemBarsInsets;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +39,11 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_login);
+        setupLoginScreen();
+    }
 
+    private void setupLoginScreen() {
+        SystemBarsInsets.apply(this, findViewById(R.id.loginRoot));
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
@@ -64,9 +69,6 @@ public class LoginActivity extends AppCompatActivity {
         authApi.login(request).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                loginButton.setEnabled(true);
-                loginButton.setText("Войти");
-
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse body = response.body();
 
@@ -76,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
                     loadProfileAndOpenScreen();
                 } else {
                     Toast.makeText(LoginActivity.this, "Неверный email или пароль", Toast.LENGTH_SHORT).show();
+                    loginButton.setEnabled(true);
+                    loginButton.setText("Войти");
                 }
             }
 
@@ -136,12 +140,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showLoginScreen() {
         setContentView(R.layout.activity_login);
-
-        emailInput = findViewById(R.id.emailInput);
-        passwordInput = findViewById(R.id.passwordInput);
-        loginButton = findViewById(R.id.loginButton);
-
-        loginButton.setOnClickListener(e -> login());
+        setupLoginScreen();
     }
     private void openMainScreenByRole(String role) {
         Intent intent;

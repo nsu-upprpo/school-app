@@ -3,7 +3,7 @@ package com.github.nsu_upprpo.school_app.controller;
 import com.github.nsu_upprpo.school_app.common.util.SecurityUtils;
 import com.github.nsu_upprpo.school_app.model.dto.request.MarkAttendanceRequest;
 import com.github.nsu_upprpo.school_app.model.dto.response.AttendanceResponse;
-import com.github.nsu_upprpo.school_app.service.AttendanceService;
+import com.github.nsu_upprpo.school_app.service.LessonParticipationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,19 +18,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AttendanceController {
 
-    private final AttendanceService attendanceService;
+    private final LessonParticipationService participationService;
 
     @GetMapping
     public ResponseEntity<List<AttendanceResponse>> getByLesson(@PathVariable UUID lessonId) {
-        return ResponseEntity.ok(attendanceService.getByLesson(lessonId));
+        return ResponseEntity.ok(participationService.getAttendanceByLesson(lessonId));
     }
 
     @PostMapping
     public ResponseEntity<AttendanceResponse> mark(@PathVariable UUID lessonId,
-                                                    @Valid @RequestBody MarkAttendanceRequest request) {
+                                                   @Valid @RequestBody MarkAttendanceRequest request) {
         UUID teacherId = SecurityUtils.getCurrentUserId();
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(attendanceService.mark(lessonId, request, teacherId));
+                .body(participationService.markByTeacher(lessonId, request, teacherId));
     }
 }
-
