@@ -186,14 +186,7 @@ public class ParentLessonsFragment extends Fragment {
 
     private void loadParentLessons() {
         if (lessonsStorage.hasAnyLessons()) {
-            futureLessons.clear();
-            futureLessons.addAll(lessonsStorage.getFutureLessons());
-
-            missedLessons.clear();
-            missedLessons.addAll(lessonsStorage.getMissedLessons());
-
-            showChildNameInLessonCards = hasMultipleChildrenInLessons(futureLessons, missedLessons);
-            adapter.setShowChildName(showChildNameInLessonCards);
+            showCachedLessons();
 
             if (hasInvalidActionIds(futureLessons) || hasInvalidActionIds(missedLessons)) {
                 lessonsStorage.clear();
@@ -214,6 +207,31 @@ public class ParentLessonsFragment extends Fragment {
         }
 
         refreshParentLessonsFromBackend();
+    }
+
+    private boolean showCachedLessons() {
+        if (!lessonsStorage.hasAnyLessons()) {
+            return false;
+        }
+
+        futureLessons.clear();
+        futureLessons.addAll(lessonsStorage.getFutureLessons());
+
+        missedLessons.clear();
+        missedLessons.addAll(lessonsStorage.getMissedLessons());
+
+        showChildNameInLessonCards = hasMultipleChildrenInLessons(futureLessons, missedLessons);
+        adapter.setShowChildName(showChildNameInLessonCards);
+
+        updateWeekDots();
+
+        if (isFutureMode) {
+            showFutureLessons();
+        } else {
+            showMissedLessons();
+        }
+
+        return true;
     }
 
     private void refreshParentLessonsFromBackend() {
@@ -255,7 +273,7 @@ public class ParentLessonsFragment extends Fragment {
                     loadParentGroupsThenSchedules(children);
                 } else {
                     Toast.makeText(requireContext(), "Не удалось загрузить детей", Toast.LENGTH_SHORT).show();
-                    showEmpty("Не удалось загрузить занятия");
+                    showBackendErrorOrCache("Не удалось загрузить занятия");
                 }
             }
 
@@ -264,7 +282,7 @@ public class ParentLessonsFragment extends Fragment {
                 if (!isAdded()) return;
 
                 Toast.makeText(requireContext(), "Ошибка загрузки детей: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                showEmpty("Не удалось загрузить занятия");
+                showBackendErrorOrCache("Не удалось загрузить занятия");
             }
         });
     }
@@ -334,6 +352,7 @@ public class ParentLessonsFragment extends Fragment {
         ScheduleApi scheduleApi = ApiClient.getClient().create(ScheduleApi.class);
 
         final int[] loadedCount = {0};
+        final boolean[] hasScheduleError = {false};
         String from = "2025-01-01T00:00:00";
         String to = "2030-01-01T00:00:00";
 
@@ -341,7 +360,11 @@ public class ParentLessonsFragment extends Fragment {
             String childId = child.getId();
 
             if (childId == null || childId.isEmpty()) {
+                hasScheduleError[0] = true;
                 loadedCount[0]++;
+                if (loadedCount[0] == children.size()) {
+                    finishLoadingLessons(false);
+                }
                 continue;
             }
 
@@ -356,11 +379,12 @@ public class ParentLessonsFragment extends Fragment {
                         Log.e(TAG, "child schedule failed childId=" + childId
                                 + ", code=" + response.code()
                                 + ", body=" + getErrorBodyString(response));
+                        hasScheduleError[0] = true;
                     }
 
                     loadedCount[0]++;
                     if (loadedCount[0] == children.size()) {
-                        finishLoadingLessons();
+                        finishLoadingLessons(!hasScheduleError[0]);
                     }
                 }
 
@@ -369,9 +393,10 @@ public class ParentLessonsFragment extends Fragment {
                     if (!isAdded()) return;
 
                     Log.e(TAG, "child schedule error childId=" + childId + ", message=" + t.getMessage());
+                    hasScheduleError[0] = true;
                     loadedCount[0]++;
                     if (loadedCount[0] == children.size()) {
-                        finishLoadingLessons();
+                        finishLoadingLessons(false);
                     }
                 }
             });
@@ -510,7 +535,7 @@ public class ParentLessonsFragment extends Fragment {
         }
     }
 
-    private void finishLoadingLessons() {
+    private void finishLoadingLessons(boolean canSaveToCache) {
         Collections.sort(futureLessons, Comparator.comparingLong(ParentLessonItem::getDateMillis));
 
         updateWeekDots();
@@ -519,11 +544,14 @@ public class ParentLessonsFragment extends Fragment {
             showFutureLessons();
         }
 
-        loadMissedLessons();
-        lessonsStorage.saveFutureLessons(futureLessons);
+        loadMissedLessons(canSaveToCache);
+
+        if (canSaveToCache) {
+            lessonsStorage.saveFutureLessons(futureLessons);
+        }
     }
 
-    private void loadMissedLessons() {
+    private void loadMissedLessons(boolean canSaveToCache) {
         AttendanceApi attendanceApi = ApiClient.getClient().create(AttendanceApi.class);
 
         List<ParentLessonItem> lessonsForAttendance = new ArrayList<>();
@@ -576,11 +604,14 @@ public class ParentLessonsFragment extends Fragment {
         }
 
         if (lessonsForAttendance.isEmpty()) {
-            lessonsStorage.saveMissedLessons(missedLessons);
+            if (canSaveToCache) {
+                lessonsStorage.saveMissedLessons(missedLessons);
+            }
             return;
         }
 
         final int[] loadedCount = {0};
+        final boolean[] hasAttendanceError = {false};
 
         for (ParentLessonItem lesson : lessonsForAttendance) {
             attendanceApi.getLessonAttendances(authHeader, lesson.getLessonId())
@@ -592,11 +623,13 @@ public class ParentLessonsFragment extends Fragment {
 
                             if (response.isSuccessful() && response.body() != null) {
                                 addMissedLessonsFromAttendance(lesson, response.body());
+                            } else {
+                                hasAttendanceError[0] = true;
                             }
 
                             loadedCount[0]++;
-                            if (loadedCount[0] == lessonsForAttendance.size() && !isFutureMode) {
-                                showMissedLessons();
+                            if (loadedCount[0] == lessonsForAttendance.size()) {
+                                finishLoadingMissedLessons(canSaveToCache && !hasAttendanceError[0]);
                             }
                         }
 
@@ -604,9 +637,10 @@ public class ParentLessonsFragment extends Fragment {
                         public void onFailure(Call<List<AttendanceDto>> call, Throwable t) {
                             if (!isAdded()) return;
 
+                            hasAttendanceError[0] = true;
                             loadedCount[0]++;
-                            if (loadedCount[0] == lessonsForAttendance.size() && !isFutureMode) {
-                                showMissedLessons();
+                            if (loadedCount[0] == lessonsForAttendance.size()) {
+                                finishLoadingMissedLessons(false);
                             }
                         }
                     });
@@ -645,7 +679,24 @@ public class ParentLessonsFragment extends Fragment {
         }
 
         Collections.sort(missedLessons, Comparator.comparingLong(ParentLessonItem::getDateMillis));
-        lessonsStorage.saveMissedLessons(missedLessons);
+    }
+
+    private void finishLoadingMissedLessons(boolean canSaveToCache) {
+        Collections.sort(missedLessons, Comparator.comparingLong(ParentLessonItem::getDateMillis));
+
+        if (!isFutureMode) {
+            showMissedLessons();
+        }
+
+        if (canSaveToCache) {
+            lessonsStorage.saveMissedLessons(missedLessons);
+        }
+    }
+
+    private void showBackendErrorOrCache(String message) {
+        if (!showCachedLessons()) {
+            showEmpty(message);
+        }
     }
 
     private void showFutureLessons() {

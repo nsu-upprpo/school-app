@@ -61,4 +61,33 @@
         android:clipToPadding="false"
         android:paddingBottom="24dp" />
 
+    <LinearLayout
+        android:id="@+id/teacherTodayEmptyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="32dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="280dp"
+            android:layout_height="220dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_no_lessons" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Сегодня занятий нет"
+            android:textColor="@color/text_dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
 </LinearLayout>

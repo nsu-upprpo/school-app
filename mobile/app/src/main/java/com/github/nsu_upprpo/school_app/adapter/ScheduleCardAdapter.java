@@ -49,7 +49,7 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
         holder.timeText.setText(item.getTime());
 
         holder.colorStripe.setBackgroundColor(
-                ContextCompat.getColor(holder.itemView.getContext(), item.getStripeColorResId())
+                ContextCompat.getColor(holder.itemView.getContext(), R.color.course_orange)
         );
 
         holder.itemView.setOnClickListener(v -> {

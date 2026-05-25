@@ -48,6 +48,8 @@ public class TeacherScheduleFragment extends Fragment {
 
     private final List<ScheduleDay> allDays = new ArrayList<>();
     private ScheduleDayAdapter adapter;
+    private RecyclerView recyclerView;
+    private View emptyTodayLayout;
     private TextView todayTab;
     private TextView weekTab;
     private boolean isTodayMode = true;
@@ -60,7 +62,8 @@ public class TeacherScheduleFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_teacher_schedule, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.teacherScheduleRecyclerView);
+        recyclerView = view.findViewById(R.id.teacherScheduleRecyclerView);
+        emptyTodayLayout = view.findViewById(R.id.teacherTodayEmptyLayout);
         todayTab = view.findViewById(R.id.teacherTodayTab);
         weekTab = view.findViewById(R.id.teacherWeekTab);
 
@@ -107,8 +110,9 @@ public class TeacherScheduleFragment extends Fragment {
             allDays.clear();
             allDays.addAll(createEmptyWeek());
             updateUiByMode();
-            loadTeacherGroups();
         }
+
+        loadTeacherGroups();
 
         return view;
     }
@@ -152,11 +156,29 @@ public class TeacherScheduleFragment extends Fragment {
     private void updateUiByMode() {
         if (isTodayMode) {
             setTodayTabActive();
-            adapter.updateDays(getTodayOnly());
+            List<ScheduleDay> todayDays = getTodayOnly();
+            adapter.updateDays(todayDays);
+            updateTodayEmptyState(todayDays);
         } else {
             setWeekTabActive();
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyTodayLayout.setVisibility(View.GONE);
             adapter.updateDays(new ArrayList<>(allDays));
         }
+    }
+
+    private void updateTodayEmptyState(List<ScheduleDay> todayDays) {
+        boolean hasLessons = false;
+
+        for (ScheduleDay day : todayDays) {
+            if (day.getItems() != null && !day.getItems().isEmpty()) {
+                hasLessons = true;
+                break;
+            }
+        }
+
+        recyclerView.setVisibility(hasLessons ? View.VISIBLE : View.GONE);
+        emptyTodayLayout.setVisibility(hasLessons ? View.GONE : View.VISIBLE);
     }
 
     private void loadTeacherGroups() {
@@ -205,6 +227,7 @@ public class TeacherScheduleFragment extends Fragment {
         ScheduleApi scheduleApi = ApiClient.getClient().create(ScheduleApi.class);
 
         final int[] pending = {groups.size()};
+        final boolean[] hasPartialError = {false};
 
         for (GroupDto group : groups) {
             scheduleApi.getGroupSchedule(authHeader, group.getGroupId())
@@ -215,12 +238,14 @@ public class TeacherScheduleFragment extends Fragment {
 
                             if (response.isSuccessful() && response.body() != null) {
                                 addLessonsToDayMap(dayMap, group, response.body());
+                            } else {
+                                hasPartialError[0] = true;
                             }
 
                             pending[0]--;
 
                             if (pending[0] == 0) {
-                                finishScheduleLoading(dayMap);
+                                finishScheduleLoading(dayMap, !hasPartialError[0]);
                             }
                         }
 
@@ -228,10 +253,11 @@ public class TeacherScheduleFragment extends Fragment {
                         public void onFailure(Call<List<LessonDto>> call, Throwable t) {
                             if (!isAdded()) return;
 
+                            hasPartialError[0] = true;
                             pending[0]--;
 
                             if (pending[0] == 0) {
-                                finishScheduleLoading(dayMap);
+                                finishScheduleLoading(dayMap, false);
                             }
                         }
                     });
@@ -253,7 +279,7 @@ public class TeacherScheduleFragment extends Fragment {
             String title = safe(group.getCourseName());
             String subtitle = safe(group.getBranchName());
             String time = formatTime(lesson.getStartTime()) + "-" + formatTime(lesson.getEndTime());
-            int color = pickColorByCourseId(group.getCourseId());
+            int color = R.color.course_orange;
 
             ScheduleItem item = new ScheduleItem(
                     lesson.getId(),
@@ -311,7 +337,7 @@ public class TeacherScheduleFragment extends Fragment {
         }
     }
 
-    private void finishScheduleLoading(Map<String, List<ScheduleItem>> dayMap) {
+    private void finishScheduleLoading(Map<String, List<ScheduleItem>> dayMap, boolean canSaveToCache) {
         for (List<ScheduleItem> items : dayMap.values()) {
             items.sort((a, b) -> Integer.compare(
                     parseStartMinutes(a.getTime()),
@@ -322,7 +348,10 @@ public class TeacherScheduleFragment extends Fragment {
         allDays.clear();
         allDays.addAll(mapDayMapToScheduleDays(dayMap));
 
-        saveToCache();
+        if (canSaveToCache) {
+            saveToCache();
+        }
+
         updateUiByMode();
     }
 
@@ -401,23 +430,6 @@ public class TeacherScheduleFragment extends Fragment {
         } catch (NumberFormatException e) {
             return Integer.MAX_VALUE;
         }
-    }
-
-    private int pickColorByCourseId(String courseId) {
-        int[] colors = {
-                R.color.course_green,
-                R.color.course_blue,
-                R.color.course_yellow,
-                R.color.course_orange,
-                R.color.course_purple
-        };
-
-        if (courseId == null || courseId.isEmpty()) {
-            return R.color.course_orange;
-        }
-
-        int index = Math.abs(courseId.hashCode()) % colors.length;
-        return colors[index];
     }
 
     private String getTodayRussianName() {
