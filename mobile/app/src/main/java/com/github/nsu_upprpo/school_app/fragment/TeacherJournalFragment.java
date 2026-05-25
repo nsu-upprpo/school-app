@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,17 +22,24 @@ import com.github.nsu_upprpo.school_app.api.GroupApi;
 import com.github.nsu_upprpo.school_app.api.ProjectApi;
 import com.github.nsu_upprpo.school_app.api.ScheduleApi;
 import com.github.nsu_upprpo.school_app.model.AttendanceDto;
+import com.github.nsu_upprpo.school_app.model.GradeDto;
 import com.github.nsu_upprpo.school_app.model.GroupDto;
 import com.github.nsu_upprpo.school_app.model.LessonDto;
 import com.github.nsu_upprpo.school_app.model.ProjectDto;
+import com.github.nsu_upprpo.school_app.storage.TeacherJournalStorage;
 import com.github.nsu_upprpo.school_app.storage.TokenStorage;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,10 +70,14 @@ public class TeacherJournalFragment extends Fragment {
     private ProjectApi projectApi;
     private ScheduleApi scheduleApi;
     private AttendanceApi attendanceApi;
+    private TeacherJournalStorage journalStorage;
+    private final Gson gson = new Gson();
 
     private List<GroupDto> currentGroups = new ArrayList<>();
     private List<ProjectDto> currentProjects = new ArrayList<>();
     private List<LessonDto> currentLessons = new ArrayList<>();
+    private final List<StudentGradeItem> currentStudentGrades = new ArrayList<>();
+    private int requestVersion;
 
     @Nullable
     @Override
@@ -80,9 +92,8 @@ public class TeacherJournalFragment extends Fragment {
         journalContent = view.findViewById(R.id.teacherJournalContent);
         submitButton = view.findViewById(R.id.teacherJournalSubmitButton);
 
-        submitButton.setOnClickListener(v ->
-                Toast.makeText(requireContext(), "Отправка оценок пока не реализована", Toast.LENGTH_SHORT).show()
-        );
+        journalStorage = new TeacherJournalStorage(requireContext());
+        submitButton.setOnClickListener(v -> sendChangedGrades());
 
         setupBackHandling();
         setupApi();
@@ -139,43 +150,56 @@ public class TeacherJournalFragment extends Fragment {
     }
 
     private void showCourses() {
+        int requestId = nextRequestVersion();
         state = JournalState.COURSES;
         selectedGroup = null;
         selectedProject = null;
         selectedLesson = null;
+        clearStudentGrades();
         updateBackCallback();
 
         titleText.setText("Журнал");
         subtitleText.setText("Выберите курс");
         submitButton.setVisibility(View.GONE);
-        showLoading("Загрузка курсов...");
+        if (!showCachedCourses()) {
+            showLoading("Загрузка курсов...");
+        }
 
         groupApi.getTeacherGroups(authHeader).enqueue(new Callback<List<GroupDto>>() {
             @Override
             public void onResponse(Call<List<GroupDto>> call, Response<List<GroupDto>> response) {
-                if (!isAdded()) return;
+                if (!isActiveRequest(requestId)) return;
 
                 if (response.isSuccessful() && response.body() != null) {
                     currentGroups = response.body();
-                    showCoursesFromCache();
+                    journalStorage.saveGroupsJson(gson.toJson(currentGroups));
+                    showCoursesFromCache(false);
                 } else {
-                    showEmpty("Не удалось загрузить курсы");
+                    showRetry("Не удалось загрузить курсы", v -> showCourses());
                 }
             }
 
             @Override
             public void onFailure(Call<List<GroupDto>> call, Throwable t) {
-                if (!isAdded()) return;
-                showEmpty("Ошибка сети: " + t.getMessage());
+                if (!isActiveRequest(requestId)) return;
+                showRetry("Не удалось загрузить курсы. Проверьте интернет и попробуйте снова.", v -> showCourses());
             }
         });
     }
 
     private void showCoursesFromCache() {
+        showCoursesFromCache(true);
+    }
+
+    private void showCoursesFromCache(boolean invalidateRequests) {
+        if (invalidateRequests) {
+            nextRequestVersion();
+        }
         state = JournalState.COURSES;
         selectedGroup = null;
         selectedProject = null;
         selectedLesson = null;
+        clearStudentGrades();
         updateBackCallback();
 
         titleText.setText("Журнал");
@@ -184,43 +208,102 @@ public class TeacherJournalFragment extends Fragment {
         renderCourseCards(currentGroups);
     }
 
+    private boolean showCachedCourses() {
+        if (!journalStorage.hasGroups()) {
+            return false;
+        }
+
+        Type type = new TypeToken<List<GroupDto>>() {}.getType();
+        List<GroupDto> cachedGroups = parseList(journalStorage.getGroupsJson(), type);
+
+        if (cachedGroups.isEmpty()) {
+            return false;
+        }
+
+        currentGroups = cachedGroups;
+        renderCourseCards(currentGroups);
+        return true;
+    }
+
     private void showProjects(GroupDto group) {
+        int requestId = nextRequestVersion();
         state = JournalState.PROJECTS;
         selectedGroup = group;
         selectedProject = null;
         selectedLesson = null;
+        currentProjects.clear();
+        currentLessons.clear();
+        clearStudentGrades();
         updateBackCallback();
 
         titleText.setText(safe(group.getCourseName(), "Курс"));
         subtitleText.setText("Выберите проект");
         submitButton.setVisibility(View.GONE);
-        showLoading("Загрузка проектов...");
+        if (!showCachedProjects(group.getGroupId())) {
+            showLoading("Загрузка проектов...");
+        }
+        refreshLessonsCacheForProjectCounts(group.getGroupId(), requestId);
 
         projectApi.getProjectsByGroup(authHeader, group.getGroupId()).enqueue(new Callback<List<ProjectDto>>() {
             @Override
             public void onResponse(Call<List<ProjectDto>> call, Response<List<ProjectDto>> response) {
-                if (!isAdded()) return;
+                if (!isActiveRequest(requestId)) return;
 
                 if (response.isSuccessful() && response.body() != null) {
                     currentProjects = response.body();
-                    showProjectsFromCache();
+                    journalStorage.saveProjectsJson(group.getGroupId(), gson.toJson(currentProjects));
+                    showProjectsFromCache(false);
                 } else {
-                    showEmpty("Не удалось загрузить проекты");
+                    showRetry("Не удалось загрузить проекты", v -> showProjects(group));
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProjectDto>> call, Throwable t) {
-                if (!isAdded()) return;
-                showEmpty("Ошибка сети: " + t.getMessage());
+                if (!isActiveRequest(requestId)) return;
+                showRetry("Не удалось загрузить проекты. Проверьте интернет и попробуйте снова.", v -> showProjects(group));
+            }
+        });
+    }
+
+    private void refreshLessonsCacheForProjectCounts(String groupId, int requestId) {
+        if (groupId == null || groupId.isEmpty()) {
+            return;
+        }
+
+        scheduleApi.getGroupSchedule(authHeader, groupId).enqueue(new Callback<List<LessonDto>>() {
+            @Override
+            public void onResponse(Call<List<LessonDto>> call, Response<List<LessonDto>> response) {
+                if (!isActiveRequest(requestId) || state != JournalState.PROJECTS) return;
+
+                if (response.isSuccessful() && response.body() != null) {
+                    journalStorage.saveLessonsJson(groupId, gson.toJson(response.body()));
+                    if (currentProjects != null && !currentProjects.isEmpty()) {
+                        renderProjectCards(currentProjects);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LessonDto>> call, Throwable t) {
+                // The project list can still work with project.totalLessons if lesson count refresh fails.
             }
         });
     }
 
     private void showProjectsFromCache() {
+        showProjectsFromCache(true);
+    }
+
+    private void showProjectsFromCache(boolean invalidateRequests) {
+        if (invalidateRequests) {
+            nextRequestVersion();
+        }
         state = JournalState.PROJECTS;
         selectedProject = null;
         selectedLesson = null;
+        currentLessons.clear();
+        clearStudentGrades();
         updateBackCallback();
 
         titleText.setText(safe(selectedGroup == null ? null : selectedGroup.getCourseName(), "Курс"));
@@ -229,41 +312,79 @@ public class TeacherJournalFragment extends Fragment {
         renderProjectCards(currentProjects);
     }
 
+    private boolean showCachedProjects(String groupId) {
+        if (groupId == null || groupId.isEmpty() || !journalStorage.hasProjectsForGroup(groupId)) {
+            return false;
+        }
+
+        Type type = new TypeToken<List<ProjectDto>>() {}.getType();
+        List<ProjectDto> cachedProjects = parseList(journalStorage.getProjectsJson(groupId), type);
+
+        if (cachedProjects.isEmpty()) {
+            return false;
+        }
+
+        currentProjects = cachedProjects;
+        renderProjectCards(currentProjects);
+        return true;
+    }
+
     private void showLessons(ProjectDto project) {
+        int requestId = nextRequestVersion();
         state = JournalState.LESSONS;
         selectedProject = project;
         selectedLesson = null;
+        currentLessons.clear();
+        clearStudentGrades();
         updateBackCallback();
 
         titleText.setText(safe(project.getName(), "Проект"));
         subtitleText.setText("Выберите пару");
         submitButton.setVisibility(View.GONE);
-        showLoading("Загрузка пар...");
+
+        if (selectedGroup == null || selectedGroup.getGroupId() == null || selectedGroup.getGroupId().isEmpty()
+                || project == null || project.getId() == null || project.getId().isEmpty()) {
+            showEmpty("Выберите пару");
+            return;
+        }
+
+        if (!showCachedLessons(project)) {
+            showLoading("Загрузка пар...");
+        }
 
         scheduleApi.getGroupSchedule(authHeader, selectedGroup.getGroupId()).enqueue(new Callback<List<LessonDto>>() {
             @Override
             public void onResponse(Call<List<LessonDto>> call, Response<List<LessonDto>> response) {
-                if (!isAdded()) return;
+                if (!isActiveRequest(requestId)) return;
 
                 if (response.isSuccessful() && response.body() != null) {
+                    journalStorage.saveLessonsJson(selectedGroup.getGroupId(), gson.toJson(response.body()));
                     currentLessons = filterLessonsByProject(response.body(), project.getId());
-                    showLessonsFromCache();
+                    showLessonsFromCache(false);
                 } else {
-                    showEmpty("Не удалось загрузить пары");
+                    showRetry("Не удалось загрузить пары", v -> showLessons(project));
                 }
             }
 
             @Override
             public void onFailure(Call<List<LessonDto>> call, Throwable t) {
-                if (!isAdded()) return;
-                showEmpty("Ошибка сети: " + t.getMessage());
+                if (!isActiveRequest(requestId)) return;
+                showRetry("Не удалось загрузить пары. Проверьте интернет и попробуйте снова.", v -> showLessons(project));
             }
         });
     }
 
     private void showLessonsFromCache() {
+        showLessonsFromCache(true);
+    }
+
+    private void showLessonsFromCache(boolean invalidateRequests) {
+        if (invalidateRequests) {
+            nextRequestVersion();
+        }
         state = JournalState.LESSONS;
         selectedLesson = null;
+        clearStudentGrades();
         updateBackCallback();
 
         titleText.setText(safe(selectedProject == null ? null : selectedProject.getName(), "Проект"));
@@ -272,32 +393,93 @@ public class TeacherJournalFragment extends Fragment {
         renderLessonCards(currentLessons);
     }
 
+    private boolean showCachedLessons(ProjectDto project) {
+        if (selectedGroup == null || selectedGroup.getGroupId() == null || selectedGroup.getGroupId().isEmpty()
+                || project == null || project.getId() == null || project.getId().isEmpty()
+                || !journalStorage.hasLessonsForGroup(selectedGroup.getGroupId())) {
+            return false;
+        }
+
+        Type type = new TypeToken<List<LessonDto>>() {}.getType();
+        List<LessonDto> cachedLessons = parseList(journalStorage.getLessonsJson(selectedGroup.getGroupId()), type);
+
+        if (cachedLessons.isEmpty()) {
+            return false;
+        }
+
+        currentLessons = filterLessonsByProject(cachedLessons, project.getId());
+        renderLessonCards(currentLessons);
+        return true;
+    }
+
     private void showStudents(LessonDto lesson) {
+        int requestId = nextRequestVersion();
         state = JournalState.STUDENTS;
         selectedLesson = lesson;
+        clearStudentGrades();
         updateBackCallback();
 
         titleText.setText(safe(lesson.getTopic(), "Пара"));
         subtitleText.setText(formatLessonTime(lesson));
         submitButton.setVisibility(View.VISIBLE);
+        setSubmitEnabled(false);
         showLoading("Загрузка учеников...");
+
+        if (selectedProject == null || selectedProject.getId() == null || selectedProject.getId().isEmpty()
+                || lesson == null || lesson.getId() == null || lesson.getId().isEmpty()) {
+            submitButton.setVisibility(View.GONE);
+            showEmpty("Выберите пару");
+            return;
+        }
 
         attendanceApi.getLessonAttendances(authHeader, lesson.getId()).enqueue(new Callback<List<AttendanceDto>>() {
             @Override
             public void onResponse(Call<List<AttendanceDto>> call, Response<List<AttendanceDto>> response) {
-                if (!isAdded()) return;
+                if (!isActiveRequest(requestId)) return;
 
                 if (response.isSuccessful() && response.body() != null) {
-                    renderStudentCards(response.body());
+                    loadProjectGrades(response.body(), requestId);
                 } else {
-                    showEmpty("Не удалось загрузить учеников");
+                    submitButton.setVisibility(View.GONE);
+                    showRetry("Не удалось загрузить список учеников", v -> showStudents(lesson));
                 }
             }
 
             @Override
             public void onFailure(Call<List<AttendanceDto>> call, Throwable t) {
-                if (!isAdded()) return;
-                showEmpty("Ошибка сети: " + t.getMessage());
+                if (!isActiveRequest(requestId)) return;
+                submitButton.setVisibility(View.GONE);
+                showRetry("Не удалось загрузить список учеников. Проверьте интернет и попробуйте снова.", v -> showStudents(lesson));
+            }
+        });
+    }
+
+    private void loadProjectGrades(List<AttendanceDto> attendances, int requestId) {
+        if (selectedProject == null || selectedProject.getId() == null || selectedProject.getId().isEmpty()) {
+            submitButton.setVisibility(View.GONE);
+            showEmpty("Не удалось определить проект для оценок");
+            return;
+        }
+
+        projectApi.getProjectGrades(authHeader, selectedProject.getId()).enqueue(new Callback<List<GradeDto>>() {
+            @Override
+            public void onResponse(Call<List<GradeDto>> call, Response<List<GradeDto>> response) {
+                if (!isActiveRequest(requestId)) return;
+
+                if (response.isSuccessful() && response.body() != null) {
+                    renderStudentCards(attendances, response.body());
+                } else {
+                    submitButton.setVisibility(View.GONE);
+                    showRetry("Не удалось загрузить оценки", v -> loadProjectGrades(attendances, nextRequestVersion()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GradeDto>> call, Throwable t) {
+                if (!isActiveRequest(requestId)) return;
+                submitButton.setVisibility(View.GONE);
+                showRetry("Не удалось загрузить оценки. Проверьте интернет и попробуйте снова.",
+                        v -> loadProjectGrades(attendances, nextRequestVersion()));
             }
         });
     }
@@ -344,11 +526,33 @@ public class TeacherJournalFragment extends Fragment {
         for (ProjectDto project : projects) {
             LinearLayout card = createCard();
             card.addView(createTitle(safe(project.getName(), "Проект")));
-            card.addView(createSubtitle("Пар: " + project.getTotalLessons() + " • максимум " + project.getMaxScore() + " баллов"));
+            card.addView(createSubtitle("Занятий: " + getDisplayedLessonCount(project) + " • максимум " + project.getMaxScore() + " баллов"));
             card.addView(createAction("Открыть пары  ›"));
             card.setOnClickListener(v -> showLessons(project));
             journalContent.addView(card);
         }
+    }
+
+    private int getDisplayedLessonCount(ProjectDto project) {
+        int cachedCount = getCachedLessonCount(project);
+        if (cachedCount >= 0) {
+            return cachedCount;
+        }
+
+        return project.getTotalLessons();
+    }
+
+    private int getCachedLessonCount(ProjectDto project) {
+        if (selectedGroup == null || selectedGroup.getGroupId() == null || selectedGroup.getGroupId().isEmpty()
+                || project == null || project.getId() == null || project.getId().isEmpty()
+                || !journalStorage.hasLessonsForGroup(selectedGroup.getGroupId())) {
+            return -1;
+        }
+
+        Type type = new TypeToken<List<LessonDto>>() {}.getType();
+        List<LessonDto> cachedLessons = parseList(journalStorage.getLessonsJson(selectedGroup.getGroupId()), type);
+
+        return filterLessonsByProject(cachedLessons, project.getId()).size();
     }
 
     private void renderLessonCards(List<LessonDto> lessons) {
@@ -369,21 +573,37 @@ public class TeacherJournalFragment extends Fragment {
         }
     }
 
-    private void renderStudentCards(List<AttendanceDto> attendances) {
+    private void renderStudentCards(List<AttendanceDto> attendances, List<GradeDto> grades) {
         journalContent.removeAllViews();
+        currentStudentGrades.clear();
 
         if (attendances == null || attendances.isEmpty()) {
-            showEmpty("Список учеников для этой пары пуст");
+            submitButton.setVisibility(View.GONE);
+            showEmpty("Для этой пары пока нет учеников");
             return;
         }
 
         submitButton.setVisibility(View.VISIBLE);
+        setSubmitEnabled(false);
+        int maxScore = getSelectedProjectMaxScore();
+        Map<String, GradeDto> gradesByChildId = mapGradesByChildId(grades);
 
         for (AttendanceDto attendance : attendances) {
+            String childId = attendance.getChildId();
+            if (childId == null || childId.isEmpty()) {
+                continue;
+            }
+
+            GradeDto grade = gradesByChildId.get(childId);
+            int initialScore = clampScore(grade == null || grade.getScore() == null ? 0 : grade.getScore(), maxScore);
             StudentGradeItem student = new StudentGradeItem(
+                    childId,
                     safe(attendance.getChildName(), "Ученик"),
-                    0
+                    initialScore,
+                    maxScore,
+                    grade == null ? "" : safeRaw(grade.getComment())
             );
+            currentStudentGrades.add(student);
 
             LinearLayout card = createCard();
             card.setOrientation(LinearLayout.HORIZONTAL);
@@ -394,24 +614,29 @@ public class TeacherJournalFragment extends Fragment {
             LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
 
             TextView nameText = createTitle(student.name);
-            TextView gradeLabel = createSubtitle("Оценка");
             textBlock.addView(nameText);
-            textBlock.addView(gradeLabel);
 
-            TextView gradeText = createGradeValue(student.grade);
+            TextView gradeText = createGradeValue(student);
             TextView minusButton = createGradeButton("-");
             TextView plusButton = createGradeButton("+");
+            updateGradeButtons(student, minusButton, plusButton);
 
             minusButton.setOnClickListener(v -> {
-                if (student.grade > 0) {
-                    student.grade--;
-                    gradeText.setText(String.valueOf(student.grade));
+                if (student.score > student.minScore) {
+                    student.score--;
+                    gradeText.setText(formatGradeValue(student));
+                    updateGradeButtons(student, minusButton, plusButton);
+                    updateSubmitStateByGrades();
                 }
             });
 
             plusButton.setOnClickListener(v -> {
-                student.grade++;
-                gradeText.setText(String.valueOf(student.grade));
+                if (student.score < student.maxScore) {
+                    student.score++;
+                    gradeText.setText(formatGradeValue(student));
+                    updateGradeButtons(student, minusButton, plusButton);
+                    updateSubmitStateByGrades();
+                }
             });
 
             card.addView(textBlock, textParams);
@@ -420,6 +645,147 @@ public class TeacherJournalFragment extends Fragment {
             card.addView(plusButton);
             journalContent.addView(card);
         }
+
+        if (currentStudentGrades.isEmpty()) {
+            submitButton.setVisibility(View.GONE);
+            showEmpty("Для этой пары пока нет учеников");
+        }
+    }
+
+    private Map<String, GradeDto> mapGradesByChildId(List<GradeDto> grades) {
+        Map<String, GradeDto> result = new HashMap<>();
+
+        if (grades == null) {
+            return result;
+        }
+
+        for (GradeDto grade : grades) {
+            if (grade == null || grade.getChildId() == null || grade.getChildId().isEmpty()) {
+                continue;
+            }
+
+            result.put(grade.getChildId(), grade);
+        }
+
+        return result;
+    }
+
+    private void sendChangedGrades() {
+        if (selectedProject == null || selectedProject.getId() == null || selectedProject.getId().isEmpty()) {
+            Toast.makeText(requireContext(), "Не удалось определить проект", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<StudentGradeItem> changedGrades = getChangedGrades();
+        if (changedGrades.isEmpty()) {
+            setSubmitEnabled(false);
+            return;
+        }
+
+        setSubmitEnabled(false);
+        submitButton.setText("Отправка...");
+
+        final int[] total = {changedGrades.size()};
+        final int[] success = {0};
+        final int[] errors = {0};
+
+        for (StudentGradeItem student : changedGrades) {
+            projectApi.saveProjectGrade(
+                    authHeader,
+                    selectedProject.getId(),
+                    student.childId,
+                    student.score,
+                    student.comment
+            ).enqueue(new Callback<GradeDto>() {
+                @Override
+                public void onResponse(Call<GradeDto> call, Response<GradeDto> response) {
+                    if (!isAdded()) return;
+
+                    if (response.isSuccessful()) {
+                        success[0]++;
+                    } else {
+                        errors[0]++;
+                    }
+
+                    checkGradeSendingFinished(total[0], success[0], errors[0]);
+                }
+
+                @Override
+                public void onFailure(Call<GradeDto> call, Throwable t) {
+                    if (!isAdded()) return;
+
+                    errors[0]++;
+                    checkGradeSendingFinished(total[0], success[0], errors[0]);
+                }
+            });
+        }
+    }
+
+    private void checkGradeSendingFinished(int total, int success, int errors) {
+        if (success + errors < total) {
+            return;
+        }
+
+        submitButton.setText("Отправить");
+
+        if (errors == 0) {
+            for (StudentGradeItem student : currentStudentGrades) {
+                student.originalScore = student.score;
+                student.minScore = student.score;
+            }
+            updateSubmitStateByGrades();
+            Toast.makeText(requireContext(), "Оценки отправлены", Toast.LENGTH_SHORT).show();
+        } else {
+            updateSubmitStateByGrades();
+            Toast.makeText(requireContext(), "Не удалось отправить все оценки", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private List<StudentGradeItem> getChangedGrades() {
+        List<StudentGradeItem> result = new ArrayList<>();
+
+        for (StudentGradeItem student : currentStudentGrades) {
+            if (student.score != student.originalScore) {
+                result.add(student);
+            }
+        }
+
+        return result;
+    }
+
+    private void updateSubmitStateByGrades() {
+        setSubmitEnabled(!getChangedGrades().isEmpty());
+    }
+
+    private void setSubmitEnabled(boolean enabled) {
+        submitButton.setEnabled(enabled);
+        submitButton.setAlpha(enabled ? 1f : 0.4f);
+    }
+
+    private int getSelectedProjectMaxScore() {
+        if (selectedProject == null) {
+            return 0;
+        }
+
+        return Math.max(0, selectedProject.getMaxScore());
+    }
+
+    private int clampScore(int score, int maxScore) {
+        return Math.max(0, Math.min(score, maxScore));
+    }
+
+    private String formatGradeValue(StudentGradeItem student) {
+        return student.score + " / " + student.maxScore;
+    }
+
+    private void updateGradeButtons(StudentGradeItem student, TextView minusButton, TextView plusButton) {
+        setGradeButtonEnabled(minusButton, student.score > student.minScore);
+        setGradeButtonEnabled(plusButton, student.score < student.maxScore);
+    }
+
+    private void setGradeButtonEnabled(TextView button, boolean enabled) {
+        button.setEnabled(enabled);
+        button.setAlpha(enabled ? 1f : 0.4f);
     }
 
     private void showLoading(String message) {
@@ -431,8 +797,57 @@ public class TeacherJournalFragment extends Fragment {
 
     private void showEmpty(String message) {
         journalContent.removeAllViews();
+        setSubmitEnabled(false);
         TextView textView = createSubtitle(message);
         journalContent.addView(textView);
+    }
+
+    private void showRetry(String message, View.OnClickListener listener) {
+        journalContent.removeAllViews();
+        setSubmitEnabled(false);
+
+        TextView textView = createSubtitle(message);
+        journalContent.addView(textView);
+
+        Button retryButton = new Button(requireContext());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, dp(14), 0, 0);
+        retryButton.setLayoutParams(params);
+        retryButton.setText("Повторить");
+        retryButton.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.white));
+        retryButton.setBackgroundResource(R.drawable.bg_button_orange);
+        retryButton.setOnClickListener(listener);
+        journalContent.addView(retryButton);
+    }
+
+    private int nextRequestVersion() {
+        requestVersion++;
+        return requestVersion;
+    }
+
+    private boolean isActiveRequest(int requestId) {
+        return isAdded() && requestId == requestVersion;
+    }
+
+    private void clearStudentGrades() {
+        currentStudentGrades.clear();
+        setSubmitEnabled(false);
+    }
+
+    private <T> List<T> parseList(String json, Type type) {
+        if (json == null || json.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        try {
+            List<T> result = gson.fromJson(json, type);
+            return result == null ? new ArrayList<>() : result;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 
     private LinearLayout createCard() {
@@ -507,22 +922,23 @@ public class TeacherJournalFragment extends Fragment {
         textView.setClickable(true);
         textView.setFocusable(true);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp(34), dp(34));
-        params.setMargins(dp(6), 0, 0, 0);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp(32), dp(32));
+        params.setMargins(dp(4), 0, 0, 0);
         textView.setLayoutParams(params);
 
         return textView;
     }
 
-    private TextView createGradeValue(int grade) {
+    private TextView createGradeValue(StudentGradeItem student) {
         TextView textView = new TextView(requireContext());
-        textView.setText(String.valueOf(grade));
+        textView.setText(formatGradeValue(student));
         textView.setGravity(android.view.Gravity.CENTER);
         textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_dark));
-        textView.setTextSize(16);
+        textView.setTextSize(14);
         textView.setTypeface(null, android.graphics.Typeface.BOLD);
+        textView.setSingleLine(true);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp(34), dp(34));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp(82), dp(34));
         params.setMargins(dp(8), 0, 0, 0);
         textView.setLayoutParams(params);
 
@@ -559,17 +975,31 @@ public class TeacherJournalFragment extends Fragment {
         return value == null || value.trim().isEmpty() ? fallback : value;
     }
 
+    private String safeRaw(String value) {
+        return value == null ? "" : value;
+    }
+
     private int dp(int value) {
         return (int) (value * getResources().getDisplayMetrics().density + 0.5f);
     }
 
     private static class StudentGradeItem {
+        final String childId;
         final String name;
-        int grade;
+        final int maxScore;
+        final String comment;
+        int minScore;
+        int score;
+        int originalScore;
 
-        StudentGradeItem(String name, int grade) {
+        StudentGradeItem(String childId, String name, int score, int maxScore, String comment) {
+            this.childId = childId;
             this.name = name;
-            this.grade = grade;
+            this.score = score;
+            this.originalScore = score;
+            this.maxScore = maxScore;
+            this.comment = comment;
+            this.minScore = score;
         }
     }
 }

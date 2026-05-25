@@ -7,6 +7,7 @@ public class TeacherJournalStorage {
     private static final String PREFS_NAME = "teacher_journal_storage";
 
     private static final String KEY_GROUPS_JSON = "teacher_groups_json";
+    private static final String KEY_PROJECTS_PREFIX = "teacher_projects_";
     private static final String KEY_LESSONS_PREFIX = "teacher_lessons_";
 
     private final SharedPreferences prefs;
@@ -26,6 +27,19 @@ public class TeacherJournalStorage {
 
     public void saveGroupsJson(String json) {
         prefs.edit().putString(KEY_GROUPS_JSON, json).apply();
+    }
+
+    public boolean hasProjectsForGroup(String groupId) {
+        String json = prefs.getString(KEY_PROJECTS_PREFIX + groupId, "");
+        return json != null && !json.isEmpty();
+    }
+
+    public String getProjectsJson(String groupId) {
+        return prefs.getString(KEY_PROJECTS_PREFIX + groupId, "");
+    }
+
+    public void saveProjectsJson(String groupId, String json) {
+        prefs.edit().putString(KEY_PROJECTS_PREFIX + groupId, json).apply();
     }
 
     public boolean hasLessonsForGroup(String groupId) {
