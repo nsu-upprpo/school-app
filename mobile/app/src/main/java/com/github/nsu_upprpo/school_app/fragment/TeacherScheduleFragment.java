@@ -68,8 +68,7 @@ public class TeacherScheduleFragment extends Fragment {
         weekTab = view.findViewById(R.id.teacherWeekTab);
 
         scheduleStorage = new ScheduleStorage(requireContext());
-        isTodayMode = true;
-        scheduleStorage.setTeacherTodayMode(true);
+        isTodayMode = scheduleStorage.isTeacherTodayMode();
 
         adapter = new ScheduleDayAdapter(new ArrayList<>(), item -> {
             if (item.getLessonId() == null || item.getLessonId().isEmpty()) {
@@ -79,6 +78,7 @@ public class TeacherScheduleFragment extends Fragment {
 
             TeacherAttendanceFragment fragment = TeacherAttendanceFragment.newInstance(
                     item.getLessonId(),
+                    item.getGroupId(),
                     item.getTitle(),
                     item.getSubtitle() + " • " + item.getTime()
             );

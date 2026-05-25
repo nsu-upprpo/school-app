@@ -1,10 +1,12 @@
 package com.github.nsu_upprpo.school_app.fragment;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -17,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 
+import com.github.nsu_upprpo.school_app.LoginActivity;
 import com.github.nsu_upprpo.school_app.R;
 import com.github.nsu_upprpo.school_app.api.ApiClient;
 import com.github.nsu_upprpo.school_app.api.AttendanceApi;
@@ -35,26 +38,34 @@ import retrofit2.Response;
 public class TeacherAttendanceFragment extends Fragment {
 
     private static final String ARG_LESSON_ID = "lesson_id";
+    private static final String ARG_GROUP_ID = "group_id";
     private static final String ARG_TITLE = "title";
     private static final String ARG_SUBTITLE = "subtitle";
 
     private TextView titleText;
     private TextView subtitleText;
+    private ImageView backButton;
     private Button markAllButton;
     private Button sendButton;
     private LinearLayout contentLayout;
 
     private String lessonId;
+    private String groupId;
     private String authHeader;
+    private boolean isSubmitted;
+    private boolean isDirty;
+    private boolean isSessionExpired;
 
     private final Map<String, String> selectedStatuses = new HashMap<>();
     private final Map<String, String> oldStatuses = new HashMap<>();
 
-    public static TeacherAttendanceFragment newInstance(String lessonId, String title, String subtitle) {
+    public static TeacherAttendanceFragment newInstance(String lessonId, String groupId,
+                                                        String title, String subtitle) {
         TeacherAttendanceFragment fragment = new TeacherAttendanceFragment();
 
         Bundle args = new Bundle();
         args.putString(ARG_LESSON_ID, lessonId);
+        args.putString(ARG_GROUP_ID, groupId);
         args.putString(ARG_TITLE, title);
         args.putString(ARG_SUBTITLE, subtitle);
 
@@ -72,6 +83,7 @@ public class TeacherAttendanceFragment extends Fragment {
 
         titleText = view.findViewById(R.id.attendanceTitleText);
         subtitleText = view.findViewById(R.id.attendanceSubtitleText);
+        backButton = view.findViewById(R.id.attendanceBackButton);
         markAllButton = view.findViewById(R.id.markAllPresentButton);
         sendButton = view.findViewById(R.id.saveAttendanceButton);
         contentLayout = view.findViewById(R.id.attendanceContentLayout);
@@ -80,10 +92,12 @@ public class TeacherAttendanceFragment extends Fragment {
 
         if (args != null) {
             lessonId = args.getString(ARG_LESSON_ID);
+            groupId = args.getString(ARG_GROUP_ID);
             titleText.setText(args.getString(ARG_TITLE, "Посещаемость"));
             subtitleText.setText(args.getString(ARG_SUBTITLE, ""));
         }
 
+        backButton.setOnClickListener(v -> getParentFragmentManager().popBackStack());
         TokenStorage tokenStorage = new TokenStorage(requireContext());
         String token = tokenStorage.getAccessToken();
 
@@ -96,6 +110,7 @@ public class TeacherAttendanceFragment extends Fragment {
 
         markAllButton.setOnClickListener(v -> markAllPresent());
         sendButton.setOnClickListener(v -> sendAttendance());
+        updateSendButtonState();
 
         loadAttendance();
 
@@ -105,12 +120,12 @@ public class TeacherAttendanceFragment extends Fragment {
     private void loadAttendance() {
         if (lessonId == null || lessonId.isEmpty()) {
             showMessage("Не найден id занятия");
-            sendButton.setEnabled(false);
-            markAllButton.setEnabled(false);
+            setActionsEnabled(false);
             return;
         }
 
         showMessage("Загрузка посещаемости...");
+        setActionsEnabled(false);
 
         AttendanceApi api = ApiClient.getClient().create(AttendanceApi.class);
 
@@ -121,15 +136,18 @@ public class TeacherAttendanceFragment extends Fragment {
 
                 if (response.isSuccessful() && response.body() != null) {
                     showAttendance(response.body());
+                } else if (response.code() == 401) {
+                    handleUnauthorized();
+                    return;
                 } else {
-                    showMessage("Не удалось загрузить посещаемость. Код: " + response.code());
+                    showLoadError();
                 }
             }
 
             @Override
             public void onFailure(Call<List<AttendanceDto>> call, Throwable t) {
                 if (!isAdded()) return;
-                showMessage("Ошибка сети: " + t.getMessage());
+                showLoadError();
             }
         });
     }
@@ -138,20 +156,41 @@ public class TeacherAttendanceFragment extends Fragment {
         contentLayout.removeAllViews();
         selectedStatuses.clear();
         oldStatuses.clear();
+        isDirty = false;
+        isSubmitted = hasSavedAttendance(attendances);
 
         if (attendances == null || attendances.isEmpty()) {
-            showMessage("Сервер не вернул список учеников для этого занятия.");
-            sendButton.setEnabled(true);
-            markAllButton.setEnabled(false);
+            showNoStudentsMessage();
+            setActionsEnabled(false);
             return;
         }
 
-        sendButton.setEnabled(true);
         markAllButton.setEnabled(true);
 
         for (AttendanceDto attendance : attendances) {
             addStudentCard(attendance);
         }
+
+        updateSendButtonState();
+    }
+
+    private boolean hasSavedAttendance(List<AttendanceDto> attendances) {
+        if (attendances == null) {
+            return false;
+        }
+
+        for (AttendanceDto attendance : attendances) {
+            if (attendance == null) {
+                continue;
+            }
+
+            String status = attendance.getStatus();
+            if ("PRESENT".equalsIgnoreCase(status) || "ABSENT".equalsIgnoreCase(status)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void addStudentCard(AttendanceDto attendance) {
@@ -167,8 +206,8 @@ public class TeacherAttendanceFragment extends Fragment {
             childName = "Ученик";
         }
 
-        if (status == null) {
-            status = "";
+        if (!"PRESENT".equalsIgnoreCase(status) && !"ABSENT".equalsIgnoreCase(status)) {
+            status = "ABSENT";
         }
 
         oldStatuses.put(childId, status);
@@ -204,7 +243,7 @@ public class TeacherAttendanceFragment extends Fragment {
 
         if ("PRESENT".equalsIgnoreCase(status)) {
             presentButton.setChecked(true);
-        } else if ("ABSENT".equalsIgnoreCase(status)) {
+        } else {
             absentButton.setChecked(true);
         }
 
@@ -216,6 +255,7 @@ public class TeacherAttendanceFragment extends Fragment {
 
                 if (parts.length == 2) {
                     selectedStatuses.put(parts[0], parts[1]);
+                    updateDirtyState();
                 }
             }
         });
@@ -224,6 +264,25 @@ public class TeacherAttendanceFragment extends Fragment {
         card.addView(radioGroup);
 
         contentLayout.addView(card);
+    }
+
+    private void updateDirtyState() {
+        isDirty = !selectedStatuses.equals(oldStatuses);
+        updateSendButtonState();
+    }
+
+    private void updateSendButtonState() {
+        if (sendButton == null) {
+            return;
+        }
+
+        sendButton.setText(isSubmitted ? "Переотправить" : "Отправить");
+        sendButton.setEnabled(isDirty && !selectedStatuses.isEmpty());
+    }
+
+    private void setActionsEnabled(boolean enabled) {
+        markAllButton.setEnabled(enabled);
+        sendButton.setEnabled(enabled && isDirty && !selectedStatuses.isEmpty());
     }
 
     private void markAllPresent() {
@@ -266,6 +325,10 @@ public class TeacherAttendanceFragment extends Fragment {
             return;
         }
 
+        if (!isDirty) {
+            return;
+        }
+
         sendButton.setEnabled(false);
         sendButton.setText("Отправка...");
 
@@ -292,6 +355,9 @@ public class TeacherAttendanceFragment extends Fragment {
                 public void onResponse(Call<AttendanceDto> call, Response<AttendanceDto> response) {
                     if (response.isSuccessful()) {
                         success[0]++;
+                    } else if (response.code() == 401) {
+                        handleUnauthorized();
+                        return;
                     } else {
                         errors[0]++;
                     }
@@ -308,8 +374,7 @@ public class TeacherAttendanceFragment extends Fragment {
         }
 
         if (total[0] == 0) {
-            sendButton.setEnabled(true);
-            sendButton.setText("Отправить");
+            updateSendButtonState();
             Toast.makeText(requireContext(), "Нет данных для отправки", Toast.LENGTH_SHORT).show();
         }
     }
@@ -319,10 +384,12 @@ public class TeacherAttendanceFragment extends Fragment {
             return;
         }
 
-        sendButton.setEnabled(true);
-        sendButton.setText("Отправить");
-
         if (errors == 0) {
+            oldStatuses.clear();
+            oldStatuses.putAll(selectedStatuses);
+            isSubmitted = true;
+            isDirty = false;
+            updateSendButtonState();
             Toast.makeText(
                     requireContext(),
                     "Посещаемость отправлена",
@@ -334,12 +401,57 @@ public class TeacherAttendanceFragment extends Fragment {
                     "Сохранено: " + success + ", ошибок: " + errors,
                     Toast.LENGTH_LONG
             ).show();
+            updateDirtyState();
         }
     }
 
     private void showMessage(String message) {
         contentLayout.removeAllViews();
         contentLayout.addView(createText(message, 15, false, R.color.hint_gray));
+    }
+
+    private void showNoStudentsMessage() {
+        showMessage("Для этого занятия пока не добавлены ученики. Проверьте группу занятия или обратитесь к администратору.");
+    }
+
+    private void showLoadError() {
+        contentLayout.removeAllViews();
+        contentLayout.addView(createText(
+                "Не удалось загрузить список учеников. Проверьте интернет и попробуйте снова.",
+                15,
+                false,
+                R.color.hint_gray
+        ));
+
+        Button retryButton = new Button(requireContext());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 20, 0, 0);
+        retryButton.setLayoutParams(params);
+        retryButton.setText("Повторить");
+        retryButton.setTextColor(getResources().getColor(android.R.color.white));
+        retryButton.setBackgroundResource(R.drawable.bg_button_orange);
+        retryButton.setOnClickListener(v -> loadAttendance());
+
+        contentLayout.addView(retryButton);
+        setActionsEnabled(false);
+    }
+
+    private void handleUnauthorized() {
+        if (!isAdded() || isSessionExpired) {
+            return;
+        }
+
+        isSessionExpired = true;
+        new TokenStorage(requireContext()).clear();
+        Toast.makeText(requireContext(), "Сессия истекла. Войдите снова", Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(requireContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        requireActivity().finish();
     }
 
     private TextView createText(String text, int size, boolean bold, int colorRes) {
