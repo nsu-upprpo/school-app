@@ -18,6 +18,21 @@
 
     <include layout="@layout/item_parent_lesson" />
 
+    <TextView
+        android:id="@+id/lessonActionsHintText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_card"
+        android:paddingStart="14dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="10dp"
+        android:text="Для перенесённых занятий действия недоступны"
+        android:textColor="@color/hint_gray"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
     <include
         android:id="@+id/moveLessonAction"
         layout="@layout/item_bottom_sheet_action"

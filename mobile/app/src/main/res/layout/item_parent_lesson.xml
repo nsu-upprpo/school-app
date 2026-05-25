@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
+    android:layout_marginBottom="16dp"
     android:background="@drawable/bg_lesson_card"
     android:clickable="true"
     android:clipToOutline="true"
@@ -53,21 +53,46 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/lessonStatusText"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/lessonBadgesRow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:background="@drawable/bg_status_red"
-            android:paddingStart="10dp"
-            android:paddingTop="3dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="3dp"
-            android:text="Пропущено"
-            android:textColor="@android:color/white"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/lessonStatusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_red"
+                android:paddingStart="8dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="2dp"
+                android:text="Пропуск"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/lessonChildText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:paddingStart="9dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="9dp"
+                android:paddingBottom="2dp"
+                android:text="Котова Рита"
+                android:textColor="@color/text_dark"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/lessonCourseText"
@@ -76,7 +101,8 @@
             android:layout_marginTop="10dp"
             android:text="Курс: Графический дизайн"
             android:textColor="@color/text_dark"
-            android:textSize="13sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lessonTopicText"
