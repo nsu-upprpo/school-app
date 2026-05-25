@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,4 +16,6 @@ public interface LessonRepository extends JpaRepository<Lesson, UUID> {
     List<Lesson> findByGroupIdAndStartTimeBetween(UUID groupId, LocalDateTime from, LocalDateTime to);
     List<Lesson> findByProjectId(UUID projectId);
     long countByProjectId(UUID projectId);
+    List<Lesson> findByGroupIdInAndStartTimeBetween(Collection<UUID> groupIds, LocalDateTime from, LocalDateTime to);
+    List<Lesson> findByIdIn(Collection<UUID> ids);
 }

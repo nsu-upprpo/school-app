@@ -64,13 +64,14 @@ public class ProjectService {
         User child = userService.findById(childId);
         User teacher = userService.findById(teacherId);
 
-        ProjectGrade grade = ProjectGrade.builder()
-                .project(project)
-                .child(child)
-                .teacher(teacher)
-                .score(score)
-                .comment(comment)
-                .build();
+        ProjectGrade grade = projectGradeRepository.findByProjectIdAndChildId(projectId, childId)
+                .orElseGet(() -> ProjectGrade.builder()
+                        .project(project)
+                        .child(child)
+                        .build());
+        grade.setTeacher(teacher);
+        grade.setScore(score);
+        grade.setComment(comment);
         grade = projectGradeRepository.save(grade);
 
         applicationEventPublisher.publishEvent(new ProjectGradeCreatedEvent(

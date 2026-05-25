@@ -13,10 +13,9 @@ import com.github.nsu_upprpo.school_app.api.AuthApi;
 import com.github.nsu_upprpo.school_app.api.UserApi;
 import com.github.nsu_upprpo.school_app.model.LoginRequest;
 import com.github.nsu_upprpo.school_app.model.LoginResponse;
-import com.github.nsu_upprpo.school_app.model.RefreshRequest;
-import com.github.nsu_upprpo.school_app.model.RefreshResponse;
 import com.github.nsu_upprpo.school_app.model.UserProfile;
 import com.github.nsu_upprpo.school_app.storage.TokenStorage;
+import com.github.nsu_upprpo.school_app.ui.SystemBarsInsets;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +39,11 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_login);
+        setupLoginScreen();
+    }
 
+    private void setupLoginScreen() {
+        SystemBarsInsets.apply(this, findViewById(R.id.loginRoot));
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
@@ -57,6 +60,9 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        loginButton.setEnabled(false);
+        loginButton.setText("Вход...");
+
         AuthApi authApi = ApiClient.getClient().create(AuthApi.class);
         LoginRequest request = new LoginRequest(email, password);
 
@@ -71,23 +77,18 @@ public class LoginActivity extends AppCompatActivity {
 
                     loadProfileAndOpenScreen();
                 } else {
-                    String errorText = "Ошибка login. Код: " + response.code();
-
-                    try {
-                        if (response.errorBody() != null) {
-                            errorText += "\n" + response.errorBody().string();
-                        }
-                    } catch (Exception e) {
-                        errorText += "\nНе удалось прочитать errorBody";
-                    }
-
-                    Toast.makeText(LoginActivity.this, errorText, Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Неверный email или пароль", Toast.LENGTH_SHORT).show();
+                    loginButton.setEnabled(true);
+                    loginButton.setText("Войти");
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Ошибка сети: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                loginButton.setEnabled(true);
+                loginButton.setText("Войти");
+
+                Toast.makeText(LoginActivity.this,"Нет соединения с сервером. Проверьте интернет и попробуйте снова", Toast.LENGTH_LONG).show();
 
                 TokenStorage storage = new TokenStorage(LoginActivity.this);
                 storage.clear();
@@ -116,20 +117,11 @@ public class LoginActivity extends AppCompatActivity {
                     UserProfile profile = response.body();
                     openMainScreenByRole(profile.getRole());
                 } else {
-                    String errorText = "Ошибка входа. Код: " + response.code();
-
-                    try {
-                        if (response.errorBody() != null) {
-                            errorText += "\n" + response.errorBody().string();
-                        }
-                    } catch (Exception e) {
-                        errorText += "\nНе удалось прочитать errorBody";
-                    }
+                    Toast.makeText(LoginActivity.this, "Ошибка входа. Попробуйте снова", Toast.LENGTH_SHORT).show();
 
                     TokenStorage storage = new TokenStorage(LoginActivity.this);
                     storage.clear();
 
-                    Toast.makeText(LoginActivity.this, errorText, Toast.LENGTH_LONG).show();
                     showLoginScreen();
                 }
             }
@@ -139,51 +131,8 @@ public class LoginActivity extends AppCompatActivity {
                 TokenStorage storage = new TokenStorage(LoginActivity.this);
                 storage.clear();
 
-                Toast.makeText(LoginActivity.this, "Ошибка сети: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Ошибка соединения. Проверьте интернет", Toast.LENGTH_SHORT).show();
 
-                showLoginScreen();
-            }
-        });
-    }
-
-    private void refreshTokenAndRetry() {
-        TokenStorage storage = new TokenStorage(this);
-        String refreshToken = storage.getRefreshToken();
-
-        if (refreshToken == null || refreshToken.isEmpty()) {
-            storage.clear();
-            showLoginScreen();
-            return;
-        }
-
-        AuthApi authApi = ApiClient.getClient().create(AuthApi.class);
-        RefreshRequest request = new RefreshRequest(refreshToken);
-
-        authApi.refresh(request).enqueue(new Callback<RefreshResponse>() {
-            @Override
-            public void onResponse(Call<RefreshResponse> call, Response<RefreshResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    RefreshResponse body = response.body();
-
-                    String newAccessToken = body.getAccessToken();
-                    String newRefreshToken = body.getRefreshToken();
-
-                    if (newRefreshToken == null || newRefreshToken.isEmpty()) {
-                        newRefreshToken = refreshToken;
-                    }
-
-                    storage.saveTokens(newAccessToken, newRefreshToken);
-                    loadProfileAndOpenScreen();
-                } else {
-                    storage.clear();
-                    Toast.makeText(LoginActivity.this, "Сессия истекла. Войдите заново", Toast.LENGTH_SHORT).show();
-                    showLoginScreen();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RefreshResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Ошибка обновления токена: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 showLoginScreen();
             }
         });
@@ -191,12 +140,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showLoginScreen() {
         setContentView(R.layout.activity_login);
-
-        emailInput = findViewById(R.id.emailInput);
-        passwordInput = findViewById(R.id.passwordInput);
-        loginButton = findViewById(R.id.loginButton);
-
-        loginButton.setOnClickListener(e -> login());
+        setupLoginScreen();
     }
     private void openMainScreenByRole(String role) {
         Intent intent;

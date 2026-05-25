@@ -1,0 +1,103 @@
+databaseChangeLog:
+  - changeSet:
+      id: 015-rename-attendances-to-lesson-participations
+      author: arsenii
+      changes:
+        - renameTable:
+            oldTableName: attendances
+            newTableName: lesson_participations
+
+        - renameColumn:
+            tableName: lesson_participations
+            oldColumnName: marked_by
+            newColumnName: changed_by
+            columnDataType: uuid
+
+        - renameColumn:
+            tableName: lesson_participations
+            oldColumnName: marked_at
+            newColumnName: changed_at
+            columnDataType: timestamp
+
+        - renameColumn:
+            tableName: lesson_participations
+            oldColumnName: rescheduled_lesson_id
+            newColumnName: rescheduled_to_lesson_id
+            columnDataType: uuid
+
+        - modifyDataType:
+            tableName: lesson_participations
+            columnName: status
+            newDataType: varchar(30)
+
+        - addColumn:
+            tableName: lesson_participations
+            columns:
+              - column:
+                  name: rescheduled_from_lesson_id
+                  type: uuid
+              - column:
+                  name: reason
+                  type: varchar(255)
+
+        - dropForeignKeyConstraint:
+            baseTableName: lesson_participations
+            constraintName: fk_attendances_lesson
+        - dropForeignKeyConstraint:
+            baseTableName: lesson_participations
+            constraintName: fk_attendances_rescheduled_lesson
+        - dropForeignKeyConstraint:
+            baseTableName: lesson_participations
+            constraintName: fk_attendances_child
+        - dropForeignKeyConstraint:
+            baseTableName: lesson_participations
+            constraintName: fk_attendances_marked_by
+
+        - addForeignKeyConstraint:
+            baseTableName: lesson_participations
+            baseColumnNames: lesson_id
+            referencedTableName: lessons
+            referencedColumnNames: id
+            constraintName: fk_participation_lesson
+        - addForeignKeyConstraint:
+            baseTableName: lesson_participations
+            baseColumnNames: rescheduled_to_lesson_id
+            referencedTableName: lessons
+            referencedColumnNames: id
+            constraintName: fk_participation_rescheduled_to
+        - addForeignKeyConstraint:
+            baseTableName: lesson_participations
+            baseColumnNames: rescheduled_from_lesson_id
+            referencedTableName: lessons
+            referencedColumnNames: id
+            constraintName: fk_participation_rescheduled_from
+        - addForeignKeyConstraint:
+            baseTableName: lesson_participations
+            baseColumnNames: child_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_participation_child
+        - addForeignKeyConstraint:
+            baseTableName: lesson_participations
+            baseColumnNames: changed_by
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_participation_changed_by
+
+        - addUniqueConstraint:
+            tableName: lesson_participations
+            columnNames: lesson_id, child_id
+            constraintName: uk_participation_lesson_child
+
+        - createIndex:
+            tableName: lesson_participations
+            indexName: idx_participation_child
+            columns:
+              - column:
+                  name: child_id
+        - createIndex:
+            tableName: lesson_participations
+            indexName: idx_participation_lesson
+            columns:
+              - column:
+                  name: lesson_id
