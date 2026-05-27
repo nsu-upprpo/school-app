@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '4.0.3'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'checkstyle'
+	id 'jacoco'
 	id 'org.sonarqube' version '7.2.3.7755'
 }
 
@@ -57,11 +58,22 @@ checkstyle {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy tasks.named('jacocoTestReport')
+}
+
+tasks.named('jacocoTestReport') {
+	dependsOn tasks.named('test')
+	reports {
+		xml.required = true
+		html.required = true
+	}
 }
 
 sonar {
 	properties {
 		property "sonar.projectKey", "nsu-upprpo_school-app_backend"
 		property "sonar.organization", "nsu-upprpo-1"
+		property "sonar.coverage.jacoco.xmlReportPaths"
+		"${layout.buildDirectory.get()}/reports/jacoco/test/jacocoTestReport.xml"
 	}
 }
