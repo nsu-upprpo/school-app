@@ -73,7 +73,7 @@ sonar {
 	properties {
 		property "sonar.projectKey", "nsu-upprpo_school-app_backend"
 		property "sonar.organization", "nsu-upprpo-1"
-		property "sonar.coverage.jacoco.xmlReportPaths"
-		"${layout.buildDirectory.get()}/reports/jacoco/test/jacocoTestReport.xml"
+		property "sonar.coverage.jacoco.xmlReportPaths",
+			"${layout.buildDirectory.get()}/reports/jacoco/test/jacocoTestReport.xml"
 	}
 }

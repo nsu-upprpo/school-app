@@ -14,10 +14,10 @@ public final class SecurityUtils {
 
     public static UserDetailsImpl getCurrentUserDetails() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !(auth.getPrincipal() instanceof UserDetailsImpl)) {
-            throw new AccessDeniedException("User does not authenticated");
+        if (auth == null || !(auth.getPrincipal() instanceof UserDetailsImpl userDetails)) {
+            throw new AccessDeniedException("User is not authenticated");
         }
-        return (UserDetailsImpl) auth.getPrincipal();
+        return userDetails;
     }
 
     public static UUID getCurrentUserId() {
