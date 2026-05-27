@@ -11,6 +11,7 @@ import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;
 import com.github.nsu_upprpo.school_app.repository.ParentChildRepository;
 import com.github.nsu_upprpo.school_app.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
@@ -40,6 +42,8 @@ public class PaymentService {
                 request.getGroupId(),
                 request.getChildId()
         )) {
+            log.warn("Payment creation rejected: child not in group [childId={}, groupId={}]",
+                    request.getChildId(), request.getGroupId());
             throw new ForbiddenException("Ребёнок не состоит в этой группе");
         }
 
@@ -57,6 +61,8 @@ public class PaymentService {
                 .build();
 
         payment = paymentRepository.save(payment);
+        log.info("Payment created [paymentId={}, childId={}, groupId={}, amount={}, dueDate={}]",
+                payment.getId(), child.getId(), group.getId(), payment.getAmount(), payment.getDueDate());
 
         eventPublisher.publishEvent(new PaymentCreatedEvent(
                 payment.getId(),
@@ -127,12 +133,16 @@ public class PaymentService {
         UUID childId = payment.getChild().getId();
 
         if (!parentChildRepository.existsByParentIdAndChildId(parentId, childId)) {
+            log.warn("Payment submission rejected: parent has no access [parentId={}, paymentId={}, childId={}]",
+                    parentId, paymentId, childId);
             throw new ForbiddenException("Нет доступа к этой оплате");
         }
 
         if (payment.getStatus() != PaymentStatus.UNPAID
                 && payment.getStatus() != PaymentStatus.OVERDUE
                 && payment.getStatus() != PaymentStatus.REJECTED) {
+            log.warn("Payment submission rejected: illegal status transition [paymentId={}, currentStatus={}]",
+                    paymentId, payment.getStatus());
             throw new IllegalStateException("Эту оплату нельзя отправить на подтверждение");
         }
 
@@ -141,6 +151,7 @@ public class PaymentService {
         payment.setRejectionReason(null);
 
         payment = paymentRepository.save(payment);
+        log.info("Payment submitted for confirmation [paymentId={}, parentId={}]", paymentId, parentId);
 
         return toResponse(payment);
     }
@@ -151,6 +162,8 @@ public class PaymentService {
         User admin = userService.findById(adminId);
 
         if (payment.getStatus() != PaymentStatus.PENDING_CONFIRMATION) {
+            log.warn("Payment confirmation rejected: illegal status [paymentId={}, currentStatus={}]",
+                    paymentId, payment.getStatus());
             throw new IllegalStateException("Подтвердить можно только оплату в статусе PENDING_CONFIRMATION");
         }
 
@@ -160,6 +173,8 @@ public class PaymentService {
         payment.setRejectionReason(null);
 
         payment = paymentRepository.save(payment);
+        log.info("Payment confirmed [paymentId={}, adminId={}, amount={}]",
+                paymentId, adminId, payment.getAmount());
 
         eventPublisher.publishEvent(new PaymentConfirmedEvent(
                 payment.getId(),
@@ -175,6 +190,8 @@ public class PaymentService {
         Payment payment = findById(paymentId);
 
         if (payment.getStatus() != PaymentStatus.PENDING_CONFIRMATION) {
+            log.warn("Payment rejection refused: illegal status [paymentId={}, currentStatus={}]",
+                    paymentId, payment.getStatus());
             throw new IllegalStateException("Отклонить можно только оплату в статусе PENDING_CONFIRMATION");
         }
 
@@ -182,6 +199,7 @@ public class PaymentService {
         payment.setRejectionReason(request.getReason());
 
         payment = paymentRepository.save(payment);
+        log.info("Payment rejected [paymentId={}, reason={}]", paymentId, request.getReason());
 
         eventPublisher.publishEvent(new PaymentRejectedEvent(
                 payment.getId(),
@@ -197,12 +215,14 @@ public class PaymentService {
         Payment payment = findById(paymentId);
 
         if (payment.getStatus() == PaymentStatus.PAID) {
+            log.warn("Payment cancellation refused: payment already paid [paymentId={}]", paymentId);
             throw new IllegalStateException("Оплаченное начисление нельзя отменить");
         }
 
         payment.setStatus(PaymentStatus.CANCELLED);
 
         payment = paymentRepository.save(payment);
+        log.info("Payment cancelled [paymentId={}]", paymentId);
 
         return toResponse(payment);
     }
@@ -214,6 +234,7 @@ public class PaymentService {
         List<Payment> payments = paymentRepository
                 .findByStatusAndDueDateOrderByCreatedAtDesc(PaymentStatus.UNPAID, targetDate);
 
+        int notified = 0;
         for (Payment payment : payments) {
             if (payment.getDueSoonNotifiedAt() != null) {
                 continue;
@@ -226,6 +247,10 @@ public class PaymentService {
                     payment.getChild().getId(),
                     payment.getDueDate()
             ));
+            notified++;
+        }
+        if (notified > 0) {
+            log.info("Due-soon payment notifications dispatched [count={}, dueDate={}]", notified, targetDate);
         }
     }
 
@@ -234,6 +259,7 @@ public class PaymentService {
         List<Payment> payments = paymentRepository
                 .findByStatusAndDueDateBeforeOrderByCreatedAtDesc(PaymentStatus.UNPAID, LocalDate.now());
 
+        int marked = 0;
         for (Payment payment : payments) {
             if (payment.getOverdueNotifiedAt() != null) {
                 continue;
@@ -246,6 +272,10 @@ public class PaymentService {
                     payment.getId(),
                     payment.getChild().getId()
             ));
+            marked++;
+        }
+        if (marked > 0) {
+            log.info("Payments marked overdue [count={}]", marked);
         }
     }
 

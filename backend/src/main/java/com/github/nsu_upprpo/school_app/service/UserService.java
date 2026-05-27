@@ -8,6 +8,7 @@ import com.github.nsu_upprpo.school_app.model.dto.response.UserResponse;
 import com.github.nsu_upprpo.school_app.model.entity.User;
 import com.github.nsu_upprpo.school_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -35,11 +37,15 @@ public class UserService {
         user.setPhone(request.getPhone());
         if (!user.getEmail().equals(request.getEmail())) {
             if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+                log.warn("Profile update rejected: email already in use [userId={}, newEmail={}]",
+                        userId, request.getEmail());
                 throw new ConflictException("User with this email already exists");
             }
+            log.info("User email changed [userId={}, newEmail={}]", userId, request.getEmail());
             user.setEmail(request.getEmail());
         }
         user = userRepository.save(user);
+        log.info("Profile updated [userId={}]", userId);
         return mapToResponse(user);
     }
 
@@ -47,13 +53,16 @@ public class UserService {
     public void changePassword(UUID userId, ChangePasswordRequest request) {
         User user = findById(userId);
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
+            log.warn("Password change rejected: current password mismatch [userId={}]", userId);
             throw new BadCredentialsException("Current password is incorrect");
         }
         if (passwordEncoder.matches(request.getNewPassword(), user.getPasswordHash())) {
+            log.warn("Password change rejected: new password equals current [userId={}]", userId);
             throw new BadCredentialsException("New password must be different from current password");
         }
         user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
+        log.info("Password changed [userId={}]", userId);
     }
 
     public User findById(UUID userId) {

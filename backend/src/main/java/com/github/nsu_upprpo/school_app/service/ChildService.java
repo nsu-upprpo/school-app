@@ -12,6 +12,7 @@ import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;
 import com.github.nsu_upprpo.school_app.repository.ParentChildRepository;
 import com.github.nsu_upprpo.school_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChildService {
@@ -46,6 +48,7 @@ public class ChildService {
 
         ParentChild link = new ParentChild(parentId, child.getId());
         parentChildRepository.save(link);
+        log.info("Child added [parentId={}, childId={}]", parentId, child.getId());
 
         return toResponse(child, Collections.emptyList());
     }
@@ -84,6 +87,7 @@ public class ChildService {
         child.setPatronymic(request.getPatronymic());
         child.setBirthDate(request.getBirthDate());
         child = userRepository.save(child);
+        log.info("Child updated [parentId={}, childId={}]", parentId, childId);
 
         List<GroupStudent> groupStudents = groupStudentRepository.findByChildId(childId);
         return toResponse(child, groupStudents);
@@ -91,6 +95,7 @@ public class ChildService {
 
     private void checkOwnership(UUID parentId, UUID childId) {
         if (!parentChildRepository.existsByParentIdAndChildId(parentId, childId)) {
+            log.warn("Child ownership check failed [parentId={}, childId={}]", parentId, childId);
             throw new ForbiddenException("Нет доступа к данному ребёнку");
         }
     }

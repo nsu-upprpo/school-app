@@ -12,12 +12,14 @@ import com.github.nsu_upprpo.school_app.repository.UserRepository;
 import com.github.nsu_upprpo.school_app.security.JwtTokenProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -30,6 +32,7 @@ public class AuthService {
     @Transactional
     public TokenResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
+            log.warn("Registration rejected: email already exists [email={}]", request.getEmail());
             throw new ConflictException("User with email " + request.getEmail() + " already exists");
         }
 
@@ -42,6 +45,7 @@ public class AuthService {
                 .role(Role.PARENT)
                 .build();
         user = userRepository.save(user);
+        log.info("User registered [userId={}, email={}, role={}]", user.getId(), user.getEmail(), user.getRole());
 
         return generateToken(user);
     }
@@ -52,32 +56,45 @@ public class AuthService {
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
         } catch (BadCredentialsException e) {
+            log.warn("Login failed: invalid credentials [email={}]", request.getEmail());
             throw new BadCredentialsException("Invalid email or password");
         }
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
+                .orElseThrow(() -> {
+                    log.warn("Login failed: authenticated user not found in repository [email={}]", request.getEmail());
+                    return new BadCredentialsException("Invalid email or password");
+                });
         if (!user.isActive()) {
+            log.warn("Login rejected: account deactivated [userId={}, email={}]", user.getId(), user.getEmail());
             throw new BadRequestException("Account deactivated");
         }
+        log.info("User logged in [userId={}, role={}]", user.getId(), user.getRole());
         return generateToken(user);
     }
 
     public TokenResponse refresh(RefreshTokenRequest request) {
         String refreshToken = request.getRefreshToken();
         if (!jwtTokenProvider.isValid(refreshToken)) {
+            log.warn("Token refresh failed: invalid refresh token");
             throw new BadRequestException("Invalid refresh token");
         }
         if (!jwtTokenProvider.getTokenType(refreshToken).equals("refresh")) {
+            log.warn("Token refresh failed: wrong token type supplied");
             throw new BadRequestException("Not a refresh token");
         }
 
         String email = jwtTokenProvider.getEmail(refreshToken);
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new BadRequestException("User not found"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> {
+            log.warn("Token refresh failed: user not found [email={}]", email);
+            return new BadRequestException("User not found");
+        });
         if (!user.isActive()) {
+            log.warn("Token refresh rejected: account deactivated [userId={}]", user.getId());
             throw new BadRequestException("Account deactivated");
         }
 
+        log.debug("Tokens refreshed [userId={}]", user.getId());
         return generateToken(user);
     }
 

@@ -6,6 +6,7 @@ import com.github.nsu_upprpo.school_app.model.dto.response.CourseResponse;
 import com.github.nsu_upprpo.school_app.model.entity.Course;
 import com.github.nsu_upprpo.school_app.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CourseService {
@@ -38,6 +40,7 @@ public class CourseService {
                 .maxAge(request.getMaxAge())
                 .build();
         course = courseRepository.save(course);
+        log.info("Course created [courseId={}, name={}]", course.getId(), course.getName());
         return toResponse(course);
     }
 
@@ -49,6 +52,7 @@ public class CourseService {
         course.setMinAge(request.getMinAge());
         course.setMaxAge(request.getMaxAge());
         course = courseRepository.save(course);
+        log.info("Course updated [courseId={}]", id);
         return toResponse(course);
     }
 
@@ -57,6 +61,7 @@ public class CourseService {
         Course course = findById(id);
         course.setActive(false);
         courseRepository.save(course);
+        log.info("Course deactivated [courseId={}]", id);
     }
 
     public Course findById(UUID id) {

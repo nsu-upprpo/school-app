@@ -12,6 +12,7 @@ import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;
 import com.github.nsu_upprpo.school_app.repository.LessonParticipationRepository;
 import com.github.nsu_upprpo.school_app.repository.ParentChildRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LessonParticipationService {
@@ -60,6 +62,8 @@ public class LessonParticipationService {
         p.setChangedAt(LocalDateTime.now());
 
         p = participationRepository.save(p);
+        log.info("Attendance marked by teacher [lessonId={}, childId={}, teacherId={}, status={}]",
+                lesson.getId(), child.getId(), teacher.getId(), status);
 
         eventPublisher.publishEvent(new AttendanceMarkedEvent(
                 p.getId(),
@@ -109,6 +113,8 @@ public class LessonParticipationService {
                 .changedAt(LocalDateTime.now())
                 .build();
         participationRepository.save(p);
+        log.info("Lesson cancelled by parent [parentId={}, childId={}, lessonId={}]",
+                parentId, childId, lessonId);
 
         notifyTeacher(lesson, child,
                 "Родитель отменил занятие для ребёнка " + child.getFullName());
@@ -129,6 +135,8 @@ public class LessonParticipationService {
 
         if (s == ParticipationStatus.CANCELLED_BY_PARENT) {
             participationRepository.delete(existing);
+            log.info("Lesson cancellation restored by parent [parentId={}, childId={}, lessonId={}]",
+                    parentId, childId, lessonId);
             notifyTeacher(lesson, existing.getChild(),
                     "Родитель восстановил занятие для ребёнка " + existing.getChild().getFullName());
             return;
@@ -143,6 +151,8 @@ public class LessonParticipationService {
                         .ifPresent(participationRepository::delete);
             }
             participationRepository.delete(existing);
+            log.info("Lesson reschedule undone by parent [parentId={}, childId={}, sourceLessonId={}]",
+                    parentId, childId, lessonId);
             notifyTeacher(lesson, existing.getChild(),
                     "Родитель отменил перенос занятия для ребёнка " + existing.getChild().getFullName());
             return;
@@ -213,6 +223,8 @@ public class LessonParticipationService {
 
         participationRepository.save(out);
         participationRepository.save(in);
+        log.info("Lesson rescheduled by parent [parentId={}, childId={}, fromLessonId={}, toLessonId={}]",
+                parentId, childId, sourceLessonId, targetLessonId);
 
         notifyTeacher(source, child,
                 "Родитель перенёс ребёнка " + child.getFullName() + " с этого занятия");

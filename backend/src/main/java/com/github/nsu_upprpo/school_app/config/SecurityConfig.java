@@ -3,6 +3,7 @@ package com.github.nsu_upprpo.school_app.config;
 import com.github.nsu_upprpo.school_app.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -54,12 +56,16 @@ public class SecurityConfig {
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, authException) -> {
+            String jwtError = (String) request.getAttribute(JwtAuthenticationFilter.JWT_ERROR_ATTR);
+            String detail = jwtError != null ? jwtError : "no credentials";
+            String message = "Требуется аутентификация: " + detail;
+            log.debug("Returning 401 [uri={}, detail={}]", request.getRequestURI(), detail);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(objectMapper.writeValueAsString(Map.of(
                     "status", 401,
                     "error", "Unauthorized",
-                    "message", "Требуется аутентификация: " + authException.getMessage(),
+                    "message", message,
                     "path", request.getRequestURI(),
                     "timestamp", LocalDateTime.now().toString()
             )));
