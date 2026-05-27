@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -31,7 +30,7 @@ public class EventService {
         } else {
             events = eventRepository.findByStartTimeAfterOrderByStartTimeAsc(LocalDateTime.now());
         }
-        return events.stream().map(this::toResponse).collect(Collectors.toList());
+        return events.stream().map(this::toResponse).toList();
     }
 
     @Transactional

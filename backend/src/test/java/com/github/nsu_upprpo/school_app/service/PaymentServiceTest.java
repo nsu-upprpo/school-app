@@ -23,7 +23,6 @@ import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;
 import com.github.nsu_upprpo.school_app.repository.ParentChildRepository;
 import com.github.nsu_upprpo.school_app.repository.PaymentRepository;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

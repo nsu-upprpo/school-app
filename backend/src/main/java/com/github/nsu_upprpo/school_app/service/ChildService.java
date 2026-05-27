@@ -6,7 +6,11 @@ import com.github.nsu_upprpo.school_app.model.dto.request.CreateChildRequest;
 import com.github.nsu_upprpo.school_app.model.dto.request.UpdateChildRequest;
 import com.github.nsu_upprpo.school_app.model.dto.response.ChildResponse;
 import com.github.nsu_upprpo.school_app.model.dto.response.GroupInfo;
-import com.github.nsu_upprpo.school_app.model.entity.*;
+import com.github.nsu_upprpo.school_app.model.entity.Group;
+import com.github.nsu_upprpo.school_app.model.entity.GroupStudent;
+import com.github.nsu_upprpo.school_app.model.entity.ParentChild;
+import com.github.nsu_upprpo.school_app.model.entity.Role;
+import com.github.nsu_upprpo.school_app.model.entity.User;
 import com.github.nsu_upprpo.school_app.repository.GroupRepository;
 import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;
 import com.github.nsu_upprpo.school_app.repository.ParentChildRepository;
@@ -20,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -56,7 +59,7 @@ public class ChildService {
     public List<ChildResponse> getChildrenByParent(UUID parentId) {
         List<UUID> childIds = parentChildRepository.findByParentId(parentId).stream()
                 .map(ParentChild::getChildId)
-                .collect(Collectors.toList());
+                .toList();
 
         if (childIds.isEmpty()) {
             return Collections.emptyList();
@@ -68,7 +71,7 @@ public class ChildService {
                     List<GroupStudent> groupStudents = groupStudentRepository.findByChildId(child.getId());
                     return toResponse(child, groupStudents);
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public ChildResponse getChildById(UUID parentId, UUID childId) {
@@ -115,7 +118,7 @@ public class ChildService {
                             .courseName(group != null ? group.getCourse().getName() : null)
                             .build();
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         return ChildResponse.builder()
                 .id(child.getId())

@@ -6,7 +6,12 @@ import com.github.nsu_upprpo.school_app.common.exception.ForbiddenException;
 import com.github.nsu_upprpo.school_app.common.exception.NotFoundException;
 import com.github.nsu_upprpo.school_app.model.dto.request.MarkAttendanceRequest;
 import com.github.nsu_upprpo.school_app.model.dto.response.AttendanceResponse;
-import com.github.nsu_upprpo.school_app.model.entity.*;
+import com.github.nsu_upprpo.school_app.model.entity.Lesson;
+import com.github.nsu_upprpo.school_app.model.entity.LessonParticipation;
+import com.github.nsu_upprpo.school_app.model.entity.LessonStatus;
+import com.github.nsu_upprpo.school_app.model.entity.NotificationType;
+import com.github.nsu_upprpo.school_app.model.entity.ParticipationStatus;
+import com.github.nsu_upprpo.school_app.model.entity.User;
 import com.github.nsu_upprpo.school_app.model.event.AttendanceMarkedEvent;
 import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;
 import com.github.nsu_upprpo.school_app.repository.LessonParticipationRepository;
@@ -21,7 +26,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -40,7 +44,7 @@ public class LessonParticipationService {
         return participationRepository.findByLessonId(lessonId).stream()
                 .filter(p -> p.getStatus() != null && p.getStatus().isTeacherMark())
                 .map(this::toAttendanceResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional
@@ -116,7 +120,7 @@ public class LessonParticipationService {
         log.info("Lesson cancelled by parent [parentId={}, childId={}, lessonId={}]",
                 parentId, childId, lessonId);
 
-        notifyTeacher(lesson, child,
+        notifyTeacher(lesson,
                 "Родитель отменил занятие для ребёнка " + child.getFullName());
     }
 
@@ -137,7 +141,7 @@ public class LessonParticipationService {
             participationRepository.delete(existing);
             log.info("Lesson cancellation restored by parent [parentId={}, childId={}, lessonId={}]",
                     parentId, childId, lessonId);
-            notifyTeacher(lesson, existing.getChild(),
+            notifyTeacher(lesson,
                     "Родитель восстановил занятие для ребёнка " + existing.getChild().getFullName());
             return;
         }
@@ -153,7 +157,7 @@ public class LessonParticipationService {
             participationRepository.delete(existing);
             log.info("Lesson reschedule undone by parent [parentId={}, childId={}, sourceLessonId={}]",
                     parentId, childId, lessonId);
-            notifyTeacher(lesson, existing.getChild(),
+            notifyTeacher(lesson,
                     "Родитель отменил перенос занятия для ребёнка " + existing.getChild().getFullName());
             return;
         }
@@ -226,9 +230,9 @@ public class LessonParticipationService {
         log.info("Lesson rescheduled by parent [parentId={}, childId={}, fromLessonId={}, toLessonId={}]",
                 parentId, childId, sourceLessonId, targetLessonId);
 
-        notifyTeacher(source, child,
+        notifyTeacher(source,
                 "Родитель перенёс ребёнка " + child.getFullName() + " с этого занятия");
-        notifyTeacher(target, child,
+        notifyTeacher(target,
                 "Родитель перевёл на это занятие ребёнка " + child.getFullName());
     }
 
@@ -257,7 +261,9 @@ public class LessonParticipationService {
 
     private void ensureTargetHasCapacity(Lesson target) {
         Integer max = target.getGroup().getMaxStudents();
-        if (max == null) return;
+        if (max == null) {
+            return;
+        }
 
         long baseStudents = groupStudentRepository.countByGroupIdAndLeftAtIsNull(target.getGroup().getId());
         List<LessonParticipation> existing = participationRepository.findByLessonId(target.getId());
@@ -286,7 +292,7 @@ public class LessonParticipationService {
         }
     }
 
-    private void notifyTeacher(Lesson lesson, User child, String message) {
+    private void notifyTeacher(Lesson lesson, String message) {
         UUID teacherId = lesson.getGroup().getTeacher().getId();
         notificationService.send(
                 teacherId,

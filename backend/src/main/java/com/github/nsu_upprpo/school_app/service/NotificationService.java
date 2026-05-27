@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -27,12 +26,12 @@ public class NotificationService {
 
     public List<NotificationResponse> getByUser(UUID userId) {
         return notificationRepository.findByUserIdOrderByCreatedAtDesc(userId).stream()
-                .map(this::toResponse).collect(Collectors.toList());
+                .map(this::toResponse).toList();
     }
 
     public List<NotificationResponse> getUnreadByUser(UUID userId) {
         return notificationRepository.findByUserIdAndIsReadFalseOrderByCreatedAtDesc(userId).stream()
-                .map(this::toResponse).collect(Collectors.toList());
+                .map(this::toResponse).toList();
     }
 
     @Transactional

@@ -1,7 +1,16 @@
 package com.github.nsu_upprpo.school_app.model.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -29,7 +38,9 @@ public class GroupStudent {
     @Column(name = "left_at")
     private LocalDate leftAt;
 
-    @Data @NoArgsConstructor @AllArgsConstructor
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class GroupStudentId implements Serializable {
         private UUID groupId;
         private UUID childId;

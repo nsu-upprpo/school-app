@@ -15,7 +15,12 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -63,7 +68,7 @@ public class ChildScheduleService {
                 .filter(p -> p.getStatus() == ParticipationStatus.RESCHEDULED_IN)
                 .map(p -> p.getLesson().getId())
                 .filter(id -> !baseIds.contains(id))
-                .collect(Collectors.toList());
+                .toList();
         List<Lesson> incomingLessons = incomingLessonIds.isEmpty()
                 ? List.of()
                 : lessonRepository.findByIdIn(incomingLessonIds);
@@ -72,7 +77,7 @@ public class ChildScheduleService {
         return Stream.concat(baseLessons.stream(), incomingLessons.stream())
                 .map(lesson -> toResponse(lesson, overlayByLesson.get(lesson.getId())))
                 .sorted(Comparator.comparing(ChildScheduleLessonResponse::getStartTime))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<ChildScheduleLessonResponse> getUpcomingForChild(
@@ -87,24 +92,29 @@ public class ChildScheduleService {
         return getForChild(parentId, childId, now, horizon).stream()
                 .filter(this::isActuallyAttending)
                 .limit(limit)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private boolean isActuallyAttending(ChildScheduleLessonResponse r) {
         String s = r.getChildStatus();
-        if (s == null) {
-            return true; // штатное участие
-        }
-        return !s.equals(ParticipationStatus.CANCELLED_BY_PARENT.name())
+        // s == null означает штатное участие
+        return s == null
+                || (!s.equals(ParticipationStatus.CANCELLED_BY_PARENT.name())
                 && !s.equals(ParticipationStatus.RESCHEDULED_OUT.name())
-                && !s.equals(ParticipationStatus.ABSENT.name());
+                && !s.equals(ParticipationStatus.ABSENT.name()));
     }
 
     private boolean isWithinMembership(Lesson lesson, GroupStudent gs) {
-        if (gs == null) return false;
+        if (gs == null) {
+            return false;
+        }
         LocalDate day = lesson.getStartTime().toLocalDate();
-        if (gs.getEnrolledAt() != null && day.isBefore(gs.getEnrolledAt())) return false;
-        if (gs.getLeftAt() != null && day.isAfter(gs.getLeftAt())) return false;
+        if (gs.getEnrolledAt() != null && day.isBefore(gs.getEnrolledAt())) {
+            return false;
+        }
+        if (gs.getLeftAt() != null && day.isAfter(gs.getLeftAt())) {
+            return false;
+        }
         return true;
     }
 

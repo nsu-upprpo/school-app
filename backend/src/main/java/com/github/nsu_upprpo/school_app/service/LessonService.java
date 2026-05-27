@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -38,14 +37,14 @@ public class LessonService {
 
     public List<LessonResponse> getByGroup(UUID groupId) {
         return lessonRepository.findByGroupIdOrderByStartTimeAsc(groupId).stream()
-                .map(this::toResponse).collect(Collectors.toList());
+                .map(this::toResponse).toList();
     }
 
     public List<LessonResponse> getByPeriod(UUID groupId, LessonPeriodRequest request) {
         LocalDateTime from = request.getFromDate();
         LocalDateTime to = request.getToDate();
         return lessonRepository.findByGroupIdAndStartTimeBetween(groupId, from, to).stream()
-                .map(this::toResponse).collect(Collectors.toList());
+                .map(this::toResponse).toList();
     }
 
     public LessonResponse getById(UUID id) {
@@ -107,7 +106,7 @@ public class LessonService {
 
         List<LessonTemplateResponse.GroupTemplate> groupTemplates = groups.stream()
                 .map(this::buildGroupTemplate)
-                .collect(Collectors.toList());
+                .toList();
 
         return LessonTemplateResponse.builder()
                 .groups(groupTemplates)
@@ -118,20 +117,20 @@ public class LessonService {
         List<Lesson> recentLessons = lessonRepository.findByGroupId(group.getId()).stream()
                 .sorted(Comparator.comparing(Lesson::getStartTime).reversed())
                 .limit(RECENT_LESSONS_LIMIT)
-                .collect(Collectors.toList());
+                .toList();
 
         List<LessonTemplateResponse.RecentLessonTime> recentTimes = recentLessons.stream()
                 .map(l -> LessonTemplateResponse.RecentLessonTime.builder()
                         .startTime(l.getStartTime().plusWeeks(1))
                         .endTime(l.getEndTime().plusWeeks(1))
                         .build())
-                .collect(Collectors.toList());
+                .toList();
 
         List<String> recentTopics = recentLessons.stream()
                 .map(Lesson::getTopic)
                 .filter(t -> t != null && !t.isBlank())
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
 
         List<LessonTemplateResponse.ProjectOption> projects = projectRepository.findByGroupId(group.getId()).stream()
                 .map(p -> LessonTemplateResponse.ProjectOption.builder()
@@ -139,7 +138,7 @@ public class LessonService {
                         .name(p.getName())
                         .status(p.getStatus())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
 
         return LessonTemplateResponse.GroupTemplate.builder()
                 .groupId(group.getId())

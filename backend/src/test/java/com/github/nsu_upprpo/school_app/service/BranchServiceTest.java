@@ -3,12 +3,10 @@ package com.github.nsu_upprpo.school_app.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.github.nsu_upprpo.school_app.common.exception.NotFoundException;
-import com.github.nsu_upprpo.school_app.model.dto.request.CreateBranchRequest;
 import com.github.nsu_upprpo.school_app.model.dto.response.BranchResponse;
 import com.github.nsu_upprpo.school_app.model.entity.Branch;
 import com.github.nsu_upprpo.school_app.repository.BranchRepository;

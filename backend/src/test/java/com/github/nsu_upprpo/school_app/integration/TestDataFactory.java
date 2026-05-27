@@ -21,6 +21,7 @@ import com.github.nsu_upprpo.school_app.repository.PaymentRepository;
 import com.github.nsu_upprpo.school_app.repository.UserRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -77,7 +78,7 @@ public class TestDataFactory {
         user.setLastName("Ученик");
         user.setBirthDate(LocalDate.of(2015, 6, 15));
         user.setEmail(email);
-        user.setPhone("+7999" + (int) (Math.random() * 900000 + 100000));
+        user.setPhone("+7999" + ThreadLocalRandom.current().nextInt(100000, 1_000_000));
         user.setPasswordHash(passwordEncoder.encode(BaseIntegrationTest.TEST_PASSWORD));
         user.setRole(Role.STUDENT);
         user.setActive(true);
@@ -155,7 +156,7 @@ public class TestDataFactory {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        user.setPhone("+7999" + (int) (Math.random() * 900000 + 100000));
+        user.setPhone("+7999" + ThreadLocalRandom.current().nextInt(100000, 1_000_000));
         user.setPasswordHash(passwordEncoder.encode(BaseIntegrationTest.TEST_PASSWORD));
         user.setRole(role);
         user.setActive(true);

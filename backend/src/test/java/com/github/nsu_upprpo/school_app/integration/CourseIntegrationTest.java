@@ -61,7 +61,7 @@ class CourseIntegrationTest extends BaseIntegrationTest {
 
         assertStatusIn(createResult, 201, 200);
         JsonNode created = readJson(createResult);
-        String courseId = created.get("id").asText();
+        String courseId = created.get("id").asString();
 
         mockMvc.perform(delete("/api/v1/admin/courses/{id}", courseId)
                         .header("Authorization", "Bearer " + token))

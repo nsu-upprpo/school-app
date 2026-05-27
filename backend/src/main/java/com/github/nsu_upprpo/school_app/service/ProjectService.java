@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -34,7 +33,7 @@ public class ProjectService {
 
     public List<ProjectResponse> getByGroup(UUID groupId) {
         return projectRepository.findByGroupId(groupId).stream()
-                .map(this::toResponse).collect(Collectors.toList());
+                .map(this::toResponse).toList();
     }
 
     public ProjectResponse getById(UUID id) {
@@ -59,7 +58,7 @@ public class ProjectService {
 
     public List<ProjectGradeResponse> getGrades(UUID projectId) {
         return projectGradeRepository.findByProjectId(projectId).stream()
-                .map(this::toGradeResponse).collect(Collectors.toList());
+                .map(this::toGradeResponse).toList();
     }
 
     @Transactional

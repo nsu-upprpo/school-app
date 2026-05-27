@@ -1,7 +1,6 @@
 package com.github.nsu_upprpo.school_app.model.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

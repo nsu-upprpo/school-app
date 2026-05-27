@@ -6,7 +6,12 @@ import com.github.nsu_upprpo.school_app.common.exception.NotFoundException;
 import com.github.nsu_upprpo.school_app.model.dto.request.CreateGroupRequest;
 import com.github.nsu_upprpo.school_app.model.dto.response.GroupDetailedResponse;
 import com.github.nsu_upprpo.school_app.model.dto.response.GroupResponse;
-import com.github.nsu_upprpo.school_app.model.entity.*;
+import com.github.nsu_upprpo.school_app.model.entity.Branch;
+import com.github.nsu_upprpo.school_app.model.entity.Course;
+import com.github.nsu_upprpo.school_app.model.entity.Group;
+import com.github.nsu_upprpo.school_app.model.entity.GroupStudent;
+import com.github.nsu_upprpo.school_app.model.entity.ParentChild;
+import com.github.nsu_upprpo.school_app.model.entity.User;
 import com.github.nsu_upprpo.school_app.repository.GroupRepository;
 import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;
 import com.github.nsu_upprpo.school_app.repository.ParentChildRepository;
@@ -16,9 +21,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.time.*;
-import java.util.stream.Collectors;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -36,25 +43,25 @@ public class GroupService {
     public List<GroupResponse> getAll() {
         return groupRepository.findByActiveTrue().stream()
                 .map(this::toResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<GroupResponse> getByBranch(UUID branchId) {
         return groupRepository.findByBranchIdAndActiveTrue(branchId).stream()
                 .map(this::toResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<GroupResponse> getByTeacher(UUID teacherId) {
         return groupRepository.findByTeacherIdAndActiveTrue(teacherId).stream()
                 .map(this::toResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<GroupResponse> getByParent(UUID parentId) {
         List<UUID> childIds = parentChildRepository.findByParentId(parentId).stream()
                 .map(ParentChild::getChildId)
-                .collect(Collectors.toList());
+                .toList();
 
         if (childIds.isEmpty()) {
             return Collections.emptyList();
@@ -65,12 +72,12 @@ public class GroupService {
                 .filter(gs -> gs.getLeftAt() == null)
                 .map(GroupStudent::getGroupId)
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
 
         return groupRepository.findAllById(groupIds).stream()
                 .filter(Group::isActive)
                 .map(this::toResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public GroupDetailedResponse getById(UUID id) {
@@ -80,7 +87,9 @@ public class GroupService {
         List<GroupDetailedResponse.StudentInfo> studentInfos = students.stream()
                 .map(gs -> {
                     User child = userRepository.findById(gs.getChildId()).orElse(null);
-                    if (child == null) return null;
+                    if (child == null) {
+                        return null;
+                    }
                     return GroupDetailedResponse.StudentInfo.builder()
                             .childId(child.getId())
                             .firstName(child.getFirstName())
@@ -89,7 +98,7 @@ public class GroupService {
                             .build();
                 })
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
 
         return GroupDetailedResponse.builder()
                 .id(group.getId())
