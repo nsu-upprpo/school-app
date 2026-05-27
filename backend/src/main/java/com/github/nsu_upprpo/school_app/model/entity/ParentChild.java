@@ -1,7 +1,15 @@
 package com.github.nsu_upprpo.school_app.model.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -24,7 +32,8 @@ public class ParentChild {
     private UUID childId;
 
     @Data
-    @NoArgsConstructor @AllArgsConstructor
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ParentChildId implements Serializable {
         private UUID parentId;
         private UUID childId;

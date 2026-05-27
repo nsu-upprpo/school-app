@@ -56,7 +56,7 @@ class GroupIntegrationTest extends BaseIntegrationTest {
 
         assertStatusIn(createResult, 201, 200);
         JsonNode created = readJson(createResult);
-        String groupId = created.get("id").asText();
+        String groupId = created.get("id").asString();
 
         mockMvc.perform(get("/api/v1/admin/groups")
                         .header("Authorization", "Bearer " + token))

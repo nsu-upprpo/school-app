@@ -57,22 +57,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String type = claims.get("type", String.class);
             if (!"access".equals(type)) {
                 reject(request, uri, "expected access token, got " + type);
-                filterChain.doFilter(request, response);
-                return;
-            }
-
-            String userId = claims.getSubject();
-            try {
-                UserDetails userDetails = userDetailsService.loadByUserId(UUID.fromString(userId));
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                log.debug("JWT authenticated [userId={}, uri={}]", userId, uri);
-            } catch (UsernameNotFoundException ex) {
-                reject(request, uri, "user from token does not exist: " + userId);
-            } catch (IllegalArgumentException ex) {
-                reject(request, uri, "malformed user id in token: " + userId);
+            } else {
+                authenticateClaims(request, uri, claims);
             }
         } catch (JwtException ex) {
             reject(request, uri, ex.getClass().getSimpleName() + ": " + ex.getMessage());
@@ -81,6 +67,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private void authenticateClaims(HttpServletRequest request, String uri, Claims claims) {
+        String userId = claims.getSubject();
+        try {
+            UserDetails userDetails = userDetailsService.loadByUserId(UUID.fromString(userId));
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.debug("JWT authenticated [userId={}, uri={}]", userId, uri);
+        } catch (UsernameNotFoundException ex) {
+            reject(request, uri, "user from token does not exist: " + userId);
+        } catch (IllegalArgumentException ex) {
+            reject(request, uri, "malformed user id in token: " + userId);
+        }
     }
 
     private void reject(HttpServletRequest request, String uri, String reason) {

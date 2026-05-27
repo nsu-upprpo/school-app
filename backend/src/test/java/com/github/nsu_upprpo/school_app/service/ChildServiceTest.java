@@ -13,7 +13,6 @@ import com.github.nsu_upprpo.school_app.model.entity.Course;
 import com.github.nsu_upprpo.school_app.model.entity.Group;
 import com.github.nsu_upprpo.school_app.model.entity.GroupStudent;
 import com.github.nsu_upprpo.school_app.model.entity.ParentChild;
-import com.github.nsu_upprpo.school_app.model.entity.Role;
 import com.github.nsu_upprpo.school_app.model.entity.User;
 import com.github.nsu_upprpo.school_app.repository.GroupRepository;
 import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;

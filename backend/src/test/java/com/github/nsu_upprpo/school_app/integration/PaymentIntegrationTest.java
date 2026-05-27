@@ -76,9 +76,9 @@ class PaymentIntegrationTest extends BaseIntegrationTest {
 
         assertStatusIn(createResult, 201, 200);
         JsonNode created = readJson(createResult);
-        String paymentId = created.get("id").asText();
+        String paymentId = created.get("id").asString();
         assertNotNull(paymentId);
-        org.junit.jupiter.api.Assertions.assertEquals("UNPAID", created.get("status").asText());
+        org.junit.jupiter.api.Assertions.assertEquals("UNPAID", created.get("status").asString());
 
         mockMvc.perform(post("/api/v1/payments/{paymentId}/submit", paymentId)
                         .header("Authorization", "Bearer " + parentToken))

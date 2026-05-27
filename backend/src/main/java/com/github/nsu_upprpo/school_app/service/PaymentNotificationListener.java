@@ -2,9 +2,12 @@ package com.github.nsu_upprpo.school_app.service;
 
 import com.github.nsu_upprpo.school_app.model.entity.NotificationType;
 import com.github.nsu_upprpo.school_app.model.entity.ParentChild;
-import com.github.nsu_upprpo.school_app.model.event.*;
+import com.github.nsu_upprpo.school_app.model.event.PaymentConfirmedEvent;
+import com.github.nsu_upprpo.school_app.model.event.PaymentCreatedEvent;
+import com.github.nsu_upprpo.school_app.model.event.PaymentDueSoonEvent;
+import com.github.nsu_upprpo.school_app.model.event.PaymentOverdueEvent;
+import com.github.nsu_upprpo.school_app.model.event.PaymentRejectedEvent;
 import com.github.nsu_upprpo.school_app.repository.ParentChildRepository;
-import com.github.nsu_upprpo.school_app.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;

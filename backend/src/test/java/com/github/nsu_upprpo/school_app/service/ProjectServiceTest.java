@@ -16,7 +16,6 @@ import com.github.nsu_upprpo.school_app.model.entity.User;
 import com.github.nsu_upprpo.school_app.model.event.ProjectGradeCreatedEvent;
 import com.github.nsu_upprpo.school_app.repository.ProjectGradeRepository;
 import com.github.nsu_upprpo.school_app.repository.ProjectRepository;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

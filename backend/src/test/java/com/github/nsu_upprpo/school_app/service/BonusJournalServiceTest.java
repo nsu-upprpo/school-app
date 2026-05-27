@@ -12,8 +12,8 @@ import com.github.nsu_upprpo.school_app.model.entity.Group;
 import com.github.nsu_upprpo.school_app.model.entity.GroupStudent;
 import com.github.nsu_upprpo.school_app.model.entity.Project;
 import com.github.nsu_upprpo.school_app.model.entity.ProjectGrade;
-import com.github.nsu_upprpo.school_app.repository.AttendanceRepository;
 import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;
+import com.github.nsu_upprpo.school_app.repository.LessonParticipationRepository;
 import com.github.nsu_upprpo.school_app.repository.LessonRepository;
 import com.github.nsu_upprpo.school_app.repository.ParentChildRepository;
 import com.github.nsu_upprpo.school_app.repository.ProjectGradeRepository;
@@ -39,7 +39,7 @@ class BonusJournalServiceTest {
     @Mock
     private LessonRepository lessonRepository;
     @Mock
-    private AttendanceRepository attendanceRepository;
+    private LessonParticipationRepository attendanceRepository;
     @Mock
     private ProjectGradeRepository projectGradeRepository;
 

@@ -62,7 +62,7 @@ class BranchIntegrationTest extends BaseIntegrationTest {
 
         assertStatusIn(createResult, 201, 200);
         JsonNode created = readJson(createResult);
-        String branchId = created.get("id").asText();
+        String branchId = created.get("id").asString();
 
         mockMvc.perform(put("/api/v1/admin/branches/{id}", branchId)
                         .header("Authorization", "Bearer " + token)

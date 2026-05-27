@@ -35,7 +35,7 @@ class ChildIntegrationTest extends BaseIntegrationTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        String childId = readJson(createResult).get("id").asText();
+        String childId = readJson(createResult).get("id").asString();
 
         mockMvc.perform(get("/api/v1/parents/me/children")
                         .header("Authorization", "Bearer " + token))
@@ -68,7 +68,7 @@ class ChildIntegrationTest extends BaseIntegrationTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        String childId = readJson(createResult).get("id").asText();
+        String childId = readJson(createResult).get("id").asString();
 
         mockMvc.perform(put("/api/v1/parents/me/children/{childId}", childId)
                         .header("Authorization", "Bearer " + token)

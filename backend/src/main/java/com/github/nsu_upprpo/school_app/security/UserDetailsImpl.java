@@ -39,7 +39,8 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return active;
+        // Блокировок аккаунта в системе нет: за активность отвечает isEnabled().
+        return true;
     }
 
     @Override

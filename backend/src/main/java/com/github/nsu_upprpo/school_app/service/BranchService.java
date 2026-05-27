@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,7 +27,7 @@ public class BranchService {
         } else {
             branches = branchRepository.findByCityAndActiveTrue(city);
         }
-        return branches.stream().map(this::toResponse).collect(Collectors.toList());
+        return branches.stream().map(this::toResponse).toList();
     }
 
     public BranchResponse getById(UUID branchId) {

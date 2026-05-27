@@ -49,7 +49,7 @@ public abstract class BaseIntegrationTest {
 
         JsonNode json = readJson(result);
         assertTrue(json.hasNonNull("accessToken"), "Response must contain accessToken");
-        return json.get("accessToken").asText();
+        return json.get("accessToken").asString();
     }
 
     protected String loginAndGetRefreshToken(String email) throws Exception {
@@ -68,7 +68,7 @@ public abstract class BaseIntegrationTest {
 
         JsonNode json = readJson(result);
         assertTrue(json.hasNonNull("refreshToken"), "Response must contain refreshToken");
-        return json.get("refreshToken").asText();
+        return json.get("refreshToken").asString();
     }
 
     protected JsonNode readJson(MvcResult result) throws Exception {
