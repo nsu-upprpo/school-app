@@ -12,6 +12,7 @@ import com.github.nsu_upprpo.school_app.repository.GroupStudentRepository;
 import com.github.nsu_upprpo.school_app.repository.ParentChildRepository;
 import com.github.nsu_upprpo.school_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.*;
 import java.time.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GroupService {
@@ -114,6 +116,8 @@ public class GroupService {
                 .maxStudents(request.getMaxStudents())
                 .build();
         group = groupRepository.save(group);
+        log.info("Group created [groupId={}, courseId={}, branchId={}, teacherId={}]",
+                group.getId(), course.getId(), branch.getId(), teacher.getId());
         return toResponse(group);
     }
 
@@ -130,6 +134,7 @@ public class GroupService {
         group.setScheduleDescription(request.getScheduleDescription());
         group.setMaxStudents(request.getMaxStudents());
         group = groupRepository.save(group);
+        log.info("Group updated [groupId={}]", id);
         return toResponse(group);
     }
 
@@ -144,6 +149,7 @@ public class GroupService {
         if (group.getMaxStudents() != null) {
             long currentCount = groupStudentRepository.countByGroupIdAndLeftAtIsNull(groupId);
             if (currentCount >= group.getMaxStudents()) {
+                log.warn("Cannot enrol child: group is full [groupId={}, max={}]", groupId, group.getMaxStudents());
                 throw new BadRequestException("Группа заполнена (макс. " + group.getMaxStudents() + ")");
             }
         }
@@ -157,6 +163,7 @@ public class GroupService {
         gs.setChildId(childId);
         gs.setEnrolledAt(LocalDate.now());
         groupStudentRepository.save(gs);
+        log.info("Student enrolled in group [groupId={}, childId={}]", groupId, childId);
     }
 
     @Transactional
@@ -166,6 +173,7 @@ public class GroupService {
                 .orElseThrow(() -> new NotFoundException("Ребёнок не в этой группе"));
         gs.setLeftAt(LocalDate.now());
         groupStudentRepository.save(gs);
+        log.info("Student removed from group [groupId={}, childId={}]", groupId, childId);
     }
 
     public Group findById(UUID id) {

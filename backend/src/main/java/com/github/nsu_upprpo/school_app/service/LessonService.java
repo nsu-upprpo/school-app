@@ -14,6 +14,7 @@ import com.github.nsu_upprpo.school_app.repository.GroupRepository;
 import com.github.nsu_upprpo.school_app.repository.LessonRepository;
 import com.github.nsu_upprpo.school_app.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LessonService {
@@ -71,6 +73,8 @@ public class LessonService {
                 .status(LessonStatus.PLANNED)
                 .build();
         lesson = lessonRepository.save(lesson);
+        log.info("Lesson created [lessonId={}, groupId={}, startTime={}]",
+                lesson.getId(), group.getId(), lesson.getStartTime());
         return toResponse(lesson);
     }
 
@@ -80,6 +84,7 @@ public class LessonService {
         lesson.setStatus(LessonStatus.CANCELLED);
         lesson.setCancelReason(reason);
         lesson = lessonRepository.save(lesson);
+        log.info("Lesson cancelled [lessonId={}, reason={}]", id, reason);
         return toResponse(lesson);
     }
 
@@ -88,6 +93,7 @@ public class LessonService {
         Lesson lesson = findById(id);
         lesson.setStatus(LessonStatus.COMPLETED);
         lesson = lessonRepository.save(lesson);
+        log.info("Lesson completed [lessonId={}]", id);
         return toResponse(lesson);
     }
 

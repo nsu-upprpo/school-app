@@ -7,6 +7,7 @@ import com.github.nsu_upprpo.school_app.model.entity.Branch;
 import com.github.nsu_upprpo.school_app.model.entity.Event;
 import com.github.nsu_upprpo.school_app.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EventService {
@@ -48,6 +50,8 @@ public class EventService {
                 .location(request.getLocation())
                 .build();
         event = eventRepository.save(event);
+        log.info("Event created [eventId={}, name={}, startTime={}]",
+                event.getId(), event.getName(), event.getStartTime());
         return toResponse(event);
     }
 
@@ -65,6 +69,7 @@ public class EventService {
         event.setEndTime(request.getEndTime());
         event.setLocation(request.getLocation());
         event = eventRepository.save(event);
+        log.info("Event updated [eventId={}]", id);
         return toResponse(event);
     }
 
@@ -74,6 +79,7 @@ public class EventService {
             throw new NotFoundException("Мероприятие не найдено");
         }
         eventRepository.deleteById(id);
+        log.info("Event deleted [eventId={}]", id);
     }
 
     public Event findById(UUID id) {

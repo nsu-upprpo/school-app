@@ -12,6 +12,7 @@ import com.github.nsu_upprpo.school_app.model.event.ProjectGradeCreatedEvent;
 import com.github.nsu_upprpo.school_app.repository.ProjectGradeRepository;
 import com.github.nsu_upprpo.school_app.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
@@ -50,6 +52,8 @@ public class ProjectService {
                 .status("ACTIVE")
                 .build();
         project = projectRepository.save(project);
+        log.info("Project created [projectId={}, groupId={}, name={}]",
+                project.getId(), group.getId(), project.getName());
         return toResponse(project);
     }
 
@@ -73,6 +77,8 @@ public class ProjectService {
         grade.setScore(score);
         grade.setComment(comment);
         grade = projectGradeRepository.save(grade);
+        log.info("Project grade saved [gradeId={}, projectId={}, childId={}, teacherId={}, score={}]",
+                grade.getId(), projectId, childId, teacherId, score);
 
         applicationEventPublisher.publishEvent(new ProjectGradeCreatedEvent(
                 grade.getId(),

@@ -6,14 +6,15 @@ import com.github.nsu_upprpo.school_app.model.dto.response.BranchResponse;
 import com.github.nsu_upprpo.school_app.model.entity.Branch;
 import com.github.nsu_upprpo.school_app.repository.BranchRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BranchService {
@@ -43,6 +44,8 @@ public class BranchService {
                 .phone(request.getPhone())
                 .build();
         branch = branchRepository.save(branch);
+        log.info("Branch created [branchId={}, name={}, city={}]",
+                branch.getId(), branch.getName(), branch.getCity());
         return toResponse(branch);
     }
 
@@ -54,6 +57,7 @@ public class BranchService {
         branch.setAddress(request.getAddress());
         branch.setPhone(request.getPhone());
         branch = branchRepository.save(branch);
+        log.info("Branch updated [branchId={}]", branchId);
         return toResponse(branch);
     }
 
@@ -62,6 +66,7 @@ public class BranchService {
         Branch branch = findById(id);
         branch.setActive(false);
         branchRepository.save(branch);
+        log.info("Branch deactivated [branchId={}]", id);
     }
 
     public Branch findById(UUID id) {

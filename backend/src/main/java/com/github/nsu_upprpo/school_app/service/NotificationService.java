@@ -8,6 +8,7 @@ import com.github.nsu_upprpo.school_app.model.entity.NotificationType;
 import com.github.nsu_upprpo.school_app.model.entity.User;
 import com.github.nsu_upprpo.school_app.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
@@ -39,6 +41,8 @@ public class NotificationService {
                 .orElseThrow(() -> new NotFoundException("Уведомление не найдено"));
 
         if (!n.getUser().getId().equals(userId)) {
+            log.warn("Notification access denied [notificationId={}, requestUserId={}, ownerUserId={}]",
+                    notificationId, userId, n.getUser().getId());
             throw new ForbiddenException("Нет доступа к этому уведомлению");
         }
 
@@ -57,6 +61,8 @@ public class NotificationService {
                 .referenceType(referenceType)
                 .build();
         notificationRepository.save(n);
+        log.debug("Notification sent [userId={}, type={}, referenceType={}, referenceId={}]",
+                userId, type, referenceType, referenceId);
     }
 
     private NotificationResponse toResponse(Notification n) {
