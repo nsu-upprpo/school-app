@@ -10,7 +10,7 @@ on:
       - '.github/workflows/backend-build-deploy.yml'
 
 concurrency:
-  group: school-app-backend-deploy
+  group: school-app-backend
   cancel-in-progress: false
 
 jobs:
