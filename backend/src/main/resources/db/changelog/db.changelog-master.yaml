@@ -35,3 +35,5 @@ databaseChangeLog:
       file: db/changelog/101-more-seed-test-data.yaml
   - include:
       file: db/changelog/102-parent-lesson-scenarios.yaml
+  - include:
+      file: db/changelog/103-load-test-seed-data.yaml
