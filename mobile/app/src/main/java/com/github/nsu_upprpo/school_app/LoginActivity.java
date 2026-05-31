@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.nsu_upprpo.school_app.api.ApiClient;
 import com.github.nsu_upprpo.school_app.api.AuthApi;
+import com.github.nsu_upprpo.school_app.api.AuthSessionManager;
 import com.github.nsu_upprpo.school_app.api.UserApi;
 import com.github.nsu_upprpo.school_app.model.LoginRequest;
 import com.github.nsu_upprpo.school_app.model.LoginResponse;
@@ -74,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     TokenStorage storage = new TokenStorage(LoginActivity.this);
                     storage.saveTokens(body.getAccessToken(), body.getRefreshToken());
+                    AuthSessionManager.onLoginSuccess();
 
                     loadProfileAndOpenScreen();
                 } else {
@@ -89,11 +91,6 @@ public class LoginActivity extends AppCompatActivity {
                 loginButton.setText("Войти");
 
                 Toast.makeText(LoginActivity.this,"Нет соединения с сервером. Проверьте интернет и попробуйте снова", Toast.LENGTH_LONG).show();
-
-                TokenStorage storage = new TokenStorage(LoginActivity.this);
-                storage.clear();
-
-                showLoginScreen();
             }
         });
     }
@@ -116,21 +113,25 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     UserProfile profile = response.body();
                     openMainScreenByRole(profile.getRole());
-                } else {
-                    Toast.makeText(LoginActivity.this, "Ошибка входа. Попробуйте снова", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 401 || response.code() == 403) {
+                    if (AuthSessionManager.isLoginRedirectStarted()) {
+                        return;
+                    }
+
+                    Toast.makeText(LoginActivity.this, "Сессия истекла. Войдите снова", Toast.LENGTH_SHORT).show();
 
                     TokenStorage storage = new TokenStorage(LoginActivity.this);
                     storage.clear();
 
+                    showLoginScreen();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Ошибка входа. Попробуйте снова", Toast.LENGTH_SHORT).show();
                     showLoginScreen();
                 }
             }
 
             @Override
             public void onFailure(Call<UserProfile> call, Throwable t) {
-                TokenStorage storage = new TokenStorage(LoginActivity.this);
-                storage.clear();
-
                 Toast.makeText(LoginActivity.this, "Ошибка соединения. Проверьте интернет", Toast.LENGTH_SHORT).show();
 
                 showLoginScreen();

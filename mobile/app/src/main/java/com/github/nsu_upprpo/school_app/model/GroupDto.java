@@ -1,5 +1,7 @@
 package com.github.nsu_upprpo.school_app.model;
 
+import java.util.List;
+
 public class GroupDto {
     private boolean active;
     private String branchId;
@@ -16,6 +18,7 @@ public class GroupDto {
     private String scheduleDescription;
     private String teacherId;
     private String teacherName;
+    private List<StudentInfo> students;
 
     public boolean isActive() {
         return active;
@@ -70,5 +73,34 @@ public class GroupDto {
 
     public String getTeacherName() {
         return teacherName;
+    }
+
+    public List<StudentInfo> getStudents() {
+        return students;
+    }
+
+    public static class StudentInfo {
+        private String childId;
+        private String firstName;
+        private String lastName;
+
+        public String getChildId() {
+            return childId;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public String getFullName() {
+            String first = firstName == null ? "" : firstName.trim();
+            String last = lastName == null ? "" : lastName.trim();
+            String fullName = (last + " " + first).trim();
+            return fullName.isEmpty() ? "Ученик" : fullName;
+        }
     }
 }

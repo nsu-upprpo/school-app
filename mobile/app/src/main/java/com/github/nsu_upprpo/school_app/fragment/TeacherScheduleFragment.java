@@ -35,10 +35,12 @@ import java.lang.reflect.Type;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -216,20 +218,20 @@ public class TeacherScheduleFragment extends Fragment {
 
     private void loadLessonsForGroups(String authHeader, List<GroupDto> groups) {
         Map<String, List<ScheduleItem>> dayMap = createWeekMap();
+        List<GroupDto> visibleGroups = filterGroupsWithStudents(groups);
 
-        if (groups == null || groups.isEmpty()) {
-            allDays.clear();
-            allDays.addAll(mapDayMapToScheduleDays(dayMap));
-            updateUiByMode();
+        if (visibleGroups.isEmpty()) {
+            finishScheduleLoading(dayMap, true);
             return;
         }
 
         ScheduleApi scheduleApi = ApiClient.getClient().create(ScheduleApi.class);
 
-        final int[] pending = {groups.size()};
+        final int[] pending = {visibleGroups.size()};
         final boolean[] hasPartialError = {false};
+        final Set<String> addedLessonIds = new HashSet<>();
 
-        for (GroupDto group : groups) {
+        for (GroupDto group : visibleGroups) {
             scheduleApi.getGroupSchedule(authHeader, group.getGroupId())
                     .enqueue(new Callback<List<LessonDto>>() {
                         @Override
@@ -237,7 +239,7 @@ public class TeacherScheduleFragment extends Fragment {
                             if (!isAdded()) return;
 
                             if (response.isSuccessful() && response.body() != null) {
-                                addLessonsToDayMap(dayMap, group, response.body());
+                                addLessonsToDayMap(dayMap, group, response.body(), addedLessonIds);
                             } else {
                                 hasPartialError[0] = true;
                             }
@@ -264,11 +266,40 @@ public class TeacherScheduleFragment extends Fragment {
         }
     }
 
+    private List<GroupDto> filterGroupsWithStudents(List<GroupDto> groups) {
+        List<GroupDto> result = new ArrayList<>();
+
+        if (groups == null) {
+            return result;
+        }
+
+        for (GroupDto group : groups) {
+            if (group != null && group.getCurrentStudents() > 0) {
+                result.add(group);
+            }
+        }
+
+        return result;
+    }
+
     private void addLessonsToDayMap(Map<String, List<ScheduleItem>> dayMap,
                                     GroupDto group,
-                                    List<LessonDto> lessons) {
+                                    List<LessonDto> lessons,
+                                    Set<String> addedLessonIds) {
         for (LessonDto lesson : lessons) {
-            String dayName = getRussianDayNameFromDateTime(lesson.getStartTime());
+            String lessonId = safe(lesson.getId());
+            String groupId = safe(lesson.getGroupId());
+            String startTime = safe(lesson.getStartTime());
+
+            if (lessonId.isEmpty() || groupId.isEmpty() || startTime.isEmpty()) {
+                continue;
+            }
+
+            if (addedLessonIds.contains(lessonId) || !isLessonInCurrentWeek(startTime)) {
+                continue;
+            }
+
+            String dayName = getRussianDayNameFromDateTime(startTime);
 
             List<ScheduleItem> items = dayMap.get(dayName);
 
@@ -282,8 +313,8 @@ public class TeacherScheduleFragment extends Fragment {
             int color = R.color.course_orange;
 
             ScheduleItem item = new ScheduleItem(
-                    lesson.getId(),
-                    lesson.getGroupId(),
+                    lessonId,
+                    groupId,
                     title,
                     subtitle,
                     time,
@@ -291,6 +322,35 @@ public class TeacherScheduleFragment extends Fragment {
             );
 
             items.add(item);
+            addedLessonIds.add(lessonId);
+        }
+    }
+
+    private boolean isLessonInCurrentWeek(String dateTime) {
+        try {
+            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+            Date lessonDate = input.parse(dateTime);
+            if (lessonDate == null) {
+                return false;
+            }
+
+            Calendar lessonCalendar = Calendar.getInstance();
+            lessonCalendar.setTime(lessonDate);
+
+            Calendar weekStart = Calendar.getInstance();
+            weekStart.setFirstDayOfWeek(Calendar.MONDAY);
+            weekStart.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            weekStart.set(Calendar.HOUR_OF_DAY, 0);
+            weekStart.set(Calendar.MINUTE, 0);
+            weekStart.set(Calendar.SECOND, 0);
+            weekStart.set(Calendar.MILLISECOND, 0);
+
+            Calendar weekEnd = (Calendar) weekStart.clone();
+            weekEnd.add(Calendar.DAY_OF_YEAR, 7);
+
+            return !lessonCalendar.before(weekStart) && lessonCalendar.before(weekEnd);
+        } catch (ParseException | NullPointerException e) {
+            return false;
         }
     }
 

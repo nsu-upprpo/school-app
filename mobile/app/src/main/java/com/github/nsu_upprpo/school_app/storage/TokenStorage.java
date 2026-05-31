@@ -14,22 +14,22 @@ public class TokenStorage {
         prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
-    public void saveTokens(String accessToken, String refreshToken) {
+    public synchronized void saveTokens(String accessToken, String refreshToken) {
         prefs.edit()
                 .putString(KEY_ACCESS, accessToken)
                 .putString(KEY_REFRESH, refreshToken)
                 .apply();
     }
 
-    public String getAccessToken() {
+    public synchronized String getAccessToken() {
         return prefs.getString(KEY_ACCESS, null);
     }
 
-    public String getRefreshToken() {
+    public synchronized String getRefreshToken() {
         return prefs.getString(KEY_REFRESH, null);
     }
 
-    public void clear() {
+    public synchronized void clear() {
         prefs.edit().clear().apply();
     }
 }

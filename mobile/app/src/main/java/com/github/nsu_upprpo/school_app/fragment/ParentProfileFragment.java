@@ -72,23 +72,29 @@ public class ParentProfileFragment extends Fragment {
     private void loadProfile() {
         UserStorage userStorage = new UserStorage(requireContext());
         ChildrenStorage childrenStorage = new ChildrenStorage(requireContext());
+        boolean hasCachedProfile = userStorage.hasParentProfile();
+        boolean hasCachedChildren = childrenStorage.hasChildren();
 
-        if (userStorage.hasParentProfile()) {
+        if (hasCachedProfile) {
             parentNameInput.setText(userStorage.getParentName());
             parentPhoneInput.setText(userStorage.getParentPhone());
         } else {
-            loadParentProfileFromBackend(userStorage);
+            parentNameInput.setText("Загрузка...");
+            parentPhoneInput.setText("");
         }
 
-        if (childrenStorage.hasChildren()) {
+        if (hasCachedChildren) {
             childAdapter.updateChildren(childrenStorage.getChildren());
             childAdapter.setChildBranchNames(childrenStorage.getChildBranches());
         } else {
-            loadChildrenFromBackend();
+            childAdapter.updateChildren(null);
         }
+
+        loadParentProfileFromBackend(userStorage, hasCachedProfile);
+        loadChildrenFromBackend(childrenStorage, hasCachedChildren);
     }
 
-    private void loadParentProfileFromBackend(UserStorage userStorage) {
+    private void loadParentProfileFromBackend(UserStorage userStorage, boolean hasCachedProfile) {
         TokenStorage tokenStorage = new TokenStorage(requireContext());
         String token = tokenStorage.getAccessToken();
 
@@ -121,19 +127,19 @@ public class ParentProfileFragment extends Fragment {
 
                     userStorage.saveParentProfile(parentFullName, parentPhone, "", "");
                 } else {
-                    Toast.makeText(requireContext(), "Не удалось загрузить профиль родителя", Toast.LENGTH_SHORT).show();
+                    showParentProfileRefreshError(hasCachedProfile);
                 }
             }
 
             @Override
             public void onFailure(Call<UserProfile> call, Throwable t) {
                 if (!isAdded()) return;
-                Toast.makeText(requireContext(), "Ошибка сети: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                showParentProfileRefreshError(hasCachedProfile);
             }
         });
     }
 
-    private void loadChildrenFromBackend() {
+    private void loadChildrenFromBackend(ChildrenStorage childrenStorage, boolean hasCachedChildren) {
         TokenStorage tokenStorage = new TokenStorage(requireContext());
         String token = tokenStorage.getAccessToken();
 
@@ -156,24 +162,41 @@ public class ParentProfileFragment extends Fragment {
                     List<ChildDto> children = response.body();
                     childAdapter.updateChildren(children);
 
-                    ChildrenStorage childrenStorage = new ChildrenStorage(requireContext());
                     childrenStorage.saveChildren(children);
 
                     for (ChildDto child : children) {
                         loadBranchForChild(authHeader, groupApi, child);
                     }
                 } else {
-                    childAdapter.updateChildren(null);
-                    Toast.makeText(requireContext(), "Не удалось загрузить детей", Toast.LENGTH_SHORT).show();
+                    showChildrenRefreshError(hasCachedChildren);
                 }
             }
 
             @Override
             public void onFailure(Call<List<ChildDto>> call, Throwable t) {
                 if (!isAdded()) return;
-                Toast.makeText(requireContext(), "Ошибка загрузки детей: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                showChildrenRefreshError(hasCachedChildren);
             }
         });
+    }
+
+    private void showParentProfileRefreshError(boolean hasCachedProfile) {
+        if (hasCachedProfile) {
+            Toast.makeText(requireContext(), "Не удалось обновить профиль, показаны сохранённые данные", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(requireContext(), "Не удалось загрузить профиль родителя", Toast.LENGTH_SHORT).show();
+            parentNameInput.setText("");
+            parentPhoneInput.setText("");
+        }
+    }
+
+    private void showChildrenRefreshError(boolean hasCachedChildren) {
+        if (hasCachedChildren) {
+            Toast.makeText(requireContext(), "Не удалось обновить детей, показаны сохранённые данные", Toast.LENGTH_SHORT).show();
+        } else {
+            childAdapter.updateChildren(null);
+            Toast.makeText(requireContext(), "Не удалось загрузить детей", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loadBranchForChild(String authHeader, GroupApi groupApi, ChildDto child) {
