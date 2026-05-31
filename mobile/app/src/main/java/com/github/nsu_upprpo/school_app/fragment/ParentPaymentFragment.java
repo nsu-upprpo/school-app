@@ -52,7 +52,8 @@ public class ParentPaymentFragment extends Fragment {
     private ParentPaymentsStorage paymentsStorage;
 
     private int pendingPaymentLoads;
-    private boolean paymentRefreshHadSuccess;
+    private boolean unpaidPaymentsLoaded;
+    private boolean paymentHistoryLoaded;
     private List<PaymentDto> pendingUnpaidPayments = new ArrayList<>();
     private List<PaymentDto> pendingPaymentHistory = new ArrayList<>();
 
@@ -119,7 +120,8 @@ public class ParentPaymentFragment extends Fragment {
         PaymentApi api = ApiClient.getClient().create(PaymentApi.class);
 
         pendingPaymentLoads = 2;
-        paymentRefreshHadSuccess = false;
+        unpaidPaymentsLoaded = false;
+        paymentHistoryLoaded = false;
         pendingUnpaidPayments = new ArrayList<>();
         pendingPaymentHistory = new ArrayList<>();
 
@@ -140,7 +142,7 @@ public class ParentPaymentFragment extends Fragment {
                             return;
                         }
 
-                        paymentRefreshHadSuccess = true;
+                        unpaidPaymentsLoaded = true;
                         pendingUnpaidPayments = response.body();
                         finishPaymentLoad();
                     }
@@ -165,7 +167,7 @@ public class ParentPaymentFragment extends Fragment {
                             return;
                         }
 
-                        paymentRefreshHadSuccess = true;
+                        paymentHistoryLoaded = true;
                         pendingPaymentHistory = filterPaymentHistory(response.body());
                         finishPaymentLoad();
                     }
@@ -184,15 +186,43 @@ public class ParentPaymentFragment extends Fragment {
             return;
         }
 
-        if (!paymentRefreshHadSuccess) {
+        if (!unpaidPaymentsLoaded && !paymentHistoryLoaded) {
             if (!paymentsStorage.hasLoadedPayments()) {
                 showNoUnpaidPayments();
             }
             return;
         }
 
-        paymentsStorage.savePayments(pendingUnpaidPayments, pendingPaymentHistory);
-        showPaymentState(pendingUnpaidPayments, pendingPaymentHistory);
+        if (unpaidPaymentsLoaded && paymentHistoryLoaded) {
+            paymentsStorage.savePayments(pendingUnpaidPayments, pendingPaymentHistory);
+            showPaymentState(pendingUnpaidPayments, pendingPaymentHistory);
+            return;
+        }
+
+        if (unpaidPaymentsLoaded) {
+            paymentsStorage.saveUnpaidPayments(pendingUnpaidPayments);
+        }
+
+        if (paymentHistoryLoaded) {
+            paymentsStorage.savePaymentHistory(pendingPaymentHistory);
+        }
+
+        List<PaymentDto> unpaidPayments = unpaidPaymentsLoaded
+                ? pendingUnpaidPayments
+                : paymentsStorage.getUnpaidPayments();
+        List<PaymentDto> paymentHistory = paymentHistoryLoaded
+                ? pendingPaymentHistory
+                : paymentsStorage.getPaymentHistory();
+
+        showPaymentState(unpaidPayments, paymentHistory);
+
+        if (isAdded()) {
+            Toast.makeText(
+                    requireContext(),
+                    "Часть данных оплаты не обновилась, показаны последние сохранённые данные",
+                    Toast.LENGTH_LONG
+            ).show();
+        }
     }
 
     private List<PaymentDto> filterPaymentHistory(List<PaymentDto> payments) {

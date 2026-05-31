@@ -24,12 +24,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.nsu_upprpo.school_app.R;
 import com.github.nsu_upprpo.school_app.adapter.ParentLessonAdapter;
 import com.github.nsu_upprpo.school_app.api.ApiClient;
-import com.github.nsu_upprpo.school_app.api.AttendanceApi;
 import com.github.nsu_upprpo.school_app.api.ChildApi;
 import com.github.nsu_upprpo.school_app.api.GroupApi;
 import com.github.nsu_upprpo.school_app.api.ParentLessonActionApi;
 import com.github.nsu_upprpo.school_app.api.ScheduleApi;
-import com.github.nsu_upprpo.school_app.model.AttendanceDto;
 import com.github.nsu_upprpo.school_app.model.CancelLessonRequest;
 import com.github.nsu_upprpo.school_app.model.ChildDto;
 import com.github.nsu_upprpo.school_app.model.GroupDto;
@@ -104,6 +102,7 @@ public class ParentLessonsFragment extends Fragment {
     private String authHeader;
 
     private ParentLessonsStorage lessonsStorage;
+    private int requestVersion;
 
     @Nullable
     @Override
@@ -218,7 +217,7 @@ public class ParentLessonsFragment extends Fragment {
         futureLessons.addAll(lessonsStorage.getFutureLessons());
 
         missedLessons.clear();
-        missedLessons.addAll(lessonsStorage.getMissedLessons());
+        missedLessons.addAll(getCancelledByParentLessons(lessonsStorage.getMissedLessons()));
 
         showChildNameInLessonCards = hasMultipleChildrenInLessons(futureLessons, missedLessons);
         adapter.setShowChildName(showChildNameInLessonCards);
@@ -235,6 +234,7 @@ public class ParentLessonsFragment extends Fragment {
     }
 
     private void refreshParentLessonsFromBackend() {
+        int requestId = nextRequestVersion();
 
         TokenStorage tokenStorage = new TokenStorage(requireContext());
         String token = tokenStorage.getAccessToken();
@@ -251,38 +251,36 @@ public class ParentLessonsFragment extends Fragment {
         missedLessons.clear();
         loadedLessons.clear();
         groupsById.clear();
-        showAllFutureLessons = false;
-        showAllMissedLessons = false;
 
-        loadChildren();
+        loadChildren(requestId);
     }
 
-    private void loadChildren() {
+    private void loadChildren(int requestId) {
         ChildApi childApi = ApiClient.getClient().create(ChildApi.class);
 
         childApi.getMyChildren(authHeader).enqueue(new Callback<List<ChildDto>>() {
             @Override
             public void onResponse(Call<List<ChildDto>> call, Response<List<ChildDto>> response) {
-                if (!isAdded()) return;
+                if (!isActiveRequest(requestId)) return;
 
                 if (response.isSuccessful() && response.body() != null) {
                     List<ChildDto> children = response.body();
                     showChildNameInLessonCards = children.size() > 1;
                     adapter.setShowChildName(showChildNameInLessonCards);
                     buildGroupsById(children);
-                    loadParentGroupsThenSchedules(children);
+                    loadParentGroupsThenSchedules(children, requestId);
                 } else {
                     Toast.makeText(requireContext(), "Не удалось загрузить детей", Toast.LENGTH_SHORT).show();
-                    showBackendErrorOrCache("Не удалось загрузить занятия");
+                    showBackendErrorOrCache("Не удалось загрузить занятия", requestId);
                 }
             }
 
             @Override
             public void onFailure(Call<List<ChildDto>> call, Throwable t) {
-                if (!isAdded()) return;
+                if (!isActiveRequest(requestId)) return;
 
                 Toast.makeText(requireContext(), "Ошибка загрузки детей: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                showBackendErrorOrCache("Не удалось загрузить занятия");
+                showBackendErrorOrCache("Не удалось загрузить занятия", requestId);
             }
         });
     }
@@ -305,13 +303,13 @@ public class ParentLessonsFragment extends Fragment {
         }
     }
 
-    private void loadParentGroupsThenSchedules(List<ChildDto> children) {
+    private void loadParentGroupsThenSchedules(List<ChildDto> children, int requestId) {
         GroupApi groupApi = ApiClient.getClient().create(GroupApi.class);
 
         groupApi.getParentGroups(authHeader).enqueue(new Callback<List<GroupDto>>() {
             @Override
             public void onResponse(Call<List<GroupDto>> call, Response<List<GroupDto>> response) {
-                if (!isAdded()) return;
+                if (!isActiveRequest(requestId)) return;
 
                 if (response.isSuccessful() && response.body() != null) {
                     mergeParentGroups(response.body());
@@ -320,15 +318,15 @@ public class ParentLessonsFragment extends Fragment {
                             + ", body=" + getErrorBodyString(response));
                 }
 
-                loadSchedulesForChildren(children);
+                loadSchedulesForChildren(children, requestId);
             }
 
             @Override
             public void onFailure(Call<List<GroupDto>> call, Throwable t) {
-                if (!isAdded()) return;
+                if (!isActiveRequest(requestId)) return;
 
                 Log.e(TAG, "parent groups error message=" + t.getMessage());
-                loadSchedulesForChildren(children);
+                loadSchedulesForChildren(children, requestId);
             }
         });
     }
@@ -343,7 +341,11 @@ public class ParentLessonsFragment extends Fragment {
         }
     }
 
-    private void loadSchedulesForChildren(List<ChildDto> children) {
+    private void loadSchedulesForChildren(List<ChildDto> children, int requestId) {
+        if (!isActiveRequest(requestId)) {
+            return;
+        }
+
         if (children == null || children.isEmpty()) {
             showEmpty("У вас пока нет занятий");
             return;
@@ -353,8 +355,8 @@ public class ParentLessonsFragment extends Fragment {
 
         final int[] loadedCount = {0};
         final boolean[] hasScheduleError = {false};
-        String from = "2025-01-01T00:00:00";
-        String to = "2030-01-01T00:00:00";
+        String from = getScheduleRangeBoundary(-3, true);
+        String to = getScheduleRangeBoundary(6, false);
 
         for (ChildDto child : children) {
             String childId = child.getId();
@@ -363,7 +365,7 @@ public class ParentLessonsFragment extends Fragment {
                 hasScheduleError[0] = true;
                 loadedCount[0]++;
                 if (loadedCount[0] == children.size()) {
-                    finishLoadingLessons(false);
+                    finishLoadingLessons(false, requestId);
                 }
                 continue;
             }
@@ -371,7 +373,7 @@ public class ParentLessonsFragment extends Fragment {
             scheduleApi.getChildSchedule(authHeader, childId, from, to).enqueue(new Callback<List<LessonDto>>() {
                 @Override
                 public void onResponse(Call<List<LessonDto>> call, Response<List<LessonDto>> response) {
-                    if (!isAdded()) return;
+                    if (!isActiveRequest(requestId)) return;
 
                     if (response.isSuccessful() && response.body() != null) {
                         addLessonsFromChildSchedule(child, response.body());
@@ -384,19 +386,19 @@ public class ParentLessonsFragment extends Fragment {
 
                     loadedCount[0]++;
                     if (loadedCount[0] == children.size()) {
-                        finishLoadingLessons(!hasScheduleError[0]);
+                        finishLoadingLessons(!hasScheduleError[0], requestId);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<LessonDto>> call, Throwable t) {
-                    if (!isAdded()) return;
+                    if (!isActiveRequest(requestId)) return;
 
                     Log.e(TAG, "child schedule error childId=" + childId + ", message=" + t.getMessage());
                     hasScheduleError[0] = true;
                     loadedCount[0]++;
                     if (loadedCount[0] == children.size()) {
-                        finishLoadingLessons(false);
+                        finishLoadingLessons(false, requestId);
                     }
                 }
             });
@@ -447,6 +449,21 @@ public class ParentLessonsFragment extends Fragment {
         }
 
         return false;
+    }
+
+    private List<ParentLessonItem> getCancelledByParentLessons(List<ParentLessonItem> lessons) {
+        List<ParentLessonItem> cancelledLessons = new ArrayList<>();
+        if (lessons == null) {
+            return cancelledLessons;
+        }
+
+        for (ParentLessonItem lesson : lessons) {
+            if (isCancelledByParent(lesson)) {
+                cancelledLessons.add(lesson);
+            }
+        }
+
+        return cancelledLessons;
     }
 
     @SafeVarargs
@@ -535,7 +552,11 @@ public class ParentLessonsFragment extends Fragment {
         }
     }
 
-    private void finishLoadingLessons(boolean canSaveToCache) {
+    private void finishLoadingLessons(boolean canSaveToCache, int requestId) {
+        if (!isActiveRequest(requestId)) {
+            return;
+        }
+
         Collections.sort(futureLessons, Comparator.comparingLong(ParentLessonItem::getDateMillis));
 
         updateWeekDots();
@@ -544,18 +565,17 @@ public class ParentLessonsFragment extends Fragment {
             showFutureLessons();
         }
 
-        loadMissedLessons(canSaveToCache);
+        loadMissedLessons(canSaveToCache, requestId);
 
         if (canSaveToCache) {
             lessonsStorage.saveFutureLessons(futureLessons);
         }
     }
 
-    private void loadMissedLessons(boolean canSaveToCache) {
-        AttendanceApi attendanceApi = ApiClient.getClient().create(AttendanceApi.class);
-
-        List<ParentLessonItem> lessonsForAttendance = new ArrayList<>();
-        long now = System.currentTimeMillis();
+    private void loadMissedLessons(boolean canSaveToCache, int requestId) {
+        if (!isActiveRequest(requestId)) {
+            return;
+        }
 
         for (ParentLessonItem lesson : loadedLessons) {
             if (isCancelledByParent(lesson)) {
@@ -575,113 +595,17 @@ public class ParentLessonsFragment extends Fragment {
                         lesson.getRescheduledFromLessonId(),
                         lesson.getRescheduledToLessonId()
                 ));
-                continue;
-            }
-
-            if (isAbsentLesson(lesson)) {
-                missedLessons.add(new ParentLessonItem(
-                        lesson.getLessonId(),
-                        lesson.getChildId(),
-                        lesson.getGroupId(),
-                        lesson.getCourseName(),
-                        lesson.getTeacherName(),
-                        lesson.getTopic(),
-                        lesson.getChildNames(),
-                        lesson.getStartTime(),
-                        lesson.getEndTime(),
-                        lesson.getDateMillis(),
-                        "ABSENT",
-                        lesson.getChildStatus(),
-                        lesson.getRescheduledFromLessonId(),
-                        lesson.getRescheduledToLessonId()
-                ));
-                continue;
-            }
-
-            if (lesson.getDateMillis() < now) {
-                lessonsForAttendance.add(lesson);
             }
         }
 
-        if (lessonsForAttendance.isEmpty()) {
-            if (canSaveToCache) {
-                lessonsStorage.saveMissedLessons(missedLessons);
-            }
+        finishLoadingMissedLessons(canSaveToCache, requestId);
+    }
+
+    private void finishLoadingMissedLessons(boolean canSaveToCache, int requestId) {
+        if (!isActiveRequest(requestId)) {
             return;
         }
 
-        final int[] loadedCount = {0};
-        final boolean[] hasAttendanceError = {false};
-
-        for (ParentLessonItem lesson : lessonsForAttendance) {
-            attendanceApi.getLessonAttendances(authHeader, lesson.getLessonId())
-                    .enqueue(new Callback<List<AttendanceDto>>() {
-                        @Override
-                        public void onResponse(Call<List<AttendanceDto>> call,
-                                               Response<List<AttendanceDto>> response) {
-                            if (!isAdded()) return;
-
-                            if (response.isSuccessful() && response.body() != null) {
-                                addMissedLessonsFromAttendance(lesson, response.body());
-                            } else {
-                                hasAttendanceError[0] = true;
-                            }
-
-                            loadedCount[0]++;
-                            if (loadedCount[0] == lessonsForAttendance.size()) {
-                                finishLoadingMissedLessons(canSaveToCache && !hasAttendanceError[0]);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<List<AttendanceDto>> call, Throwable t) {
-                            if (!isAdded()) return;
-
-                            hasAttendanceError[0] = true;
-                            loadedCount[0]++;
-                            if (loadedCount[0] == lessonsForAttendance.size()) {
-                                finishLoadingMissedLessons(false);
-                            }
-                        }
-                    });
-        }
-    }
-
-    private void addMissedLessonsFromAttendance(ParentLessonItem lesson,
-                                                List<AttendanceDto> attendances) {
-        for (AttendanceDto attendance : attendances) {
-            if (!"ABSENT".equalsIgnoreCase(attendance.getStatus())) {
-                continue;
-            }
-
-            if (!safeRaw(attendance.getChildId()).equals(lesson.getChildId())) {
-                continue;
-            }
-
-            ParentLessonItem missedItem = new ParentLessonItem(
-                    lesson.getLessonId(),
-                    safeRaw(attendance.getChildId()),
-                    lesson.getGroupId(),
-                    lesson.getCourseName(),
-                    lesson.getTeacherName(),
-                    lesson.getTopic(),
-                    safe(attendance.getChildName()),
-                    lesson.getStartTime(),
-                    lesson.getEndTime(),
-                    lesson.getDateMillis(),
-                    "ABSENT",
-                    lesson.getChildStatus(),
-                    lesson.getRescheduledFromLessonId(),
-                    lesson.getRescheduledToLessonId()
-            );
-
-            missedLessons.add(missedItem);
-        }
-
-        Collections.sort(missedLessons, Comparator.comparingLong(ParentLessonItem::getDateMillis));
-    }
-
-    private void finishLoadingMissedLessons(boolean canSaveToCache) {
         Collections.sort(missedLessons, Comparator.comparingLong(ParentLessonItem::getDateMillis));
 
         if (!isFutureMode) {
@@ -693,7 +617,11 @@ public class ParentLessonsFragment extends Fragment {
         }
     }
 
-    private void showBackendErrorOrCache(String message) {
+    private void showBackendErrorOrCache(String message, int requestId) {
+        if (!isActiveRequest(requestId)) {
+            return;
+        }
+
         if (!showCachedLessons()) {
             showEmpty(message);
         }
@@ -709,7 +637,7 @@ public class ParentLessonsFragment extends Fragment {
 
     private void showMissedLessons() {
         if (missedLessons.isEmpty()) {
-            showEmpty("Пропусков пока нет");
+            showEmpty("Отменённых занятий пока нет");
         } else {
             showList(missedLessons, showAllMissedLessons);
         }
@@ -801,8 +729,10 @@ public class ParentLessonsFragment extends Fragment {
         }
 
         boolean missedLesson = isMissedLesson(lesson);
+        boolean canRescheduleLesson = shouldShowRescheduleAction(lesson);
         boolean canCancelLesson = shouldShowCancelAction(lesson);
         boolean cancelledByParent = isCancelledByParent(lesson);
+        boolean canRestoreLesson = shouldShowRestoreAction(lesson);
         boolean rescheduledLesson = isRescheduledLesson(lesson);
 
         boolean hasStatusBadge = true;
@@ -816,7 +746,7 @@ public class ParentLessonsFragment extends Fragment {
             lessonStatusText.setBackground(createBadgeBackground(Color.parseColor("#FF6B00")));
         } else if ("RESCHEDULED_IN".equalsIgnoreCase(lesson.getChildStatus())) {
             lessonStatusText.setVisibility(View.VISIBLE);
-            lessonStatusText.setText("Перенесено сюда");
+            lessonStatusText.setText("Перенесено");
             lessonStatusText.setBackground(createBadgeBackground(Color.parseColor("#A56BE8")));
         } else if (missedLesson) {
             lessonStatusText.setVisibility(View.VISIBLE);
@@ -832,26 +762,33 @@ public class ParentLessonsFragment extends Fragment {
                         ? View.VISIBLE
                         : View.GONE
         );
-        updateChildBadgeMargin(lessonChildText, hasStatusBadge);
+        updateStatusBadgeMargin(lessonStatusText, lessonChildText.getVisibility() == View.VISIBLE);
 
-        if (cancelledByParent) {
-            lessonActionsHintText.setVisibility(View.GONE);
-            moveLessonAction.setVisibility(View.VISIBLE);
-            cancelLessonAction.setVisibility(View.GONE);
-        } else if (rescheduledLesson) {
+        if (canRestoreLesson) {
+            cancelLessonText.setText("Восстановить занятие");
+            cancelLessonIcon.setImageResource(R.drawable.ic_edit);
+        }
+
+        if (canRescheduleLesson || canCancelLesson || canRestoreLesson) {
+            lessonActionsHintText.setVisibility(canRestoreLesson ? View.VISIBLE : View.GONE);
+            if (canRestoreLesson) {
+                lessonActionsHintText.setText(getLessonActionsHint(lesson));
+            }
+            moveLessonAction.setVisibility(canRescheduleLesson ? View.VISIBLE : View.GONE);
+            cancelLessonAction.setVisibility(canCancelLesson || canRestoreLesson ? View.VISIBLE : View.GONE);
+            if (canRestoreLesson) {
+                cancelLessonAction.setOnClickListener(v -> {
+                    dialog.dismiss();
+                    restoreLesson(lesson);
+                });
+            } else {
+                cancelLessonAction.setOnClickListener(v -> showCancelConfirmation(dialog, lesson));
+            }
+        } else {
             lessonActionsHintText.setVisibility(View.VISIBLE);
+            lessonActionsHintText.setText(getLessonActionsHint(lesson));
             moveLessonAction.setVisibility(View.GONE);
             cancelLessonAction.setVisibility(View.GONE);
-        } else {
-            lessonActionsHintText.setVisibility(View.GONE);
-            moveLessonAction.setVisibility(View.VISIBLE);
-            if (canCancelLesson) {
-                cancelLessonAction.setVisibility(View.VISIBLE);
-            } else {
-                cancelLessonAction.setVisibility(View.GONE);
-            }
-
-            cancelLessonAction.setOnClickListener(v -> showCancelConfirmation(dialog, lesson));
         }
 
         moveLessonAction.setOnClickListener(v -> {
@@ -929,14 +866,17 @@ public class ParentLessonsFragment extends Fragment {
                             Toast.makeText(requireContext(), "Занятие отменено", Toast.LENGTH_SHORT).show();
                             lessonsStorage.clear();
                             refreshParentLessonsFromBackend();
-                        } else if (response.code() == 409) {
-                            Log.e(TAG, "cancel failed code=" + response.code()
-                                    + ", body=" + getErrorBodyString(response));
-                            Toast.makeText(requireContext(), "Это занятие нельзя отменить", Toast.LENGTH_SHORT).show();
                         } else {
+                            String errorBody = getErrorBodyString(response);
                             Log.e(TAG, "cancel failed code=" + response.code()
-                                    + ", body=" + getErrorBodyString(response));
-                            Toast.makeText(requireContext(), "Не удалось отменить занятие", Toast.LENGTH_SHORT).show();
+                                    + ", body=" + errorBody);
+                            Toast.makeText(requireContext(),
+                                    getCancelErrorMessage(response.code(), errorBody),
+                                    Toast.LENGTH_SHORT).show();
+
+                            if (shouldRefreshAfterCancelError(response.code())) {
+                                refreshParentLessonsFromBackend();
+                            }
                         }
                     }
 
@@ -946,7 +886,62 @@ public class ParentLessonsFragment extends Fragment {
                             return;
                         }
 
-                        Toast.makeText(requireContext(), "Ошибка отмены занятия", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(),
+                                "Не удалось отменить занятие. Проверьте интернет и попробуйте снова",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void restoreLesson(ParentLessonItem lesson) {
+        if (lesson.getChildId() == null || lesson.getChildId().isEmpty()
+                || lesson.getLessonId() == null || lesson.getLessonId().isEmpty()) {
+            Toast.makeText(requireContext(), "Не удалось определить занятие для восстановления", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!shouldShowRestoreAction(lesson)) {
+            Toast.makeText(requireContext(), "Это занятие нельзя восстановить", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ParentLessonActionApi actionApi = ApiClient.getClient().create(ParentLessonActionApi.class);
+        String currentAuthHeader = getCurrentAuthHeader();
+        if (currentAuthHeader.isEmpty()) {
+            Toast.makeText(requireContext(), "Токен не найден", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        actionApi.restoreLesson(currentAuthHeader, lesson.getChildId(), lesson.getLessonId())
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (!isAdded()) {
+                            return;
+                        }
+
+                        if (response.isSuccessful()) {
+                            Toast.makeText(requireContext(), "Занятие восстановлено", Toast.LENGTH_SHORT).show();
+                            lessonsStorage.clear();
+                            refreshParentLessonsFromBackend();
+                        } else if (response.code() == 409) {
+                            Log.e(TAG, "restore failed code=" + response.code()
+                                    + ", body=" + getErrorBodyString(response));
+                            Toast.makeText(requireContext(), "Это занятие нельзя восстановить", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e(TAG, "restore failed code=" + response.code()
+                                    + ", body=" + getErrorBodyString(response));
+                            Toast.makeText(requireContext(), "Не удалось восстановить занятие", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        if (!isAdded()) {
+                            return;
+                        }
+
+                        Toast.makeText(requireContext(), "Ошибка восстановления занятия", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -956,6 +951,66 @@ public class ParentLessonsFragment extends Fragment {
         boolean future = isFutureLesson(lesson);
         boolean childStatusEmpty = isEmpty(lesson.getChildStatus());
         return isFutureMode && !missed && future && childStatusEmpty;
+    }
+
+    private boolean shouldShowRescheduleAction(ParentLessonItem lesson) {
+        boolean missed = isMissedLesson(lesson);
+        boolean future = isFutureLesson(lesson);
+        boolean childStatusEmpty = isEmpty(lesson.getChildStatus());
+        return future && !missed && !isCancelledByParent(lesson) && !isRescheduledLesson(lesson)
+                && childStatusEmpty;
+    }
+
+    private boolean shouldShowRestoreAction(ParentLessonItem lesson) {
+        return isCancelledByParent(lesson);
+    }
+
+    private String getLessonActionsHint(ParentLessonItem lesson) {
+        if (isCancelledByParent(lesson)) {
+            return "Занятие отменено. Восстановление вернёт его на исходное время.";
+        }
+        if (isAbsentLesson(lesson)) {
+            return "Ребёнок отсутствовал на занятии.";
+        }
+        if (lesson != null && "RESCHEDULED_OUT".equalsIgnoreCase(lesson.getChildStatus())) {
+            return "Занятие перенесено на другое время.";
+        }
+        if (lesson != null && "RESCHEDULED_IN".equalsIgnoreCase(lesson.getChildStatus())) {
+            return "Ребёнок придёт на это занятие вместо перенесённого.";
+        }
+
+        return "Для этого занятия действия недоступны.";
+    }
+
+    private String getCancelErrorMessage(int code, String errorBody) {
+        String body = safeRaw(errorBody).toLowerCase(Locale.ROOT);
+
+        if (code == 409) {
+            if (body.contains("уже отменено")) {
+                return "Занятие уже отменено";
+            }
+            if (body.contains("перенесено") || body.contains("перевед")) {
+                return "Перенесённое занятие нельзя отменить";
+            }
+            if (body.contains("прошедшие или текущие") || body.contains("посещение отмечено")) {
+                return "Это занятие уже нельзя отменить";
+            }
+            return "Это занятие нельзя отменить";
+        }
+
+        if (code == 403) {
+            return "Нет доступа к занятию";
+        }
+
+        if (code == 404) {
+            return "Занятие не найдено";
+        }
+
+        return "Не удалось отменить занятие";
+    }
+
+    private boolean shouldRefreshAfterCancelError(int code) {
+        return code == 409 || code == 403 || code == 404;
     }
 
     private boolean shouldShowInFutureList(String childStatus) {
@@ -990,8 +1045,6 @@ public class ParentLessonsFragment extends Fragment {
                 continue;
             } else if (!safeRaw(sourceLesson.getChildId()).equals(safeRaw(lesson.getChildId()))) {
                 continue;
-            } else if (!isSameGroupForReschedule(sourceLesson, lesson)) {
-                continue;
             } else if (!isSameCourseForReschedule(sourceLesson, lesson)) {
                 continue;
             } else if (isSchoolCancelled(lesson)) {
@@ -1007,14 +1060,6 @@ public class ParentLessonsFragment extends Fragment {
 
         Collections.sort(targetLessons, Comparator.comparingLong(ParentLessonItem::getDateMillis));
         return targetLessons;
-    }
-
-    private boolean isSameGroupForReschedule(ParentLessonItem sourceLesson, ParentLessonItem candidateLesson) {
-        if (!isEmpty(sourceLesson.getGroupId()) && !isEmpty(candidateLesson.getGroupId())) {
-            return safeRaw(sourceLesson.getGroupId()).equals(safeRaw(candidateLesson.getGroupId()));
-        }
-
-        return true;
     }
 
     private boolean isSameCourseForReschedule(ParentLessonItem sourceLesson, ParentLessonItem candidateLesson) {
@@ -1129,6 +1174,26 @@ public class ParentLessonsFragment extends Fragment {
         }
     }
 
+    private String getScheduleRangeBoundary(int monthOffset, boolean startOfDay) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, monthOffset);
+
+        if (startOfDay) {
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+        } else {
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+        }
+
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                .format(calendar.getTime());
+    }
+
     private String formatTime(String isoDateTime) {
         long millis = parseDateMillis(isoDateTime);
 
@@ -1171,10 +1236,10 @@ public class ParentLessonsFragment extends Fragment {
         return colors[Math.abs(childId.hashCode()) % colors.length];
     }
 
-    private void updateChildBadgeMargin(TextView childText, boolean hasStatusBadge) {
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) childText.getLayoutParams();
-        params.setMarginStart(hasStatusBadge ? dp(8) : 0);
-        childText.setLayoutParams(params);
+    private void updateStatusBadgeMargin(TextView statusText, boolean hasChildBadge) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) statusText.getLayoutParams();
+        params.setMarginStart(hasChildBadge ? dp(8) : 0);
+        statusText.setLayoutParams(params);
     }
 
     private int dp(int value) {
@@ -1199,6 +1264,15 @@ public class ParentLessonsFragment extends Fragment {
 
     private boolean isEmpty(String value) {
         return value == null || value.isEmpty();
+    }
+
+    private int nextRequestVersion() {
+        requestVersion++;
+        return requestVersion;
+    }
+
+    private boolean isActiveRequest(int requestId) {
+        return isAdded() && requestId == requestVersion;
     }
 
     private String getCurrentAuthHeader() {

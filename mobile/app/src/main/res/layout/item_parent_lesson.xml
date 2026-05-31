@@ -63,9 +63,24 @@
             android:visibility="gone">
 
             <TextView
+                android:id="@+id/lessonChildText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="9dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="9dp"
+                android:paddingBottom="2dp"
+                android:text="Котова Рита"
+                android:textColor="@color/text_dark"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
                 android:id="@+id/lessonStatusText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/bg_status_red"
                 android:paddingStart="8dp"
                 android:paddingTop="2dp"
@@ -74,21 +89,6 @@
                 android:text="Пропуск"
                 android:textColor="@android:color/white"
                 android:textSize="10sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/lessonChildText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:paddingStart="9dp"
-                android:paddingTop="2dp"
-                android:paddingEnd="9dp"
-                android:paddingBottom="2dp"
-                android:text="Котова Рита"
-                android:textColor="@color/text_dark"
-                android:textSize="11sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
 

@@ -28,7 +28,7 @@
         android:paddingTop="10dp"
         android:paddingEnd="14dp"
         android:paddingBottom="10dp"
-        android:text="Для перенесённых занятий действия недоступны"
+        android:text="Для этого занятия действия недоступны."
         android:textColor="@color/hint_gray"
         android:textSize="14sp"
         android:visibility="gone" />

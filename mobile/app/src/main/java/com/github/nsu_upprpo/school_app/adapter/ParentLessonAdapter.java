@@ -134,7 +134,7 @@ public class ParentLessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.lessonStatusText.setBackground(createBadgeBackground(Color.parseColor("#FF6B00")));
         } else if ("RESCHEDULED_IN".equalsIgnoreCase(lesson.getChildStatus())) {
             holder.lessonStatusText.setVisibility(View.VISIBLE);
-            holder.lessonStatusText.setText("Перенесено сюда");
+            holder.lessonStatusText.setText("Перенесено");
             holder.lessonStatusText.setBackground(createBadgeBackground(Color.parseColor("#A56BE8")));
         } else {
             holder.lessonStatusText.setVisibility(View.GONE);
@@ -146,7 +146,7 @@ public class ParentLessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         ? View.VISIBLE
                         : View.GONE
         );
-        updateChildBadgeMargin(holder.lessonChildText, hasStatusBadge);
+        updateStatusBadgeMargin(holder.lessonStatusText, holder.lessonChildText.getVisibility() == View.VISIBLE);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -198,10 +198,10 @@ public class ParentLessonAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return colors[Math.abs(childId.hashCode()) % colors.length];
     }
 
-    private void updateChildBadgeMargin(TextView childText, boolean hasStatusBadge) {
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) childText.getLayoutParams();
-        params.setMarginStart(hasStatusBadge ? dp(childText, 8) : 0);
-        childText.setLayoutParams(params);
+    private void updateStatusBadgeMargin(TextView statusText, boolean hasChildBadge) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) statusText.getLayoutParams();
+        params.setMarginStart(hasChildBadge ? dp(statusText, 8) : 0);
+        statusText.setLayoutParams(params);
     }
 
     private int dp(View view, int value) {
