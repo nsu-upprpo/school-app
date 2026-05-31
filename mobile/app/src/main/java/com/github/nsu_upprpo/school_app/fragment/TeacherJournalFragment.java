@@ -526,20 +526,22 @@ public class TeacherJournalFragment extends Fragment {
         for (ProjectDto project : projects) {
             LinearLayout card = createCard();
             card.addView(createTitle(safe(project.getName(), "Проект")));
-            card.addView(createSubtitle("Занятий: " + getDisplayedLessonCount(project) + " • максимум " + project.getMaxScore() + " баллов"));
+            card.addView(createSubtitle(getProjectSubtitle(project)));
             card.addView(createAction("Открыть пары  ›"));
             card.setOnClickListener(v -> showLessons(project));
             journalContent.addView(card);
         }
     }
 
-    private int getDisplayedLessonCount(ProjectDto project) {
-        int cachedCount = getCachedLessonCount(project);
-        if (cachedCount >= 0) {
-            return cachedCount;
+    private String getProjectSubtitle(ProjectDto project) {
+        int lessonCount = getCachedLessonCount(project);
+        String maxScoreText = "максимум " + project.getMaxScore() + " баллов";
+
+        if (lessonCount < 0) {
+            return maxScoreText;
         }
 
-        return project.getTotalLessons();
+        return "Занятий: " + lessonCount + " • " + maxScoreText;
     }
 
     private int getCachedLessonCount(ProjectDto project) {
@@ -684,6 +686,7 @@ public class TeacherJournalFragment extends Fragment {
 
         setSubmitEnabled(false);
         submitButton.setText("Отправка...");
+        int requestId = nextRequestVersion();
 
         final int[] total = {changedGrades.size()};
         final int[] success = {0};
@@ -699,7 +702,7 @@ public class TeacherJournalFragment extends Fragment {
             ).enqueue(new Callback<GradeDto>() {
                 @Override
                 public void onResponse(Call<GradeDto> call, Response<GradeDto> response) {
-                    if (!isAdded()) return;
+                    if (!isActiveRequest(requestId) || state != JournalState.STUDENTS) return;
 
                     if (response.isSuccessful()) {
                         success[0]++;
@@ -712,7 +715,7 @@ public class TeacherJournalFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<GradeDto> call, Throwable t) {
-                    if (!isAdded()) return;
+                    if (!isActiveRequest(requestId) || state != JournalState.STUDENTS) return;
 
                     errors[0]++;
                     checkGradeSendingFinished(total[0], success[0], errors[0]);
@@ -759,7 +762,6 @@ public class TeacherJournalFragment extends Fragment {
 
     private void setSubmitEnabled(boolean enabled) {
         submitButton.setEnabled(enabled);
-        submitButton.setAlpha(enabled ? 1f : 0.4f);
     }
 
     private int getSelectedProjectMaxScore() {
@@ -937,9 +939,10 @@ public class TeacherJournalFragment extends Fragment {
         textView.setTextSize(14);
         textView.setTypeface(null, android.graphics.Typeface.BOLD);
         textView.setSingleLine(true);
+        textView.setIncludeFontPadding(false);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp(82), dp(34));
-        params.setMargins(dp(8), 0, 0, 0);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp(98), dp(34));
+        params.setMargins(dp(10), 0, dp(2), 0);
         textView.setLayoutParams(params);
 
         return textView;

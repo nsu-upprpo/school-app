@@ -37,6 +37,20 @@ public class ParentPaymentsStorage {
                 .apply();
     }
 
+    public void saveUnpaidPayments(List<PaymentDto> unpaidPayments) {
+        prefs.edit()
+                .putBoolean(KEY_LOADED, true)
+                .putString(KEY_UNPAID_PAYMENTS, gson.toJson(unpaidPayments))
+                .apply();
+    }
+
+    public void savePaymentHistory(List<PaymentDto> paymentHistory) {
+        prefs.edit()
+                .putBoolean(KEY_LOADED, true)
+                .putString(KEY_PAYMENT_HISTORY, gson.toJson(paymentHistory))
+                .apply();
+    }
+
     public List<PaymentDto> getUnpaidPayments() {
         return getPaymentsByKey(KEY_UNPAID_PAYMENTS);
     }

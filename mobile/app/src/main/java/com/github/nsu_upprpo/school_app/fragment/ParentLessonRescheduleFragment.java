@@ -193,7 +193,7 @@ public class ParentLessonRescheduleFragment extends Fragment {
                         ? View.VISIBLE
                         : View.GONE
         );
-        updateChildBadgeMargin(sourceChildText, hasStatusBadge);
+        updateStatusBadgeMargin(sourceStatusText, sourceChildText.getVisibility() == View.VISIBLE);
     }
 
     private boolean renderSourceStatusBadge() {
@@ -220,7 +220,7 @@ public class ParentLessonRescheduleFragment extends Fragment {
 
         if ("RESCHEDULED_IN".equalsIgnoreCase(sourceChildStatus)) {
             sourceStatusText.setVisibility(View.VISIBLE);
-            sourceStatusText.setText("Перенесено сюда");
+            sourceStatusText.setText("Перенесено");
             sourceStatusText.setBackground(createBadgeBackground(Color.parseColor("#A56BE8")));
             return true;
         }
@@ -476,10 +476,10 @@ public class ParentLessonRescheduleFragment extends Fragment {
         return colors[Math.abs(childId.hashCode()) % colors.length];
     }
 
-    private void updateChildBadgeMargin(TextView childText, boolean hasStatusBadge) {
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) childText.getLayoutParams();
-        params.setMarginStart(hasStatusBadge ? dp(8) : 0);
-        childText.setLayoutParams(params);
+    private void updateStatusBadgeMargin(TextView statusText, boolean hasChildBadge) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) statusText.getLayoutParams();
+        params.setMarginStart(hasChildBadge ? dp(8) : 0);
+        statusText.setLayoutParams(params);
     }
 
     private String safeRaw(String value) {

@@ -1,6 +1,5 @@
 package com.github.nsu_upprpo.school_app.fragment;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -19,12 +18,13 @@ import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 
-import com.github.nsu_upprpo.school_app.LoginActivity;
 import com.github.nsu_upprpo.school_app.R;
 import com.github.nsu_upprpo.school_app.api.ApiClient;
 import com.github.nsu_upprpo.school_app.api.AttendanceApi;
+import com.github.nsu_upprpo.school_app.api.GroupApi;
 import com.github.nsu_upprpo.school_app.model.AttendanceDto;
 import com.github.nsu_upprpo.school_app.model.AttendanceRequest;
+import com.github.nsu_upprpo.school_app.model.GroupDto;
 import com.github.nsu_upprpo.school_app.storage.TokenStorage;
 
 import java.util.HashMap;
@@ -54,7 +54,6 @@ public class TeacherAttendanceFragment extends Fragment {
     private String authHeader;
     private boolean isSubmitted;
     private boolean isDirty;
-    private boolean isSessionExpired;
 
     private final Map<String, String> selectedStatuses = new HashMap<>();
     private final Map<String, String> oldStatuses = new HashMap<>();
@@ -135,9 +134,12 @@ public class TeacherAttendanceFragment extends Fragment {
                 if (!isAdded()) return;
 
                 if (response.isSuccessful() && response.body() != null) {
-                    showAttendance(response.body());
+                    if (response.body().isEmpty()) {
+                        loadGroupRoster();
+                    } else {
+                        showAttendance(response.body());
+                    }
                 } else if (response.code() == 401) {
-                    handleUnauthorized();
                     return;
                 } else {
                     showLoadError();
@@ -150,6 +152,68 @@ public class TeacherAttendanceFragment extends Fragment {
                 showLoadError();
             }
         });
+    }
+
+    private void loadGroupRoster() {
+        if (groupId == null || groupId.isEmpty()) {
+            showNoStudentsMessage();
+            setActionsEnabled(false);
+            return;
+        }
+
+        GroupApi groupApi = ApiClient.getClient().create(GroupApi.class);
+        groupApi.getGroupById(authHeader, groupId).enqueue(new Callback<GroupDto>() {
+            @Override
+            public void onResponse(Call<GroupDto> call, Response<GroupDto> response) {
+                if (!isAdded()) return;
+
+                if (response.isSuccessful() && response.body() != null) {
+                    showRoster(response.body().getStudents());
+                } else if (response.code() == 401) {
+                    return;
+                } else {
+                    showLoadError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GroupDto> call, Throwable t) {
+                if (!isAdded()) return;
+                showLoadError();
+            }
+        });
+    }
+
+    private void showRoster(List<GroupDto.StudentInfo> students) {
+        contentLayout.removeAllViews();
+        selectedStatuses.clear();
+        oldStatuses.clear();
+        isDirty = false;
+        isSubmitted = false;
+
+        if (students == null || students.isEmpty()) {
+            showNoStudentsMessage();
+            setActionsEnabled(false);
+            return;
+        }
+
+        markAllButton.setEnabled(true);
+
+        for (GroupDto.StudentInfo student : students) {
+            if (student == null) {
+                continue;
+            }
+
+            addStudentCard(student.getChildId(), student.getFullName(), "ABSENT");
+        }
+
+        if (selectedStatuses.isEmpty()) {
+            showNoStudentsMessage();
+            setActionsEnabled(false);
+            return;
+        }
+
+        updateSendButtonState();
     }
 
     private void showAttendance(List<AttendanceDto> attendances) {
@@ -198,6 +262,10 @@ public class TeacherAttendanceFragment extends Fragment {
         String childName = attendance.getChildName();
         String status = attendance.getStatus();
 
+        addStudentCard(childId, childName, status);
+    }
+
+    private void addStudentCard(String childId, String childName, String status) {
         if (childId == null || childId.isEmpty()) {
             return;
         }
@@ -356,7 +424,6 @@ public class TeacherAttendanceFragment extends Fragment {
                     if (response.isSuccessful()) {
                         success[0]++;
                     } else if (response.code() == 401) {
-                        handleUnauthorized();
                         return;
                     } else {
                         errors[0]++;
@@ -437,21 +504,6 @@ public class TeacherAttendanceFragment extends Fragment {
 
         contentLayout.addView(retryButton);
         setActionsEnabled(false);
-    }
-
-    private void handleUnauthorized() {
-        if (!isAdded() || isSessionExpired) {
-            return;
-        }
-
-        isSessionExpired = true;
-        new TokenStorage(requireContext()).clear();
-        Toast.makeText(requireContext(), "Сессия истекла. Войдите снова", Toast.LENGTH_LONG).show();
-
-        Intent intent = new Intent(requireContext(), LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        requireActivity().finish();
     }
 
     private TextView createText(String text, int size, boolean bold, int colorRes) {

@@ -49,13 +49,20 @@ public class TeacherProfileFragment extends Fragment {
     }
     private void loadProfile() {
         UserStorage userStorage = new UserStorage(requireContext());
+        boolean hasCachedProfile = userStorage.hasTeacherProfile();
 
-        if (userStorage.hasTeacherProfile()) {
+        if (hasCachedProfile) {
             teacherNameInput.setText(userStorage.getTeacherName());
             teacherPhoneInput.setText(userStorage.getTeacherPhone());
-            return;
+        } else {
+            teacherNameInput.setText("Загрузка...");
+            teacherPhoneInput.setText("");
         }
 
+        loadTeacherProfileFromBackend(userStorage, hasCachedProfile);
+    }
+
+    private void loadTeacherProfileFromBackend(UserStorage userStorage, boolean hasCachedProfile) {
         TokenStorage storage = new TokenStorage(requireContext());
         String token = storage.getAccessToken();
 
@@ -88,16 +95,26 @@ public class TeacherProfileFragment extends Fragment {
 
                     userStorage.saveTeacherProfile(fullName, phone);
                 } else {
-                    Toast.makeText(requireContext(), "Не удалось загрузить профиль", Toast.LENGTH_SHORT).show();
+                    showTeacherProfileRefreshError(hasCachedProfile);
                 }
             }
 
             @Override
             public void onFailure(Call<UserProfile> call, Throwable t) {
                 if (!isAdded()) return;
-                Toast.makeText(requireContext(), "Ошибка сети: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                showTeacherProfileRefreshError(hasCachedProfile);
             }
         });
+    }
+
+    private void showTeacherProfileRefreshError(boolean hasCachedProfile) {
+        if (hasCachedProfile) {
+            Toast.makeText(requireContext(), "Не удалось обновить профиль, показаны сохранённые данные", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(requireContext(), "Не удалось загрузить профиль", Toast.LENGTH_SHORT).show();
+            teacherNameInput.setText("");
+            teacherPhoneInput.setText("");
+        }
     }
 
     private void logout() {
