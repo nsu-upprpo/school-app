@@ -30,10 +30,6 @@ databaseChangeLog:
   - include:
       file: db/changelog/015-lesson-participations.yaml
   - include:
-      file: db/changelog/100-seed-test-data.yaml
+      file: db/changelog/100-base-test-data.yaml
   - include:
-      file: db/changelog/101-more-seed-test-data.yaml
-  - include:
-      file: db/changelog/102-parent-lesson-scenarios.yaml
-  - include:
-      file: db/changelog/103-load-test-seed-data.yaml
+      file: db/changelog/200-load-test-seed-data-1000-users.yaml
