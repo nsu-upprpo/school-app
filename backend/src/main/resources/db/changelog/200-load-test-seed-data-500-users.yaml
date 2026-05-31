@@ -62870,7 +62870,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -62990,7 +62990,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -63110,7 +63110,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -63230,7 +63230,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -63350,7 +63350,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -63470,7 +63470,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -63590,7 +63590,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -63710,7 +63710,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -63830,7 +63830,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -63950,7 +63950,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -64070,7 +64070,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -64190,7 +64190,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -64310,7 +64310,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -64430,7 +64430,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -64550,7 +64550,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -64670,7 +64670,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -64790,7 +64790,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -64910,7 +64910,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -65030,7 +65030,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -65150,7 +65150,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -65270,7 +65270,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -65390,7 +65390,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -65510,7 +65510,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -65630,7 +65630,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -65750,7 +65750,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -65870,7 +65870,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -65990,7 +65990,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -66110,7 +66110,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -66230,7 +66230,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -66350,7 +66350,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -66470,7 +66470,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -66590,7 +66590,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -66710,7 +66710,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -66830,7 +66830,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -66950,7 +66950,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -67070,7 +67070,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -67190,7 +67190,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -67310,7 +67310,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -67430,7 +67430,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -67550,7 +67550,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -67670,7 +67670,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -67790,7 +67790,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -67910,7 +67910,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -68030,7 +68030,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -68150,7 +68150,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -68270,7 +68270,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -68390,7 +68390,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -68510,7 +68510,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -68630,7 +68630,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -68750,7 +68750,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -68870,7 +68870,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -68990,7 +68990,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -69110,7 +69110,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -69230,7 +69230,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -69350,7 +69350,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -69470,7 +69470,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -69590,7 +69590,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -69710,7 +69710,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -69830,7 +69830,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -69950,7 +69950,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -70070,7 +70070,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -70190,7 +70190,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -70310,7 +70310,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -70430,7 +70430,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -70550,7 +70550,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -70670,7 +70670,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -70790,7 +70790,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -70910,7 +70910,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -71030,7 +71030,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -71150,7 +71150,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -71270,7 +71270,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -71390,7 +71390,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -71510,7 +71510,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -71630,7 +71630,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -71750,7 +71750,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -71870,7 +71870,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -71990,7 +71990,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -72110,7 +72110,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -72230,7 +72230,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -72350,7 +72350,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -72470,7 +72470,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -72590,7 +72590,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -72710,7 +72710,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -72830,7 +72830,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -72950,7 +72950,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -73070,7 +73070,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -73190,7 +73190,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -73310,7 +73310,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -73430,7 +73430,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -73550,7 +73550,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -73670,7 +73670,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -73790,7 +73790,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -73910,7 +73910,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -74030,7 +74030,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -74150,7 +74150,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -74270,7 +74270,7 @@ databaseChangeLog:
             valueNumeric: 5250.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -74390,7 +74390,7 @@ databaseChangeLog:
             valueNumeric: 4750.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -74510,7 +74510,7 @@ databaseChangeLog:
             valueNumeric: 5500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -74630,7 +74630,7 @@ databaseChangeLog:
             valueNumeric: 5000.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -74750,7 +74750,7 @@ databaseChangeLog:
             valueNumeric: 4500.0
         - column:
             name: status
-            value: PENDING
+            value: PENDING_CONFIRMATION
         - column:
             name: covers_from
             valueDate: '2026-06-01'
@@ -75974,7 +75974,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000001
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 1
@@ -75998,7 +75998,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000002
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 2
@@ -76022,7 +76022,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000003
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 3
@@ -76046,7 +76046,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000004
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 4
@@ -76070,7 +76070,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000005
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 5
@@ -76094,7 +76094,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000006
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 6
@@ -76118,7 +76118,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000007
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 7
@@ -76142,7 +76142,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000008
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 8
@@ -76166,7 +76166,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000009
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 9
@@ -76190,7 +76190,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000010
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 10
@@ -76214,7 +76214,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000011
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 11
@@ -76238,7 +76238,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000012
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 12
@@ -76262,7 +76262,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000013
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 13
@@ -76286,7 +76286,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000014
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 14
@@ -76310,7 +76310,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000015
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 15
@@ -76334,7 +76334,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000016
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 16
@@ -76358,7 +76358,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000017
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 17
@@ -76382,7 +76382,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000018
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 18
@@ -76406,7 +76406,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000019
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 19
@@ -76430,7 +76430,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000020
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 20
@@ -76454,7 +76454,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000021
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 21
@@ -76478,7 +76478,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000022
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 22
@@ -76502,7 +76502,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000023
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 23
@@ -76526,7 +76526,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000024
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 24
@@ -76550,7 +76550,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000025
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 25
@@ -76574,7 +76574,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000026
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 26
@@ -76598,7 +76598,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000027
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 27
@@ -76622,7 +76622,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000028
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 28
@@ -76646,7 +76646,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000029
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 29
@@ -76670,7 +76670,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000030
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 30
@@ -76694,7 +76694,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000031
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 31
@@ -76718,7 +76718,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000032
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 32
@@ -76742,7 +76742,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000033
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 33
@@ -76766,7 +76766,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000034
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 34
@@ -76790,7 +76790,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000035
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 35
@@ -76814,7 +76814,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000036
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 36
@@ -76838,7 +76838,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000037
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 37
@@ -76862,7 +76862,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000038
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 38
@@ -76886,7 +76886,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000039
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 39
@@ -76910,7 +76910,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000040
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 40
@@ -76934,7 +76934,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000041
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 41
@@ -76958,7 +76958,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000042
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 42
@@ -76982,7 +76982,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000043
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 43
@@ -77006,7 +77006,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000044
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 44
@@ -77030,7 +77030,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000045
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 45
@@ -77054,7 +77054,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000046
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 46
@@ -77078,7 +77078,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000047
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 47
@@ -77102,7 +77102,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000048
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 48
@@ -77126,7 +77126,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000049
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 49
@@ -77150,7 +77150,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0500-000000000050
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 50
@@ -77174,7 +77174,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000001
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 51
@@ -77198,7 +77198,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000002
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 52
@@ -77222,7 +77222,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000003
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 53
@@ -77246,7 +77246,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000004
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 54
@@ -77270,7 +77270,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000005
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 55
@@ -77294,7 +77294,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000006
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 56
@@ -77318,7 +77318,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000007
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 57
@@ -77342,7 +77342,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000008
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 58
@@ -77366,7 +77366,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000009
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 59
@@ -77390,7 +77390,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000010
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 60
@@ -77414,7 +77414,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000011
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 61
@@ -77438,7 +77438,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000012
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 62
@@ -77462,7 +77462,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000013
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 63
@@ -77486,7 +77486,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000014
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 64
@@ -77510,7 +77510,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000015
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 65
@@ -77534,7 +77534,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000016
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 66
@@ -77558,7 +77558,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000017
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 67
@@ -77582,7 +77582,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000018
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 68
@@ -77606,7 +77606,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000019
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 69
@@ -77630,7 +77630,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000020
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 70
@@ -77654,7 +77654,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000021
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 71
@@ -77678,7 +77678,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000022
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 72
@@ -77702,7 +77702,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000023
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 73
@@ -77726,7 +77726,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000024
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 74
@@ -77750,7 +77750,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000025
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 75
@@ -77774,7 +77774,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000026
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 76
@@ -77798,7 +77798,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000027
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 77
@@ -77822,7 +77822,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000028
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 78
@@ -77846,7 +77846,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000029
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 79
@@ -77870,7 +77870,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000030
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 80
@@ -77894,7 +77894,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000031
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 81
@@ -77918,7 +77918,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000032
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 82
@@ -77942,7 +77942,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000033
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 83
@@ -77966,7 +77966,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000034
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 84
@@ -77990,7 +77990,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000035
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 85
@@ -78014,7 +78014,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000036
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 86
@@ -78038,7 +78038,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000037
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 87
@@ -78062,7 +78062,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000038
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 88
@@ -78086,7 +78086,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000039
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 89
@@ -78110,7 +78110,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000040
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 90
@@ -78134,7 +78134,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000041
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 91
@@ -78158,7 +78158,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000042
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 92
@@ -78182,7 +78182,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000043
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 93
@@ -78206,7 +78206,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000044
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 94
@@ -78230,7 +78230,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000045
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 95
@@ -78254,7 +78254,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000046
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 96
@@ -78278,7 +78278,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000047
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 97
@@ -78302,7 +78302,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000048
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 98
@@ -78326,7 +78326,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000049
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 99
@@ -78350,7 +78350,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000050
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 100
@@ -78374,7 +78374,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000051
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 101
@@ -78398,7 +78398,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000052
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 102
@@ -78422,7 +78422,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000053
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 103
@@ -78446,7 +78446,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000054
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 104
@@ -78470,7 +78470,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000055
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 105
@@ -78494,7 +78494,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000056
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 106
@@ -78518,7 +78518,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000057
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 107
@@ -78542,7 +78542,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000058
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 108
@@ -78566,7 +78566,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000059
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 109
@@ -78590,7 +78590,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000060
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 110
@@ -78614,7 +78614,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000061
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 111
@@ -78638,7 +78638,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000062
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 112
@@ -78662,7 +78662,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000063
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 113
@@ -78686,7 +78686,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000064
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 114
@@ -78710,7 +78710,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000065
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 115
@@ -78734,7 +78734,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000066
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 116
@@ -78758,7 +78758,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000067
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 117
@@ -78782,7 +78782,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000068
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 118
@@ -78806,7 +78806,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000069
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 119
@@ -78830,7 +78830,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000070
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 120
@@ -78854,7 +78854,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000071
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 121
@@ -78878,7 +78878,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000072
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 122
@@ -78902,7 +78902,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000073
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 123
@@ -78926,7 +78926,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000074
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 124
@@ -78950,7 +78950,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000075
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 125
@@ -78974,7 +78974,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000076
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 126
@@ -78998,7 +78998,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000077
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 127
@@ -79022,7 +79022,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000078
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 128
@@ -79046,7 +79046,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000079
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 129
@@ -79070,7 +79070,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000080
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 130
@@ -79094,7 +79094,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000081
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 131
@@ -79118,7 +79118,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000082
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 132
@@ -79142,7 +79142,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000083
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 133
@@ -79166,7 +79166,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000084
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 134
@@ -79190,7 +79190,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000085
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 135
@@ -79214,7 +79214,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000086
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 136
@@ -79238,7 +79238,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000087
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 137
@@ -79262,7 +79262,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000088
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 138
@@ -79286,7 +79286,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000089
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 139
@@ -79310,7 +79310,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000090
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 140
@@ -79334,7 +79334,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000091
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 141
@@ -79358,7 +79358,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000092
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 142
@@ -79382,7 +79382,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000093
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 143
@@ -79406,7 +79406,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000094
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 144
@@ -79430,7 +79430,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000095
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 145
@@ -79454,7 +79454,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000096
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 146
@@ -79478,7 +79478,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000097
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 147
@@ -79502,7 +79502,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000098
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 148
@@ -79526,7 +79526,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000099
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 149
@@ -79550,7 +79550,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000100
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 150
@@ -79574,7 +79574,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000101
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 151
@@ -79598,7 +79598,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000102
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 152
@@ -79622,7 +79622,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000103
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 153
@@ -79646,7 +79646,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000104
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 154
@@ -79670,7 +79670,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000105
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 155
@@ -79694,7 +79694,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000106
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 156
@@ -79718,7 +79718,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000107
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 157
@@ -79742,7 +79742,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000108
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 158
@@ -79766,7 +79766,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000109
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 159
@@ -79790,7 +79790,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000110
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 160
@@ -79814,7 +79814,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000111
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 161
@@ -79838,7 +79838,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000112
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 162
@@ -79862,7 +79862,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000113
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 163
@@ -79886,7 +79886,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000114
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 164
@@ -79910,7 +79910,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000115
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 165
@@ -79934,7 +79934,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000116
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 166
@@ -79958,7 +79958,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000117
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 167
@@ -79982,7 +79982,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000118
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 168
@@ -80006,7 +80006,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000119
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 169
@@ -80030,7 +80030,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000120
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 170
@@ -80054,7 +80054,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000121
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 171
@@ -80078,7 +80078,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000122
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 172
@@ -80102,7 +80102,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000123
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 173
@@ -80126,7 +80126,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000124
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 174
@@ -80150,7 +80150,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000125
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 175
@@ -80174,7 +80174,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000126
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 176
@@ -80198,7 +80198,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000127
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 177
@@ -80222,7 +80222,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000128
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 178
@@ -80246,7 +80246,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000129
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 179
@@ -80270,7 +80270,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000130
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 180
@@ -80294,7 +80294,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000131
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 181
@@ -80318,7 +80318,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000132
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 182
@@ -80342,7 +80342,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000133
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 183
@@ -80366,7 +80366,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000134
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 184
@@ -80390,7 +80390,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000135
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 185
@@ -80414,7 +80414,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000136
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 186
@@ -80438,7 +80438,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000137
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 187
@@ -80462,7 +80462,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000138
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 188
@@ -80486,7 +80486,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000139
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 189
@@ -80510,7 +80510,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000140
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 190
@@ -80534,7 +80534,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000141
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 191
@@ -80558,7 +80558,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000142
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 192
@@ -80582,7 +80582,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000143
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 193
@@ -80606,7 +80606,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000144
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 194
@@ -80630,7 +80630,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000145
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 195
@@ -80654,7 +80654,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000146
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 196
@@ -80678,7 +80678,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000147
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 197
@@ -80702,7 +80702,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000148
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 198
@@ -80726,7 +80726,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000149
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 199
@@ -80750,7 +80750,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0501-000000000150
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 200
@@ -80774,7 +80774,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000001
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 201
@@ -80798,7 +80798,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000002
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 202
@@ -80822,7 +80822,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000003
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 203
@@ -80846,7 +80846,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000004
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 204
@@ -80870,7 +80870,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000005
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 205
@@ -80894,7 +80894,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000006
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 206
@@ -80918,7 +80918,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000007
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 207
@@ -80942,7 +80942,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000008
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 208
@@ -80966,7 +80966,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000009
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 209
@@ -80990,7 +80990,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000010
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 210
@@ -81014,7 +81014,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000011
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 211
@@ -81038,7 +81038,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000012
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 212
@@ -81062,7 +81062,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000013
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 213
@@ -81086,7 +81086,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000014
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 214
@@ -81110,7 +81110,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000015
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 215
@@ -81134,7 +81134,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000016
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 216
@@ -81158,7 +81158,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000017
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 217
@@ -81182,7 +81182,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000018
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 218
@@ -81206,7 +81206,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000019
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 219
@@ -81230,7 +81230,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000020
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 220
@@ -81254,7 +81254,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000021
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 221
@@ -81278,7 +81278,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000022
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 222
@@ -81302,7 +81302,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000023
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 223
@@ -81326,7 +81326,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000024
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 224
@@ -81350,7 +81350,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000025
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 225
@@ -81374,7 +81374,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000026
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 226
@@ -81398,7 +81398,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000027
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 227
@@ -81422,7 +81422,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000028
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 228
@@ -81446,7 +81446,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000029
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 229
@@ -81470,7 +81470,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000030
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 230
@@ -81494,7 +81494,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000031
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 231
@@ -81518,7 +81518,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000032
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 232
@@ -81542,7 +81542,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000033
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 233
@@ -81566,7 +81566,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000034
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 234
@@ -81590,7 +81590,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000035
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 235
@@ -81614,7 +81614,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000036
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 236
@@ -81638,7 +81638,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000037
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 237
@@ -81662,7 +81662,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000038
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 238
@@ -81686,7 +81686,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000039
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 239
@@ -81710,7 +81710,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000040
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 240
@@ -81734,7 +81734,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000041
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 241
@@ -81758,7 +81758,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000042
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 242
@@ -81782,7 +81782,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000043
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 243
@@ -81806,7 +81806,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000044
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 244
@@ -81830,7 +81830,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000045
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 245
@@ -81854,7 +81854,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000046
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 246
@@ -81878,7 +81878,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000047
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 247
@@ -81902,7 +81902,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000048
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 248
@@ -81926,7 +81926,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000049
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 249
@@ -81950,7 +81950,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000050
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 250
@@ -81974,7 +81974,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000051
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 251
@@ -81998,7 +81998,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000052
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 252
@@ -82022,7 +82022,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000053
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 253
@@ -82046,7 +82046,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000054
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 254
@@ -82070,7 +82070,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000055
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 255
@@ -82094,7 +82094,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000056
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 256
@@ -82118,7 +82118,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000057
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 257
@@ -82142,7 +82142,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000058
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 258
@@ -82166,7 +82166,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000059
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 259
@@ -82190,7 +82190,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000060
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 260
@@ -82214,7 +82214,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000061
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 261
@@ -82238,7 +82238,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000062
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 262
@@ -82262,7 +82262,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000063
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 263
@@ -82286,7 +82286,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000064
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 264
@@ -82310,7 +82310,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000065
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 265
@@ -82334,7 +82334,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000066
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 266
@@ -82358,7 +82358,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000067
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 267
@@ -82382,7 +82382,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000068
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 268
@@ -82406,7 +82406,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000069
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 269
@@ -82430,7 +82430,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000070
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 270
@@ -82454,7 +82454,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000071
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 271
@@ -82478,7 +82478,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000072
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 272
@@ -82502,7 +82502,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000073
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 273
@@ -82526,7 +82526,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000074
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 274
@@ -82550,7 +82550,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000075
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 275
@@ -82574,7 +82574,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000076
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 276
@@ -82598,7 +82598,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000077
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 277
@@ -82622,7 +82622,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000078
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 278
@@ -82646,7 +82646,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000079
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 279
@@ -82670,7 +82670,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000080
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 280
@@ -82694,7 +82694,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000081
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 281
@@ -82718,7 +82718,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000082
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 282
@@ -82742,7 +82742,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000083
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 283
@@ -82766,7 +82766,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000084
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 284
@@ -82790,7 +82790,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000085
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 285
@@ -82814,7 +82814,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000086
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 286
@@ -82838,7 +82838,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000087
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 287
@@ -82862,7 +82862,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000088
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 288
@@ -82886,7 +82886,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000089
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 289
@@ -82910,7 +82910,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000090
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 290
@@ -82934,7 +82934,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000091
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 291
@@ -82958,7 +82958,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000092
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 292
@@ -82982,7 +82982,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000093
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 293
@@ -83006,7 +83006,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000094
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 294
@@ -83030,7 +83030,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000095
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 295
@@ -83054,7 +83054,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000096
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 296
@@ -83078,7 +83078,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000097
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 297
@@ -83102,7 +83102,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000098
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 298
@@ -83126,7 +83126,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000099
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 299
@@ -83150,7 +83150,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000100
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 300
@@ -83174,7 +83174,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000101
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 301
@@ -83198,7 +83198,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000102
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 302
@@ -83222,7 +83222,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000103
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 303
@@ -83246,7 +83246,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000104
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 304
@@ -83270,7 +83270,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000105
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 305
@@ -83294,7 +83294,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000106
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 306
@@ -83318,7 +83318,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000107
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 307
@@ -83342,7 +83342,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000108
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 308
@@ -83366,7 +83366,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000109
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 309
@@ -83390,7 +83390,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000110
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 310
@@ -83414,7 +83414,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000111
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 311
@@ -83438,7 +83438,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000112
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 312
@@ -83462,7 +83462,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000113
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 313
@@ -83486,7 +83486,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000114
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 314
@@ -83510,7 +83510,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000115
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 315
@@ -83534,7 +83534,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000116
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 316
@@ -83558,7 +83558,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000117
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 317
@@ -83582,7 +83582,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000118
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 318
@@ -83606,7 +83606,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000119
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 319
@@ -83630,7 +83630,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000120
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 320
@@ -83654,7 +83654,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000121
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 321
@@ -83678,7 +83678,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000122
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 322
@@ -83702,7 +83702,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000123
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 323
@@ -83726,7 +83726,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000124
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 324
@@ -83750,7 +83750,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000125
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 325
@@ -83774,7 +83774,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000126
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 326
@@ -83798,7 +83798,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000127
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 327
@@ -83822,7 +83822,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000128
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 328
@@ -83846,7 +83846,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000129
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 329
@@ -83870,7 +83870,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000130
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 330
@@ -83894,7 +83894,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000131
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 331
@@ -83918,7 +83918,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000132
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 332
@@ -83942,7 +83942,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000133
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 333
@@ -83966,7 +83966,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000134
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 334
@@ -83990,7 +83990,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000135
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 335
@@ -84014,7 +84014,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000136
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 336
@@ -84038,7 +84038,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000137
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 337
@@ -84062,7 +84062,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000138
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 338
@@ -84086,7 +84086,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000139
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 339
@@ -84110,7 +84110,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000140
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 340
@@ -84134,7 +84134,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000141
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 341
@@ -84158,7 +84158,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000142
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 342
@@ -84182,7 +84182,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000143
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 343
@@ -84206,7 +84206,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000144
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 344
@@ -84230,7 +84230,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000145
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 345
@@ -84254,7 +84254,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000146
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 346
@@ -84278,7 +84278,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000147
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 347
@@ -84302,7 +84302,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000148
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 348
@@ -84326,7 +84326,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000149
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 349
@@ -84350,7 +84350,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000150
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 350
@@ -84374,7 +84374,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000151
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 351
@@ -84398,7 +84398,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000152
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 352
@@ -84422,7 +84422,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000153
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 353
@@ -84446,7 +84446,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000154
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 354
@@ -84470,7 +84470,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000155
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 355
@@ -84494,7 +84494,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000156
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 356
@@ -84518,7 +84518,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000157
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 357
@@ -84542,7 +84542,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000158
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 358
@@ -84566,7 +84566,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000159
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 359
@@ -84590,7 +84590,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000160
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 360
@@ -84614,7 +84614,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000161
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 361
@@ -84638,7 +84638,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000162
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 362
@@ -84662,7 +84662,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000163
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 363
@@ -84686,7 +84686,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000164
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 364
@@ -84710,7 +84710,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000165
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 365
@@ -84734,7 +84734,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000166
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 366
@@ -84758,7 +84758,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000167
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 367
@@ -84782,7 +84782,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000168
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 368
@@ -84806,7 +84806,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000169
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 369
@@ -84830,7 +84830,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000170
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 370
@@ -84854,7 +84854,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000171
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 371
@@ -84878,7 +84878,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000172
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 372
@@ -84902,7 +84902,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000173
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 373
@@ -84926,7 +84926,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000174
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 374
@@ -84950,7 +84950,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000175
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 375
@@ -84974,7 +84974,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000176
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 376
@@ -84998,7 +84998,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000177
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 377
@@ -85022,7 +85022,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000178
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 378
@@ -85046,7 +85046,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000179
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 379
@@ -85070,7 +85070,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000180
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 380
@@ -85094,7 +85094,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000181
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 381
@@ -85118,7 +85118,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000182
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 382
@@ -85142,7 +85142,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000183
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 383
@@ -85166,7 +85166,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000184
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 384
@@ -85190,7 +85190,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000185
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 385
@@ -85214,7 +85214,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000186
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 386
@@ -85238,7 +85238,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000187
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 387
@@ -85262,7 +85262,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000188
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 388
@@ -85286,7 +85286,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000189
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 389
@@ -85310,7 +85310,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000190
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 390
@@ -85334,7 +85334,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000191
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 391
@@ -85358,7 +85358,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000192
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 392
@@ -85382,7 +85382,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000193
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 393
@@ -85406,7 +85406,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000194
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 394
@@ -85430,7 +85430,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000195
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 395
@@ -85454,7 +85454,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000196
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 396
@@ -85478,7 +85478,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000197
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 397
@@ -85502,7 +85502,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000198
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 398
@@ -85526,7 +85526,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000199
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 399
@@ -85550,7 +85550,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000200
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 400
@@ -85574,7 +85574,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000201
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 401
@@ -85598,7 +85598,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000202
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 402
@@ -85622,7 +85622,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000203
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 403
@@ -85646,7 +85646,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000204
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 404
@@ -85670,7 +85670,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000205
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 405
@@ -85694,7 +85694,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000206
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 406
@@ -85718,7 +85718,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000207
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 407
@@ -85742,7 +85742,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000208
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 408
@@ -85766,7 +85766,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000209
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 409
@@ -85790,7 +85790,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000210
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 410
@@ -85814,7 +85814,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000211
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 411
@@ -85838,7 +85838,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000212
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 412
@@ -85862,7 +85862,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000213
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 413
@@ -85886,7 +85886,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000214
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 414
@@ -85910,7 +85910,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000215
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 415
@@ -85934,7 +85934,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000216
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 416
@@ -85958,7 +85958,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000217
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 417
@@ -85982,7 +85982,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000218
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 418
@@ -86006,7 +86006,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000219
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 419
@@ -86030,7 +86030,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000220
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 420
@@ -86054,7 +86054,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000221
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 421
@@ -86078,7 +86078,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000222
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 422
@@ -86102,7 +86102,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000223
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 423
@@ -86126,7 +86126,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000224
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 424
@@ -86150,7 +86150,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000225
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 425
@@ -86174,7 +86174,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000226
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 426
@@ -86198,7 +86198,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000227
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 427
@@ -86222,7 +86222,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000228
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 428
@@ -86246,7 +86246,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000229
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 429
@@ -86270,7 +86270,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000230
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 430
@@ -86294,7 +86294,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000231
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 431
@@ -86318,7 +86318,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000232
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 432
@@ -86342,7 +86342,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000233
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 433
@@ -86366,7 +86366,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000234
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 434
@@ -86390,7 +86390,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000235
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 435
@@ -86414,7 +86414,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000236
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 436
@@ -86438,7 +86438,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000237
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 437
@@ -86462,7 +86462,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000238
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 438
@@ -86486,7 +86486,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000239
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 439
@@ -86510,7 +86510,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000240
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 440
@@ -86534,7 +86534,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000241
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 441
@@ -86558,7 +86558,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000242
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 442
@@ -86582,7 +86582,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000243
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 443
@@ -86606,7 +86606,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000244
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 444
@@ -86630,7 +86630,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000245
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 445
@@ -86654,7 +86654,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000246
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 446
@@ -86678,7 +86678,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000247
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 447
@@ -86702,7 +86702,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000248
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 448
@@ -86726,7 +86726,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000249
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 449
@@ -86750,7 +86750,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000250
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 450
@@ -86774,7 +86774,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000251
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 451
@@ -86798,7 +86798,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000252
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 452
@@ -86822,7 +86822,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000253
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 453
@@ -86846,7 +86846,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000254
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 454
@@ -86870,7 +86870,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000255
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 455
@@ -86894,7 +86894,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000256
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 456
@@ -86918,7 +86918,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000257
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 457
@@ -86942,7 +86942,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000258
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 458
@@ -86966,7 +86966,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000259
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 459
@@ -86990,7 +86990,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000260
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 460
@@ -87014,7 +87014,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000261
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 461
@@ -87038,7 +87038,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000262
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 462
@@ -87062,7 +87062,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000263
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 463
@@ -87086,7 +87086,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000264
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 464
@@ -87110,7 +87110,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000265
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 465
@@ -87134,7 +87134,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000266
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 466
@@ -87158,7 +87158,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000267
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 467
@@ -87182,7 +87182,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000268
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 468
@@ -87206,7 +87206,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000269
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 469
@@ -87230,7 +87230,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000270
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 470
@@ -87254,7 +87254,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000271
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 471
@@ -87278,7 +87278,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000272
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 472
@@ -87302,7 +87302,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000273
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 473
@@ -87326,7 +87326,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000274
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 474
@@ -87350,7 +87350,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000275
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 475
@@ -87374,7 +87374,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000276
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 476
@@ -87398,7 +87398,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000277
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 477
@@ -87422,7 +87422,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000278
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 478
@@ -87446,7 +87446,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000279
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 479
@@ -87470,7 +87470,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000280
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 480
@@ -87494,7 +87494,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000281
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 481
@@ -87518,7 +87518,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000282
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 482
@@ -87542,7 +87542,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000283
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 483
@@ -87566,7 +87566,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000284
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 484
@@ -87590,7 +87590,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000285
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 485
@@ -87614,7 +87614,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000286
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 486
@@ -87638,7 +87638,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000287
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 487
@@ -87662,7 +87662,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000288
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 488
@@ -87686,7 +87686,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000289
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 489
@@ -87710,7 +87710,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000290
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 490
@@ -87734,7 +87734,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000291
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 491
@@ -87758,7 +87758,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000292
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 492
@@ -87782,7 +87782,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000293
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 493
@@ -87806,7 +87806,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000294
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 494
@@ -87830,7 +87830,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000295
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 495
@@ -87854,7 +87854,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000296
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 496
@@ -87878,7 +87878,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000297
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 497
@@ -87902,7 +87902,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000298
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 498
@@ -87926,7 +87926,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000299
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 499
@@ -87950,7 +87950,7 @@ databaseChangeLog:
             value: 00000000-0000-0000-0502-000000000300
         - column:
             name: type
-            value: INFO
+            value: SYSTEM
         - column:
             name: message_text
             value: Тестовое уведомление 500
